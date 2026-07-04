@@ -1,0 +1,6 @@
+{
+  "name": "Deep Focus OS",
+  "description": "Premium Production Management Portal for elite video editors, client pipelines, and real-time arbitrage finance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
