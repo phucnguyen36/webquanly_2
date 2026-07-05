@@ -5,6 +5,7 @@
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, collection, writeBatch } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { ClientObject, VideoTaskObject, StaffObject } from './types';
 import { UserProfile } from './components/ProfileSettingsModal';
 import { INITIAL_CLIENTS, INITIAL_STAFF, INITIAL_TASKS } from './initialData';
@@ -21,6 +22,7 @@ const firebaseConfig = {
 // Initialize Firebase and use the custom named databaseId
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, "ai-studio-deepfocusos-8d2a0c52-22d7-4199-af13-489c44897f8c");
+export const auth = getAuth(app);
 
 /**
  * Loads all data from Firestore.

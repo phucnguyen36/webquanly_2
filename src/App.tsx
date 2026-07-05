@@ -19,6 +19,7 @@ import TaskCalendar from './components/TaskCalendar';
 import ProfileSettingsModal, { UserProfile } from './components/ProfileSettingsModal';
 
 import { 
+  auth,
   loadWorkspaceData, 
   saveClient, 
   deleteClient, 
@@ -30,6 +31,7 @@ import {
   clearAllWorkspaceData,
   resetWorkspaceDataToDefault
 } from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 import { 
   Layers, TrendingUp, Users, Settings, LogOut, 
@@ -104,40 +106,67 @@ export default function App() {
   // Real-time Clock
   const [time, setTime] = useState<string>('');
 
-  // 1. Initialize & Seed State Engine from Firestore (with LocalStorage cache fallback)
+  // 1. Initialize & Seed State Engine from Firestore (with LocalStorage cache fallback) and Auth Observer
   useEffect(() => {
-    // Auth Check
-    const storedAuth = localStorage.getItem('deep_focus_os_auth');
-    if (storedAuth) {
-      setIsAuthenticated(true);
-      setUserRole(storedAuth as 'admin' | 'staff');
-    }
+    let active = true;
 
     async function loadData() {
       setIsLoading(true);
       try {
         const data = await loadWorkspaceData();
-        setClients(data.clients);
-        setStaff(data.staff);
-        setTasks(data.tasks);
-        if (data.profile) {
-          setProfile(data.profile);
+        if (active) {
+          setClients(data.clients);
+          setStaff(data.staff);
+          setTasks(data.tasks);
+          if (data.profile) {
+            setProfile(data.profile);
+          }
         }
       } catch (err) {
         console.error("Failed to load Cloud Firestore data, falling back to localStorage cache:", err);
-        const savedClients = localStorage.getItem('deep_focus_os_clients');
-        setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
+        if (active) {
+          const savedClients = localStorage.getItem('deep_focus_os_clients');
+          setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
 
-        const savedStaff = localStorage.getItem('deep_focus_os_staff');
-        setStaff(savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF);
+          const savedStaff = localStorage.getItem('deep_focus_os_staff');
+          setStaff(savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF);
 
-        const savedTasks = localStorage.getItem('deep_focus_os_tasks');
-        setTasks(savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS);
+          const savedTasks = localStorage.getItem('deep_focus_os_tasks');
+          setTasks(savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS);
+        }
       } finally {
-        setIsLoading(false);
+        if (active) {
+          setIsLoading(false);
+        }
       }
     }
-    loadData();
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+        const role = user.email === 'work.xuanphuc@gmail.com' ? 'admin' : 'staff';
+        setUserRole(role);
+        localStorage.setItem('deep_focus_os_auth', role);
+        loadData();
+      } else {
+        // Safe check for bypass/fallback local authenticated session
+        const fallbackRole = localStorage.getItem('deep_focus_os_fallback_auth');
+        if (fallbackRole === 'admin' || fallbackRole === 'staff') {
+          setIsAuthenticated(true);
+          setUserRole(fallbackRole as 'admin' | 'staff');
+          loadData();
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem('deep_focus_os_auth');
+          loadData();
+        }
+      }
+    });
+
+    return () => {
+      active = false;
+      unsubscribe();
+    };
   }, []);
 
   // Sync chosen Year and Month to localStorage
@@ -374,8 +403,14 @@ export default function App() {
     });
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
     localStorage.removeItem('deep_focus_os_auth');
+    localStorage.removeItem('deep_focus_os_fallback_auth');
     setIsAuthenticated(false);
   };
 
