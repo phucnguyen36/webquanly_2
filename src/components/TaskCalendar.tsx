@@ -268,7 +268,7 @@ export default function TaskCalendar({
           </div>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 grid-rows-6 auto-rows-fr divide-x divide-y divide-zinc-900 bg-zinc-950 min-h-[500px]">
+          <div className="grid grid-cols-7 divide-x divide-y divide-zinc-900 bg-zinc-950 min-h-[500px]">
             {calendarCells.map((cell, idx) => {
               const isToday = new Date().getDate() === cell.dayNum && 
                               new Date().getMonth() === monthIdx && 
@@ -278,7 +278,7 @@ export default function TaskCalendar({
               return (
                 <div 
                   key={idx} 
-                  className={`p-1.5 flex flex-col justify-between min-h-[90px] transition-all relative ${
+                  className={`p-2 flex flex-col justify-between min-h-[110px] h-full transition-all relative ${
                     cell.isCurrentMonth ? 'bg-[#09090b]/40' : 'bg-[#040405]/80 opacity-30 select-none'
                   } ${isToday ? 'ring-1 ring-inset ring-[#F97316]/50 bg-[#F97316]/2' : ''}`}
                 >
@@ -307,7 +307,7 @@ export default function TaskCalendar({
                   </div>
 
                   {/* Tasks on this Day */}
-                  <div className="flex-1 space-y-1 overflow-y-auto max-h-[85px] scrollbar-thin select-text">
+                  <div className="flex-1 space-y-1 select-text mt-1 pb-1">
                     {cell.tasks.map(task => (
                       <div
                         key={task.id}

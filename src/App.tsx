@@ -36,13 +36,31 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
   Layers, TrendingUp, Users, Settings, LogOut, 
   Clock, Database, RefreshCw,
-  Menu, X, Calendar, Trash2, User, Sliders, Download, Upload
+  Menu, X, Calendar, Trash2, User, Sliders, Download, Upload,
+  CloudOff, AlertTriangle
 } from 'lucide-react';
+
+const THEME_COLORS = [
+  { id: 'amber', name: 'Cyberpunk Amber', hexColor: '#F97316', hoverColor: '#ea6c0a' },
+  { id: 'emerald', name: 'Forest Emerald', hexColor: '#10B981', hoverColor: '#059669' },
+  { id: 'violet', name: 'Royal Violet', hexColor: '#8B5CF6', hoverColor: '#7C3AED' },
+  { id: 'cyan', name: 'Electric Ice', hexColor: '#06B6D4', hoverColor: '#0891B2' },
+  { id: 'crimson', name: 'Neon Crimson', hexColor: '#F43F5E', hoverColor: '#E11D48' },
+];
 
 export default function App() {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<'admin' | 'staff'>('staff');
+
+  // Dynamic Theme Customization Color State
+  const [themeColorId, setThemeColorId] = useState<string>(() => {
+    return localStorage.getItem('deep_focus_os_theme_color_id') || 'amber';
+  });
+
+  const activeThemeColor = useMemo(() => {
+    return THEME_COLORS.find(c => c.id === themeColorId) || THEME_COLORS[0];
+  }, [themeColorId]);
 
   // Profile & Workspace Settings State
   const [profile, setProfile] = useState<UserProfile>(() => {
@@ -67,6 +85,8 @@ export default function App() {
   });
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isCloudSyncFailed, setIsCloudSyncFailed] = useState<boolean>(false);
+  const [cloudErrorMsg, setCloudErrorMsg] = useState<string>('');
 
   // Core Data States
   const [clients, setClients] = useState<ClientObject[]>([]);
@@ -121,10 +141,14 @@ export default function App() {
           if (data.profile) {
             setProfile(data.profile);
           }
+          setIsCloudSyncFailed(false);
+          setCloudErrorMsg('');
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to load Cloud Firestore data, falling back to localStorage cache:", err);
         if (active) {
+          setIsCloudSyncFailed(true);
+          setCloudErrorMsg(err?.message || String(err));
           const savedClients = localStorage.getItem('deep_focus_os_clients');
           setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
 
@@ -268,6 +292,12 @@ export default function App() {
     const updated = [...clients, newClient];
     syncClientsToLocal(updated);
     saveClient(newClient);
+  };
+
+  const handleUpdateClient = (updatedClient: ClientObject) => {
+    const updated = clients.map(c => c.id === updatedClient.id ? updatedClient : c);
+    syncClientsToLocal(updated);
+    saveClient(updatedClient);
   };
 
   const handleDeleteClient = (clientId: string) => {
@@ -672,6 +702,42 @@ export default function App() {
 
   return (
     <div id="app-root" className="min-h-screen bg-[#0C0A08] text-[#F0E6D8] font-sans flex flex-col md:flex-row antialiased select-none tracking-tight">
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --primary-accent: ${activeThemeColor.hexColor};
+          --primary-accent-glow: ${activeThemeColor.hexColor}40;
+          --primary-accent-border: ${activeThemeColor.hexColor}20;
+        }
+        /* Override orange text and background classes dynamically */
+        .text-\\[\\#F97316\\] { color: ${activeThemeColor.hexColor} !important; }
+        .text-\\[rgba\\(249\\,115\\,22\\,0\\.8\\)\\] { color: ${activeThemeColor.hexColor}cc !important; }
+        .hover\\:text-\\[\\#F97316\\]:hover { color: ${activeThemeColor.hexColor} !important; }
+        .bg-\\[\\#F97316\\] { background-color: ${activeThemeColor.hexColor} !important; }
+        .hover\\:bg-\\[\\#ea6c0a\\]:hover { background-color: ${activeThemeColor.hoverColor} !important; }
+        .bg-\\[\\#F97316\\]\\/5 { background-color: ${activeThemeColor.hexColor}0d !important; }
+        .bg-\\[\\#F97316\\]\\/2 { background-color: ${activeThemeColor.hexColor}05 !important; }
+        .bg-\\[\\#F97316\\]\\/10 { background-color: ${activeThemeColor.hexColor}1a !important; }
+        .border-\\[\\#F97316\\] { border-color: ${activeThemeColor.hexColor} !important; }
+        .border-\\[\\#F97316\\]\\/20 { border-color: ${activeThemeColor.hexColor}33 !important; }
+        .border-\\[\\#F97316\\]\\/50 { border-color: ${activeThemeColor.hexColor}80 !important; }
+        .ring-\\[\\#F97316\\]\\/50 { --tw-ring-color: ${activeThemeColor.hexColor}80 !important; }
+        .ring-\\[\\#F97316\\]\\/10 { --tw-ring-color: ${activeThemeColor.hexColor}1a !important; }
+        .shadow-\\[\\#F97316\\] { --tw-shadow-color: ${activeThemeColor.hexColor} !important; }
+        .shadow-\\[0_0_15px_rgba\\(249\\,115\\,22\\,0\\.5\\)\\] { box-shadow: 0 0 15px ${activeThemeColor.hexColor}80 !important; }
+        .shadow-\\[0_0_10px_rgba\\(249\\,115\\,22\\,0\\.3\\)\\] { box-shadow: 0 0 10px ${activeThemeColor.hexColor}4d !important; }
+        .shadow-\\[0_0_15px_rgba\\(249\\,115\\,22\\,0\\.1\\)\\] { box-shadow: 0 0 15px ${activeThemeColor.hexColor}1a !important; }
+        .border-\\[rgba\\(249\\,115\\,22\\,0\\.15\\)\\] { border-color: ${activeThemeColor.hexColor}26 !important; }
+        .from-\\[\\#F97316\\] { --tw-gradient-from: ${activeThemeColor.hexColor} !important; }
+        .to-\\[\\#F97316\\] { --tw-gradient-to: ${activeThemeColor.hexColor} !important; }
+        /* Extra styles to ensure complete branding takeover */
+        .border-t-2.border-r-2.border-\\[\\#F97316\\] { border-color: ${activeThemeColor.hexColor} !important; }
+        .text-\\[\\#F97316\\]\\/80 { color: ${activeThemeColor.hexColor}cc !important; }
+        .border-\\[rgba\\(249\\,115\\,22\\,0\\.15\\)\\] { border-color: ${activeThemeColor.hexColor}26 !important; }
+        .text-\\[\\#E8B849\\] { color: ${activeThemeColor.hexColor} !important; }
+        .border-\\[\\#E8B849\\] { border-color: ${activeThemeColor.hexColor} !important; }
+        .bg-\\[\\#1E1810\\] { background-color: ${activeThemeColor.hexColor}15 !important; }
+        .bg-\\[\\#1E1810\\]\\/40 { background-color: ${activeThemeColor.hexColor}08 !important; }
+      `}} />
       
       {/* 1. Left Sidebar Navigation Panel (APEX Editors / Warm Creator Tone Style) */}
       <aside id="sidebar-panel" className="w-full md:w-64 bg-[#161210] border-r border-[rgba(249,115,22,0.15)] flex flex-col justify-between shrink-0">
@@ -816,6 +882,29 @@ export default function App() {
               System Configuration
             </span>
 
+            {/* Accent Theme Color Preset Picker */}
+            <div className="mx-2 mb-3 px-2.5 py-2 bg-[#1E1810]/40 rounded-sm border border-[rgba(249,115,22,0.15)]">
+              <span className="text-[9px] font-mono uppercase tracking-wider text-[#71717a] block mb-2">
+                Màu giao diện:
+              </span>
+              <div className="flex items-center gap-2">
+                {THEME_COLORS.map(c => (
+                  <button
+                    key={c.id}
+                    onClick={() => {
+                      setThemeColorId(c.id);
+                      localStorage.setItem('deep_focus_os_theme_color_id', c.id);
+                    }}
+                    className={`w-4 h-4 rounded-full transition-all cursor-pointer relative ${
+                      themeColorId === c.id ? 'ring-2 ring-white ring-offset-2 ring-offset-[#161210] scale-110' : 'hover:scale-110'
+                    }`}
+                    style={{ backgroundColor: c.hexColor }}
+                    title={c.name}
+                  />
+                ))}
+              </div>
+            </div>
+
             <button
               onClick={() => setIsClientModalOpen(true)}
               className="w-full text-left px-3 py-2 text-xs font-medium text-[#B8967D] hover:text-white hover:bg-[#1E1810]/40 transition-all flex items-center gap-2 cursor-pointer"
@@ -902,6 +991,27 @@ export default function App() {
       <main id="main-content-panel" className="flex-1 bg-[#0C0A08] overflow-y-auto">
         <div className="max-w-6xl mx-auto w-full p-8 md:p-10 space-y-10">
           
+          {/* Cloud Sync Status Indicator */}
+          {isCloudSyncFailed && (
+            <div id="cloud-sync-error-banner" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-orange-950/25 border-2 border-orange-500/30 rounded-sm text-orange-200 text-xs font-mono shadow-[0_0_15px_rgba(249,115,22,0.1)]">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-950/50 border border-orange-500/20 text-orange-500 rounded-sm animate-pulse">
+                  <CloudOff className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-black text-orange-400 uppercase tracking-wider">CẢNH BÁO: CHẾ ĐỘ NGOẠI TUYẾN (LOCAL STORAGE FALLBACK)</h4>
+                  <p className="text-[10px] text-orange-300/80 mt-0.5 leading-normal max-w-xl">
+                    Hệ thống không thể kết nối tới Cloud Firestore (Lỗi: {cloudErrorMsg || 'Kết nối thất bại'}). Dữ liệu hiện đang được tự động sao lưu tạm thời trên trình duyệt của máy này. Nếu bạn chạy CCleaner hoặc xóa lịch sử duyệt web, dữ liệu sẽ bị xóa hoàn toàn!
+                  </p>
+                </div>
+              </div>
+              <div className="shrink-0 flex items-center gap-2">
+                <span className="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
+                <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">DỮ LIỆU CHƯA ĐỒNG BỘ CLOUD</span>
+              </div>
+            </div>
+          )}
+
           {/* Top Control Header bar */}
           <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border-b border-zinc-900 pb-8">
             <div className="flex items-center gap-4">
@@ -1095,6 +1205,7 @@ export default function App() {
         <ClientSettingsHub 
           clients={clients}
           onAddClient={handleAddClient}
+          onUpdateClient={handleUpdateClient}
           onDeleteClient={handleDeleteClient}
           onClose={() => setIsClientModalOpen(false)}
         />

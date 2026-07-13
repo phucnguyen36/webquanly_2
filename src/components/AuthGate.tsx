@@ -46,8 +46,13 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             onAuthenticated('admin');
             return;
           }
-          // If Email/Password authentication is disabled or offline, fall back to bypass
-          if (regErr.code === 'auth/operation-not-allowed' || regErr.code === 'auth/configuration-not-found' || regErr.code === 'auth/network-request-failed') {
+          // If Email/Password authentication is disabled, offline, or unauthorized domain, fall back to bypass
+          if (
+            regErr.code === 'auth/operation-not-allowed' || 
+            regErr.code === 'auth/configuration-not-found' || 
+            regErr.code === 'auth/network-request-failed' ||
+            regErr.code === 'auth/unauthorized-domain'
+          ) {
             const role = email === 'work.xuanphuc@gmail.com' ? 'admin' : 'staff';
             localStorage.setItem('deep_focus_os_fallback_auth', role);
             localStorage.setItem('deep_focus_os_auth', role);
@@ -75,11 +80,12 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             return;
           }
 
-          // 2. If provider is disabled or not configured in Firebase console, let user log in using credentials anyway
+          // 2. If provider is disabled, offline, or unauthorized domain, let user log in using credentials anyway
           if (
             loginErr.code === 'auth/operation-not-allowed' || 
             loginErr.code === 'auth/configuration-not-found' ||
-            loginErr.code === 'auth/network-request-failed'
+            loginErr.code === 'auth/network-request-failed' ||
+            loginErr.code === 'auth/unauthorized-domain'
           ) {
             const role = email === 'work.xuanphuc@gmail.com' ? 'admin' : 'staff';
             localStorage.setItem('deep_focus_os_fallback_auth', role);
@@ -121,6 +127,8 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
         VietnameseMessage = 'Email này đã được sử dụng bởi tài khoản khác.';
       } else if (err.code === 'auth/weak-password') {
         VietnameseMessage = 'Mật khẩu quá ngắn, yêu cầu tối thiểu 6 ký tự.';
+      } else if (err.code === 'auth/unauthorized-domain') {
+        VietnameseMessage = 'Tên miền này chưa được cấp phép truy cập Auth trong Firebase Console (Authorized Domains).';
       } else if (err.code === 'auth/invalid-email') {
         VietnameseMessage = 'Định dạng email không hợp lệ.';
       }

@@ -21,8 +21,9 @@ interface GanttTimelineProps {
   currency: 'USD' | 'VND';
 }
 
-type GroupByOption = 'none' | 'staff' | 'client';
+type GroupByOption = 'none' | 'staff' | 'client' | 'status';
 type TimeScale = 'day' | 'week';
+type SortByOption = 'deadline-asc' | 'deadline-desc' | 'value-desc' | 'title-asc';
 
 export default function GanttTimeline({
   tasks,
@@ -36,6 +37,9 @@ export default function GanttTimeline({
 }: GanttTimelineProps) {
   const [groupBy, setGroupBy] = useState<GroupByOption>('none');
   const [scale, setScale] = useState<TimeScale>('day');
+  const [sortBy, setSortBy] = useState<SortByOption>('deadline-asc');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   
   // Resolve year and month context
   const year = useMemo(() => selectedYear === 'all' ? 2026 : parseInt(selectedYear), [selectedYear]);
@@ -170,99 +174,198 @@ export default function GanttTimeline({
     });
   }, [tasks, year, monthIdx, daysInMonth]);
 
-  // Grouping partitions
+  // Real-time search and status filters
+  const filteredProcessedTasks = useMemo(() => {
+    return processedTasks.filter(t => {
+      const matchSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          getEditorName(t.assignedEditorId).toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          getClientName(t.clientId).toLowerCase().includes(searchQuery.toLowerCase());
+      const matchStatus = statusFilter === 'all' || t.status === statusFilter;
+      return matchSearch && matchStatus;
+    });
+  }, [processedTasks, searchQuery, statusFilter, clients, staff]);
+
+  // Scientific sorting options
+  const sortedAndFilteredTasks = useMemo(() => {
+    const list = [...filteredProcessedTasks];
+    if (sortBy === 'deadline-asc') {
+      list.sort((a, b) => a.deadlineDay - b.deadlineDay);
+    } else if (sortBy === 'deadline-desc') {
+      list.sort((a, b) => b.deadlineDay - a.deadlineDay);
+    } else if (sortBy === 'value-desc') {
+      list.sort((a, b) => b.clientPay - a.clientPay);
+    } else if (sortBy === 'title-asc') {
+      list.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return list;
+  }, [filteredProcessedTasks, sortBy]);
+
+  // Grouping partitions (including Status)
   const groups = useMemo(() => {
-    const result: { id: string; name: string; tasks: typeof processedTasks }[] = [];
+    const result: { id: string; name: string; tasks: typeof sortedAndFilteredTasks }[] = [];
 
     if (groupBy === 'none') {
-      result.push({ id: 'all', name: 'Tất cả Video Tasks', tasks: processedTasks });
+      result.push({ id: 'all', name: 'Tất cả Video Tasks', tasks: sortedAndFilteredTasks });
     } else if (groupBy === 'staff') {
       // Unassigned
-      const unassigned = processedTasks.filter(t => t.assignedEditorId === 'Unassigned');
+      const unassigned = sortedAndFilteredTasks.filter(t => t.assignedEditorId === 'Unassigned');
       if (unassigned.length > 0) {
         result.push({ id: 'unassigned', name: 'Claimable Pool (Chưa Giao)', tasks: unassigned });
       }
       
       // Lead Phuc
-      const phucTasks = processedTasks.filter(t => t.assignedEditorId === 'Phuc');
+      const phucTasks = sortedAndFilteredTasks.filter(t => t.assignedEditorId === 'Phuc');
       if (phucTasks.length > 0) {
         result.push({ id: 'Phuc', name: 'Phuc (Lead Operator)', tasks: phucTasks });
       }
 
       // Rest of editors
       staff.forEach(s => {
-        const sTasks = processedTasks.filter(t => t.assignedEditorId === s.id);
+        const sTasks = sortedAndFilteredTasks.filter(t => t.assignedEditorId === s.id);
         if (sTasks.length > 0) {
           result.push({ id: s.id, name: `${s.name} (${s.role || 'Editor'})`, tasks: sTasks });
         }
       });
     } else if (groupBy === 'client') {
       clients.forEach(c => {
-        const cTasks = processedTasks.filter(t => t.clientId === c.id);
+        const cTasks = sortedAndFilteredTasks.filter(t => t.clientId === c.id);
         if (cTasks.length > 0) {
           result.push({ id: c.id, name: `${c.displayName} (${c.tier})`, tasks: cTasks });
         }
       });
-      const unassignedClient = processedTasks.filter(t => !t.clientId || !clients.some(c => c.id === t.clientId));
+      const unassignedClient = sortedAndFilteredTasks.filter(t => !t.clientId || !clients.some(c => c.id === t.clientId));
       if (unassignedClient.length > 0) {
         result.push({ id: 'unassigned-client', name: 'Khách vãng lai / Không rõ', tasks: unassignedClient });
       }
+    } else if (groupBy === 'status') {
+      const statuses: TaskStatus[] = ['Unassigned', 'Rough Cut', 'Final Polish', 'Client Review', 'Approved'];
+      const statusLabels: Record<TaskStatus, string> = {
+        'Unassigned': 'Chưa Giao (Unassigned)',
+        'Rough Cut': 'Bản Dự Thảo (Rough Cut)',
+        'Final Polish': 'Tinh Chỉnh (Final Polish)',
+        'Client Review': 'Khách Duyệt (Client Review)',
+        'Approved': 'Đã Duyệt (Approved)'
+      };
+      statuses.forEach(st => {
+        const stTasks = sortedAndFilteredTasks.filter(t => t.status === st);
+        if (stTasks.length > 0) {
+          result.push({ id: st, name: statusLabels[st], tasks: stTasks });
+        }
+      });
     }
 
     return result;
-  }, [processedTasks, groupBy, staff, clients]);
+  }, [sortedAndFilteredTasks, groupBy, staff, clients]);
 
   return (
     <div className="space-y-6">
       
       {/* View Header & Toggles */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-zinc-950 border border-zinc-900 p-4 rounded-none">
-        <div>
-          <h2 className="text-sm font-black tracking-widest text-zinc-100 uppercase flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#F97316] animate-pulse" />
-            TIMELINE WORKSPACE (GANTT)
-          </h2>
-          <p className="text-[10px] text-zinc-500 font-mono uppercase mt-1">
-            Giao diện trực quan hóa tiến độ & điều chỉnh Deadline cho {monthName} {year}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 font-mono text-[10px]">
-          {/* Scale selection */}
-          <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
-            <span className="text-zinc-500 font-bold px-2 uppercase">Chia tỉ lệ:</span>
-            <button
-              onClick={() => setScale('day')}
-              className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
-                scale === 'day' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              Cận Cảnh (Ngày)
-            </button>
-            <button
-              onClick={() => setScale('week')}
-              className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
-                scale === 'week' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              Tổng Quan (Tuần)
-            </button>
+      <div className="flex flex-col gap-4 bg-zinc-950 border border-zinc-900 p-4 rounded-none">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <h2 className="text-sm font-black tracking-widest text-zinc-100 uppercase flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#F97316] animate-pulse" />
+              TIMELINE WORKSPACE (GANTT)
+            </h2>
+            <p className="text-[10px] text-zinc-500 font-mono uppercase mt-1">
+              Giao diện trực quan hóa tiến độ & điều chỉnh Deadline cho {monthName} {year}
+            </p>
           </div>
 
-          {/* Group By selector */}
-          <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
-            <span className="text-zinc-500 font-bold px-2 uppercase">Gom nhóm:</span>
+          <div className="flex flex-wrap items-center gap-3 font-mono text-[10px]">
+            {/* Scale selection */}
+            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
+              <span className="text-zinc-500 font-bold px-2 uppercase text-[9px]">Chia tỉ lệ:</span>
+              <button
+                onClick={() => setScale('day')}
+                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
+                  scale === 'day' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Cận Cảnh (Ngày)
+              </button>
+              <button
+                onClick={() => setScale('week')}
+                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
+                  scale === 'week' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Tổng Quan (Tuần)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Dynamic Filters cluster (Scientific details) */}
+        <div className="border-t border-zinc-900 pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[10px] font-mono">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            {/* Search Input */}
+            <div className="relative flex-1 md:flex-initial">
+              <input
+                type="text"
+                placeholder="Tìm kiếm task, editor, client..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full md:w-56 px-2.5 py-1.5 bg-zinc-900 text-zinc-100 font-mono text-xs border border-zinc-800 rounded-sm focus:outline-none focus:border-[#F97316] placeholder-zinc-600"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1.5 text-zinc-500 hover:text-white"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Status Filter */}
+            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
+              <span className="text-zinc-500 px-2 font-bold uppercase text-[9px]">Trạng thái:</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-transparent text-zinc-300 font-mono text-[10px] py-1 px-1 outline-none cursor-pointer"
+              >
+                <option value="all" className="bg-zinc-950">Tất cả</option>
+                <option value="Unassigned" className="bg-zinc-950">Unassigned</option>
+                <option value="Rough Cut" className="bg-zinc-950">Rough Cut</option>
+                <option value="Final Polish" className="bg-zinc-950">Final Polish</option>
+                <option value="Client Review" className="bg-zinc-950">Client Review</option>
+                <option value="Approved" className="bg-zinc-950">Approved</option>
+              </select>
+            </div>
+
+            {/* Sort Filter */}
+            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
+              <span className="text-zinc-500 px-2 font-bold uppercase text-[9px]">Sắp xếp:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortByOption)}
+                className="bg-transparent text-zinc-300 font-mono text-[10px] py-1 px-1 outline-none cursor-pointer"
+              >
+                <option value="deadline-asc" className="bg-zinc-950">Deadline (Tăng dần)</option>
+                <option value="deadline-desc" className="bg-zinc-950">Deadline (Giảm dần)</option>
+                <option value="value-desc" className="bg-zinc-950">Giá trị (Giảm dần)</option>
+                <option value="title-asc" className="bg-zinc-950">Tên Task (A-Z)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Group by selector */}
+          <div className="flex items-center gap-1 bg-zinc-900/60 p-0.5 border border-zinc-850 w-full md:w-auto overflow-x-auto">
+            <span className="text-zinc-500 font-bold px-2 uppercase shrink-0 text-[9px]">Gom nhóm:</span>
             <button
               onClick={() => setGroupBy('none')}
-              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
+              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
                 groupBy === 'none' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
               }`}
             >
-              Danh sách phẳng
+              Phẳng
             </button>
             <button
               onClick={() => setGroupBy('staff')}
-              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
+              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
                 groupBy === 'staff' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -270,11 +373,19 @@ export default function GanttTimeline({
             </button>
             <button
               onClick={() => setGroupBy('client')}
-              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
+              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
                 groupBy === 'client' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
               }`}
             >
-              Theo Khách hàng
+              Theo Client
+            </button>
+            <button
+              onClick={() => setGroupBy('status')}
+              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
+                groupBy === 'status' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Theo Trạng Thái
             </button>
           </div>
         </div>

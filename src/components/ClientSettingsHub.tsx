@@ -5,19 +5,26 @@
 
 import React, { useState } from 'react';
 import { ClientObject, ClientTier } from '../types';
-import { Plus, Trash2, X, AlertTriangle } from 'lucide-react';
+import { Plus, Trash2, X, AlertTriangle, Edit2, Check } from 'lucide-react';
 
 interface ClientSettingsHubProps {
   clients: ClientObject[];
   onAddClient: (client: ClientObject) => void;
+  onUpdateClient: (client: ClientObject) => void;
   onDeleteClient: (clientId: string) => void;
   onClose: () => void;
 }
 
-export default function ClientSettingsHub({ clients, onAddClient, onDeleteClient, onClose }: ClientSettingsHubProps) {
+export default function ClientSettingsHub({ clients, onAddClient, onUpdateClient, onDeleteClient, onClose }: ClientSettingsHubProps) {
   const [newClientName, setNewClientName] = useState('');
   const [newClientTier, setNewClientTier] = useState<ClientTier>('Volume-Arbitrage');
   const [error, setError] = useState('');
+
+  // Inline editing state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState('');
+  const [editingTier, setEditingTier] = useState<ClientTier>('Volume-Arbitrage');
+  const [editError, setEditError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,37 +124,124 @@ export default function ClientSettingsHub({ clients, onAddClient, onDeleteClient
 
           {/* List of Clients */}
           <div className="space-y-3">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#71717a] block">
-              Active Segment Directories
-            </span>
-            <div className="max-h-48 overflow-y-auto space-y-2 pr-1">
-              {clients.map(client => (
-                <div 
-                  key={client.id}
-                  className="flex items-center justify-between p-3 bg-black border border-[#1e293b] rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#ef4444]"></span>
-                    <div>
-                      <p className="text-xs font-bold text-[#f4f4f5]">{client.displayName}</p>
-                      <span className={`inline-block text-[9px] font-mono uppercase px-1.5 py-0.5 rounded mt-1 ${
-                        client.tier === 'High-Ticket' 
-                          ? 'bg-red-950/20 text-[#ef4444] border border-[#ef4444]/30' 
-                          : 'bg-zinc-800 text-zinc-400 border border-zinc-700/50'
-                      }`}>
-                        {client.tier}
-                      </span>
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#71717a] block">
+                Active Segment Directories
+              </span>
+              {editError && (
+                <span className="text-[9px] font-mono text-red-400">{editError}</span>
+              )}
+            </div>
+            <div className="max-h-56 overflow-y-auto space-y-2 pr-1">
+              {clients.map(client => {
+                const isEditing = editingId === client.id;
+                return (
+                  <div 
+                    key={client.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-black border border-[#1e293b] rounded-lg gap-2"
+                  >
+                    {isEditing ? (
+                      <div className="flex-1 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                        <input
+                          type="text"
+                          value={editingName}
+                          onChange={(e) => {
+                            setEditingName(e.target.value);
+                            setEditError('');
+                          }}
+                          className="px-2 py-1 bg-[#09090b] text-[#f4f4f5] font-mono text-xs border border-[#1e293b] rounded-md focus:outline-none focus:border-[#ef4444] flex-1"
+                          placeholder="Client Name"
+                        />
+                        <select
+                          value={editingTier}
+                          onChange={(e) => setEditingTier(e.target.value as ClientTier)}
+                          className="px-2 py-1 bg-[#09090b] text-[#f4f4f5] font-mono text-xs border border-[#1e293b] rounded-md focus:outline-none focus:border-[#ef4444]"
+                        >
+                          <option value="High-Ticket">High-Ticket</option>
+                          <option value="Volume-Arbitrage">Volume-Arbitrage</option>
+                        </select>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <span className="w-2 h-2 rounded-full bg-[#ef4444]"></span>
+                        <div>
+                          <p className="text-xs font-bold text-[#f4f4f5]">{client.displayName}</p>
+                          <span className={`inline-block text-[9px] font-mono uppercase px-1.5 py-0.5 rounded mt-1 ${
+                            client.tier === 'High-Ticket' 
+                              ? 'bg-red-950/20 text-[#ef4444] border border-[#ef4444]/30' 
+                              : 'bg-zinc-800 text-zinc-400 border border-zinc-700/50'
+                          }`}>
+                            {client.tier}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-end gap-1 shrink-0">
+                      {isEditing ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              if (!editingName.trim()) {
+                                setEditError('Tên không được để trống.');
+                                return;
+                              }
+                              const otherExists = clients.some(c => c.id !== client.id && c.displayName.toLowerCase() === editingName.trim().toLowerCase());
+                              if (otherExists) {
+                                setEditError('Tên client đã tồn tại.');
+                                return;
+                              }
+                              onUpdateClient({
+                                ...client,
+                                displayName: editingName.trim(),
+                                tier: editingTier
+                              });
+                              setEditingId(null);
+                              setEditError('');
+                            }}
+                            className="p-1.5 text-emerald-400 hover:bg-emerald-950/20 rounded transition-colors cursor-pointer"
+                            title="Lưu thay đổi"
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingId(null);
+                              setEditError('');
+                            }}
+                            className="p-1.5 text-zinc-400 hover:bg-zinc-800 rounded transition-colors cursor-pointer"
+                            title="Hủy"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditingId(client.id);
+                              setEditingName(client.displayName);
+                              setEditingTier(client.tier);
+                              setEditError('');
+                            }}
+                            className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition-colors cursor-pointer"
+                            title="Sửa thông tin Client"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => onDeleteClient(client.id)}
+                            className="p-1.5 text-zinc-600 hover:text-red-400 hover:bg-red-950/20 rounded transition-colors cursor-pointer"
+                            title="Delete client segment"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-                  <button
-                    onClick={() => onDeleteClient(client.id)}
-                    className="p-1.5 text-zinc-600 hover:text-red-400 hover:bg-red-950/20 rounded transition-colors cursor-pointer"
-                    title="Delete client segment"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
