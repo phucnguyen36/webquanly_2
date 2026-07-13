@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ClientObject, VideoTaskObject, StaffObject, TaskStatus, PaymentStatus, FinancialSummary } from './types';
 import { INITIAL_CLIENTS, INITIAL_STAFF, INITIAL_TASKS } from './initialData';
 
@@ -127,44 +127,36 @@ export default function App() {
   const [time, setTime] = useState<string>('');
 
   // 1. Initialize & Seed State Engine from Firestore (with LocalStorage cache fallback) and Auth Observer
-  useEffect(() => {
-    let active = true;
-
-    async function loadData() {
-      setIsLoading(true);
-      try {
-        const data = await loadWorkspaceData();
-        if (active) {
-          setClients(data.clients);
-          setStaff(data.staff);
-          setTasks(data.tasks);
-          if (data.profile) {
-            setProfile(data.profile);
-          }
-          setIsCloudSyncFailed(false);
-          setCloudErrorMsg('');
-        }
-      } catch (err: any) {
-        console.error("Failed to load Cloud Firestore data, falling back to localStorage cache:", err);
-        if (active) {
-          setIsCloudSyncFailed(true);
-          setCloudErrorMsg(err?.message || String(err));
-          const savedClients = localStorage.getItem('deep_focus_os_clients');
-          setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
-
-          const savedStaff = localStorage.getItem('deep_focus_os_staff');
-          setStaff(savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF);
-
-          const savedTasks = localStorage.getItem('deep_focus_os_tasks');
-          setTasks(savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS);
-        }
-      } finally {
-        if (active) {
-          setIsLoading(false);
-        }
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await loadWorkspaceData();
+      setClients(data.clients);
+      setStaff(data.staff);
+      setTasks(data.tasks);
+      if (data.profile) {
+        setProfile(data.profile);
       }
-    }
+      setIsCloudSyncFailed(false);
+      setCloudErrorMsg('');
+    } catch (err: any) {
+      console.error("Failed to load Cloud Firestore data, falling back to localStorage cache:", err);
+      setIsCloudSyncFailed(true);
+      setCloudErrorMsg(err?.message || String(err));
+      const savedClients = localStorage.getItem('deep_focus_os_clients');
+      setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
 
+      const savedStaff = localStorage.getItem('deep_focus_os_staff');
+      setStaff(savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF);
+
+      const savedTasks = localStorage.getItem('deep_focus_os_tasks');
+      setTasks(savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuthenticated(true);
@@ -188,10 +180,9 @@ export default function App() {
     });
 
     return () => {
-      active = false;
       unsubscribe();
     };
-  }, []);
+  }, [loadData]);
 
   // Sync chosen Year and Month to localStorage
   useEffect(() => {
@@ -669,6 +660,7 @@ export default function App() {
     return <AuthGate onAuthenticated={(role) => {
       setIsAuthenticated(true);
       setUserRole(role);
+      loadData();
     }} />;
   }
 
@@ -876,6 +868,19 @@ export default function App() {
               />
             </label>
 
+            <button
+              onClick={loadData}
+              className={`w-full text-left px-3 py-2 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+                isCloudSyncFailed 
+                  ? 'text-orange-400 bg-orange-950/20 hover:text-white hover:bg-orange-950/40 border border-orange-500/20' 
+                  : 'text-[#10b981] hover:text-white hover:bg-[#10b981]/10'
+              }`}
+              title="Click để kết nối lại và đồng bộ với Cloud Firestore Database"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isCloudSyncFailed ? 'text-orange-500 animate-spin' : 'text-[#10b981]'}`} />
+              <span>{isCloudSyncFailed ? 'KẾT NỐI CLOUD (THỬ LẠI)' : 'ĐÃ ĐỒNG BỘ CLOUD'}</span>
+            </button>
+
             <div className="h-px bg-[rgba(249,115,22,0.15)] my-4"></div>
             
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#71717a] px-2 block mb-2">
@@ -999,15 +1004,23 @@ export default function App() {
                   <CloudOff className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-black text-orange-400 uppercase tracking-wider">CẢNH BÁO: CHẾ ĐỘ NGOẠI TUYẾN (LOCAL STORAGE FALLBACK)</h4>
+                  <h4 className="font-black text-orange-400 uppercase tracking-wider">THÔNG BÁO: CHƯA ĐỒNG BỘ CLOUD FIRESTORE</h4>
                   <p className="text-[10px] text-orange-300/80 mt-0.5 leading-normal max-w-xl">
-                    Hệ thống không thể kết nối tới Cloud Firestore (Lỗi: {cloudErrorMsg || 'Kết nối thất bại'}). Dữ liệu hiện đang được tự động sao lưu tạm thời trên trình duyệt của máy này. Nếu bạn chạy CCleaner hoặc xóa lịch sử duyệt web, dữ liệu sẽ bị xóa hoàn toàn!
+                    Hệ thống hiện đang chạy ở chế độ Offline Local Storage. Firebase Database vừa được cấu hình và kích hoạt thành công trên Cloud! Vui lòng nhấn nút <strong className="text-white">KẾT NỐI CLOUD</strong> bên cạnh hoặc tải lại trang để bắt đầu đồng bộ và lưu trữ dữ liệu an toàn trên Cloud Firestore.
                   </p>
                 </div>
               </div>
-              <div className="shrink-0 flex items-center gap-2">
-                <span className="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
-                <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">DỮ LIỆU CHƯA ĐỒNG BỘ CLOUD</span>
+              <div className="shrink-0 flex items-center gap-3">
+                <button
+                  onClick={loadData}
+                  className="px-3 py-1.5 bg-[#F97316] hover:bg-[#ea6c0a] text-white font-mono font-black text-[10px] uppercase rounded-sm shadow-[0_0_10px_rgba(249,115,22,0.3)] cursor-pointer transition-all hover:scale-105 active:scale-95"
+                >
+                  KẾT NỐI CLOUD
+                </button>
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
+                  <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">NGOẠI TUYẾN</span>
+                </div>
               </div>
             </div>
           )}
@@ -1030,6 +1043,25 @@ export default function App() {
 
           <div className="flex items-center gap-4 flex-wrap w-full lg:w-auto lg:justify-end">
             
+            {/* Cloud Database Status Badge */}
+            <div className="flex items-center">
+              {isCloudSyncFailed ? (
+                <button
+                  onClick={loadData}
+                  className="flex items-center gap-1.5 px-3 py-1 bg-orange-950/40 hover:bg-orange-900/40 border border-orange-500/30 rounded-none text-[10px] font-mono text-orange-400 cursor-pointer transition-colors"
+                  title="Không thể kết nối Firestore Cloud. Click để thử lại."
+                >
+                  <CloudOff className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
+                  <span>CLOUD: OFFLINE (THỬ LẠI KẾT NỐI)</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-950/40 border border-emerald-500/30 rounded-none text-[10px] font-mono text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]"></span>
+                  <span>CLOUD: ONLINE</span>
+                </div>
+              )}
+            </div>
+
             {/* Realtime Year & Month Filters */}
             <div className="flex items-center gap-2">
               {/* Year Selector */}
@@ -1180,8 +1212,24 @@ export default function App() {
           <footer className="flex flex-col sm:flex-row justify-between items-center py-4 border-t border-zinc-900 gap-3">
             <div className="flex flex-wrap items-center gap-6 text-[10px] text-[#71717a] font-mono uppercase tracking-widest">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]"></span>
-                DATABASE SYNCED
+                {isCloudSyncFailed ? (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316] animate-pulse"></span>
+                    <span className="text-orange-400 font-bold">DATABASE OFFLINE (LOCAL CACHE)</span>
+                    <button 
+                      onClick={loadData}
+                      className="ml-1 px-1.5 py-0.5 bg-orange-950/40 text-orange-400 hover:text-white border border-orange-800/40 text-[9px] font-mono uppercase tracking-wider cursor-pointer transition-colors"
+                      title="Thử lại đồng bộ Cloud Firestore"
+                    >
+                      THỬ LẠI KẾT NỐI (RETRY)
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]"></span>
+                    <span className="text-emerald-400 font-bold">DATABASE CLOUD SYNCED</span>
+                  </>
+                )}
               </div>
               {profile.focusMode ? (
                 <div className="text-[#10b981] font-bold tracking-widest animate-pulse">[FOCUS WORKSPACE ACTIVE]</div>

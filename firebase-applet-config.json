@@ -6,5 +6,6 @@
   "firestoreDatabaseId": "ai-studio-deepfocusos-8d2a0c52-22d7-4199-af13-489c44897f8c",
   "storageBucket": "gen-lang-client-0696138502.firebasestorage.app",
   "messagingSenderId": "496717945327",
-  "measurementId": ""
+  "measurementId": "",
+  "oAuthClientId": "496717945327-a45n3hisvndqqom0svmie223cabjasrm.apps.googleusercontent.com"
 }
