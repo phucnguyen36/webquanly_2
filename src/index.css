@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/*
+ * OBSIDIAN & ELECTRIC SAPPHIRE SPATIAL OS DESIGN SYSTEM
+ * High-Retention Video Editor Studio Specification
+ */
+
+@theme {
+  --color-background: #000000;
+  --color-obsidian: #070A12;
+  --color-primary-accent: #2563EB;
+  --color-primary: #FFFFFF;
+  --color-secondary: #E2E8F0;
+  
+  --font-haas: "Neue Haas Grotesk Display Pro", "Neue Haas Grotesk", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "Neue Haas Grotesk Text", "Neue Haas Grotesk", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Plus Jakarta Sans", "Inter", monospace;
+}
+
+:root {
+  font-family: var(--font-haas);
+  color-scheme: dark;
+}
+
+/* 100% Exact Font Synchronization & Swiss Typography Rule */
+html, body, *, ::before, ::after, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, div, a, li, th, td, code, kbd {
+  font-family: "Neue Haas Grotesk Display Pro", "Neue Haas Grotesk", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: -0.025em !important;
+}
+
+body {
+  background-color: #000000;
+  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* 100% UNIFIED BORDER RADIUS RULE (ĐỒNG BỘ NĂM GÓC 6PX CHO TOÀN BỘ SHAPES & MODALS) */
+button, input, select, textarea, img, label, form,
+.spatial-card, .spatial-window, #profile-settings-card, #client-settings-card, #task-modal-card {
+  border-radius: 6px !important;
+}
+
+/* 1. Film Grain Noise Overlay (SVG Noise) */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* 2. VFX Edit Blur Spotlights (Radial Electric Sapphire Blurs) */
+.bg-edit-blur-1 {
+  position: fixed;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, transparent 70%);
+  filter: blur(75px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-edit-blur-2 {
+  position: fixed;
+  width: 750px;
+  height: 750px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.14) 0%, transparent 70%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 3. Obsidian & Electric Sapphire Glass Tokens */
+.spatial-window {
+  background: rgba(14, 16, 22, 0.88);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px !important;
+}
+
+.spatial-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spatial-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 15px 35px -10px rgba(37, 99, 235, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 4. Sapphire Gradient Text Utility */
+.gradient-heading {
+  background: linear-gradient(135deg, #60A5FA 0%, #38BDF8 50%, #67E8F9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563EB;
+}
