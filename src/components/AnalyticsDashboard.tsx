@@ -336,26 +336,26 @@ export default function AnalyticsDashboard({
                 {renderGrowthBadge(growthMetrics.revenueGrowth, 'than last month')}
               </div>
 
-              {/* Wallets / Currency Breakdown Sub-Cards */}
+              {/* Real Financial Vaults Sub-Cards */}
               <div className="mt-6">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 block mb-2">
-                  WALLETS | TOTAL 3 VAULTS
+                  PRODUCTION FINANCIAL VAULTS
                 </span>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[10px] font-mono text-slate-400 font-bold">USD</div>
-                    <div className="text-xs font-black text-white font-mono mt-1">${(grossYield * 0.7).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div>
-                    <span className="text-[9px] text-emerald-400 font-bold block mt-0.5">Active</span>
+                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">GROSS REV</div>
+                    <div className="text-xs font-black text-white font-mono mt-1">{formatMoney(grossYield)}</div>
+                    <span className="text-[9px] text-blue-400 font-bold block mt-0.5">Client Pay</span>
                   </div>
                   <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[10px] font-mono text-slate-400 font-bold">EUR</div>
-                    <div className="text-xs font-black text-white font-mono mt-1">€{(grossYield * 0.2).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div>
-                    <span className="text-[9px] text-emerald-400 font-bold block mt-0.5">Active</span>
+                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">EDITOR PAY</div>
+                    <div className="text-xs font-black text-slate-300 font-mono mt-1">{formatMoney(payoutQueue)}</div>
+                    <span className="text-[9px] text-amber-400 font-bold block mt-0.5">Outsource</span>
                   </div>
                   <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[10px] font-mono text-slate-400 font-bold">VND</div>
-                    <div className="text-xs font-black text-white font-mono mt-1">₫{Math.round(grossYield * 0.1 * 25400 / 1000000)}M</div>
-                    <span className="text-[9px] text-slate-400 font-bold block mt-0.5">Reserve</span>
+                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">NET PROFIT</div>
+                    <div className="text-xs font-black text-emerald-400 font-mono mt-1">{formatMoney(netYieldVal)}</div>
+                    <span className="text-[9px] text-emerald-400 font-bold block mt-0.5">Yield</span>
                   </div>
                 </div>
               </div>
@@ -646,53 +646,59 @@ export default function AnalyticsDashboard({
           {/* Digital VIP Cards & VIP Tier Breakdown Row */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            {/* Widget 5: Digital VIP Cards Showcase (6 cols) */}
+            {/* Widget 5: Digital VIP Cards Showcase (6 cols - Real Client Data) */}
             <div className="lg:col-span-6 spatial-card p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-extrabold text-white uppercase tracking-wider font-mono flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-blue-500" />
-                  MY VIP CLIENT CARDS
+                  TOP VIP CLIENT CARDS
                 </h3>
                 <span className="text-[10px] font-mono text-blue-400 font-bold">
-                  {clients.length} Active Partners
+                  {clientAnalytics.length} Partner Records
                 </span>
               </div>
 
-              {/* Digital Cards Grid */}
+              {/* Digital Real Client Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Card 1: Diamond VIP */}
-                <div className="p-4 bg-gradient-to-br from-zinc-900 to-black rounded-[8px] border border-white/15 relative overflow-hidden flex flex-col justify-between h-32 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded bg-blue-600/30 text-blue-400 text-[9px] font-mono font-bold uppercase border border-blue-500/30">
-                      DIAMOND VIP
-                    </span>
-                    <Crown className="w-4 h-4 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-400 uppercase">Total Lifetime Spend</div>
-                    <div className="text-base font-black text-white font-mono">{formatMoney(grossYield * 0.6)}</div>
-                  </div>
-                  <div className="text-[9px] font-mono text-slate-500 tracking-widest">
-                    **** **** 6782
-                  </div>
-                </div>
+                {clientAnalytics.slice(0, 2).map((client, idx) => {
+                  const isTop1 = idx === 0;
+                  return (
+                    <div 
+                      key={client.id}
+                      className={`p-4 rounded-[6px] border relative overflow-hidden flex flex-col justify-between h-32 shadow-xl ${
+                        isTop1 
+                          ? 'bg-gradient-to-br from-blue-900/60 via-blue-950/80 to-black border-blue-500/40'
+                          : 'bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border-white/15'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase border ${
+                          isTop1
+                            ? 'bg-blue-600/30 text-blue-400 border-blue-500/30'
+                            : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                        }`}>
+                          {client.tier.toUpperCase()} VIP
+                        </span>
+                        <Crown className={`w-4 h-4 ${isTop1 ? 'text-blue-400' : 'text-amber-400'}`} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-black text-white font-sans truncate">{client.name}</div>
+                        <div className="text-[10px] font-mono text-slate-400 uppercase mt-0.5">Total Spend: {formatMoney(client.totalPay)}</div>
+                      </div>
+                      <div className="text-[9px] font-mono text-slate-400 tracking-wider flex items-center justify-between">
+                        <span>{client.taskCount} Video Tasks</span>
+                        <span className="text-emerald-400 font-bold">Yield: +{formatMoney(client.netYield)}</span>
+                      </div>
+                    </div>
+                  );
+                })}
 
-                {/* Card 2: Gold Partner */}
-                <div className="p-4 bg-gradient-to-br from-blue-900/60 via-blue-950/80 to-black rounded-[8px] border border-blue-500/30 relative overflow-hidden flex flex-col justify-between h-32 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded bg-amber-500/30 text-amber-300 text-[9px] font-mono font-bold uppercase border border-amber-500/30">
-                      GOLD PARTNER
-                    </span>
-                    <Sparkles className="w-4 h-4 text-blue-400" />
+                {clientAnalytics.length === 0 && (
+                  <div className="col-span-2 p-4 bg-black/40 rounded-[6px] border border-white/10 flex flex-col justify-center items-center text-center h-32">
+                    <Users className="w-5 h-5 text-slate-600 mb-1" />
+                    <span className="text-xs text-slate-400 font-mono">Chưa có dữ liệu Khách Hàng VIP</span>
                   </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-400 uppercase">Total Lifetime Spend</div>
-                    <div className="text-base font-black text-white font-mono">{formatMoney(grossYield * 0.4)}</div>
-                  </div>
-                  <div className="text-[9px] font-mono text-slate-400 tracking-widest">
-                    **** **** 4356
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
