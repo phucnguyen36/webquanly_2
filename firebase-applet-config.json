@@ -1,11 +1,8 @@
 {
-  "projectId": "gen-lang-client-0696138502",
-  "appId": "1:496717945327:web:0e07107f9440aa1481be1a",
-  "apiKey": "AIzaSyAD7_8-bDvGEjfFO4jM5ejdMj0dgQvml1o",
-  "authDomain": "gen-lang-client-0696138502.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-deepfocusos-8d2a0c52-22d7-4199-af13-489c44897f8c",
-  "storageBucket": "gen-lang-client-0696138502.firebasestorage.app",
-  "messagingSenderId": "496717945327",
-  "measurementId": "",
-  "oAuthClientId": "496717945327-a45n3hisvndqqom0svmie223cabjasrm.apps.googleusercontent.com"
+  "projectId": "my-sales-crm-5bfad",
+  "appId": "1:124927014516:web:b49a27a1922f26a0510321",
+  "apiKey": "AIzaSyB5nG6cDcxnTMqvT-OXJU8PDsjKy4CLBd0",
+  "authDomain": "my-sales-crm-5bfad.firebaseapp.com",
+  "storageBucket": "my-sales-crm-5bfad.firebasestorage.app",
+  "messagingSenderId": "124927014516"
 }

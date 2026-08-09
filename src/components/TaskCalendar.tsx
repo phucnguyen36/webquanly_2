@@ -253,42 +253,7 @@ export default function TaskCalendar({
         </div>
       </div>
 
-      {/* Unscheduled Tasks Drag Tray (Hộp chứa task chờ kéo thả) */}
-      {unscheduledTasks.length > 0 && (
-        <div className="spatial-card p-4 bg-blue-950/20 border border-blue-500/30 rounded-[6px]">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-mono font-bold text-blue-400 uppercase flex items-center gap-1.5">
-              <Move className="w-3.5 h-3.5 animate-bounce" />
-              TASK CHỜ GẮP THẢ LÊN LỊCH ({unscheduledTasks.length} tasks)
-            </span>
-            <span className="text-[10px] text-slate-400 font-mono">Gắp thả vào ô ngày bên dưới để xếp Deadline</span>
-          </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {unscheduledTasks.map(t => (
-              <div
-                key={t.id}
-                draggable={true}
-                onDragStart={(e) => {
-                  e.dataTransfer.setData('text/plain', t.id);
-                  e.dataTransfer.effectAllowed = 'move';
-                  setDraggingTaskId(t.id);
-                }}
-                onDragEnd={() => setDraggingTaskId(null)}
-                className={`p-2 bg-black/80 border border-blue-500/40 rounded-[6px] text-xs flex items-center gap-2 cursor-grab active:cursor-grabbing hover:border-blue-400 min-w-[180px] ${
-                  draggingTaskId === t.id ? 'opacity-40 ring-2 ring-blue-500' : ''
-                }`}
-              >
-                <GripVertical className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                <div className="overflow-hidden">
-                  <div className="font-bold text-white text-[11px] truncate">{t.title}</div>
-                  <div className="text-[9px] text-slate-400 font-mono">{getClientName(t.clientId)}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* 1. MONTH VIEW CALENDAR GRID */}
       {viewMode === 'month' && (

@@ -15,21 +15,21 @@ import { UserProfile } from './components/ProfileSettingsModal';
 import { INITIAL_CLIENTS, INITIAL_STAFF, INITIAL_TASKS } from './initialData';
 
 const firebaseConfig = {
-  apiKey: firebaseConfigJson.apiKey || "AIzaSyAD7_8-bDvGEjfFO4jM5ejdMj0dgQvml1o",
-  authDomain: firebaseConfigJson.authDomain || "gen-lang-client-0696138502.firebaseapp.com",
-  projectId: firebaseConfigJson.projectId || "gen-lang-client-0696138502",
-  storageBucket: firebaseConfigJson.storageBucket || "gen-lang-client-0696138502.firebasestorage.app",
-  messagingSenderId: firebaseConfigJson.messagingSenderId || "496717945327",
-  appId: firebaseConfigJson.appId || "1:496717945327:web:0e07107f9440aa1481be1a"
+  apiKey: firebaseConfigJson.apiKey || "AIzaSyB5nG6cDcxnTMqvT-OXJU8PDsjKy4CLBd0",
+  authDomain: firebaseConfigJson.authDomain || "my-sales-crm-5bfad.firebaseapp.com",
+  projectId: firebaseConfigJson.projectId || "my-sales-crm-5bfad",
+  storageBucket: firebaseConfigJson.storageBucket || "my-sales-crm-5bfad.firebasestorage.app",
+  messagingSenderId: firebaseConfigJson.messagingSenderId || "124927014516",
+  appId: firebaseConfigJson.appId || "1:124927014516:web:b49a27a1922f26a0510321"
 };
 
 const app = initializeApp(firebaseConfig);
 
-// Try using Google AI Studio's assigned custom database ID, fallback to default
+// Connect to default Firestore Database or custom DB ID if specified
 let firestoreDb: any;
 try {
-  const customDbId = firebaseConfigJson.firestoreDatabaseId || "ai-studio-deepfocusos-8d2a0c52-22d7-4199-af13-489c44897f8c";
-  firestoreDb = getFirestore(app, customDbId);
+  const customDbId = (firebaseConfigJson as any)?.firestoreDatabaseId;
+  firestoreDb = customDbId ? getFirestore(app, customDbId) : getFirestore(app);
 } catch (e) {
   firestoreDb = getFirestore(app);
 }
