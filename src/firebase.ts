@@ -48,7 +48,7 @@ try {
  * If network hangs or times out (> 4s), it gracefully falls back to local data cache.
  */
 export async function loadWorkspaceData() {
-  const timeoutMs = 4000;
+  const timeoutMs = 15000;
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('Cloud Firestore connection timeout')), timeoutMs)
   );
