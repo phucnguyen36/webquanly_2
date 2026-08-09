@@ -12,6 +12,7 @@ import {
   ListFilter, X, ShieldCheck
 } from 'lucide-react';
 import VideoProofingModal from './VideoProofingModal';
+import { formatTaskCurrency, CURRENCY_SYMBOLS } from '../utils/currency';
 
 interface ProjectMatrixProps {
   tasks: VideoTaskObject[];
@@ -1091,6 +1092,7 @@ export default function ProjectMatrix({
                                 }
 
                                 if (col.id === 'clientPay') {
+                                  const curSymbol = CURRENCY_SYMBOLS[task.currency || 'USD']?.symbol || '$';
                                   return (
                                     <td 
                                       key={col.id} 
@@ -1098,7 +1100,7 @@ export default function ProjectMatrix({
                                       className={`${denseLayout ? 'py-0.5 px-2' : 'py-1 px-3'} text-right truncate`}
                                     >
                                       <div className="flex items-center justify-end w-full">
-                                        <span className="text-zinc-600 mr-0.5">$</span>
+                                        <span className="text-zinc-500 font-mono text-[10px] mr-0.5">{curSymbol}</span>
                                         <input
                                           type="number"
                                           value={task.clientPay}
@@ -1112,6 +1114,7 @@ export default function ProjectMatrix({
                                 }
 
                                 if (col.id === 'subPay') {
+                                  const curSymbol = CURRENCY_SYMBOLS[task.currency || 'USD']?.symbol || '$';
                                   return (
                                     <td 
                                       key={col.id} 
@@ -1119,7 +1122,7 @@ export default function ProjectMatrix({
                                       className={`${denseLayout ? 'py-0.5 px-2' : 'py-1 px-3'} text-right truncate`}
                                     >
                                       <div className="flex items-center justify-end w-full">
-                                        <span className="text-zinc-600 mr-0.5">$</span>
+                                        <span className="text-zinc-500 font-mono text-[10px] mr-0.5">{curSymbol}</span>
                                         <input
                                           type="number"
                                           value={task.subPay}
@@ -1142,7 +1145,7 @@ export default function ProjectMatrix({
                                       className={`${denseLayout ? 'py-1 px-2' : 'py-2.5 px-3'} text-right font-black ${profit > 0 ? 'text-emerald-400' : 'text-zinc-500'} truncate`}
                                     >
                                       <div className="flex flex-col items-end w-full">
-                                        <span className="truncate">{formatPrice(profit)}</span>
+                                        <span className="truncate">{formatTaskCurrency(profit, task.currency || 'USD')}</span>
                                         {showWarning && (
                                           <span className="text-[8px] text-amber-500 font-mono font-bold animate-pulse uppercase tracking-tight truncate">
                                             ⚠️ LOW ({marginPercent.toFixed(0)}%)

@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { VideoTaskObject, ClientObject, StaffObject, TaskStatus, PaymentStatus, CurrencyCode } from '../types';
 import { X, Calendar, DollarSign, FileText, Link, User, Globe } from 'lucide-react';
+import { CURRENCY_SYMBOLS, formatTaskCurrency } from '../utils/currency';
 
 interface TaskModalProps {
   task?: VideoTaskObject; // if provided, we are editing
@@ -290,6 +291,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
                 </select>
               </div>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Client Pay */}
               <div>
@@ -297,12 +299,14 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
                   Inbound Contract Revenue (Client Pay)
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-zinc-600 text-xs">$</span>
+                  <span className="absolute left-3 top-2.5 text-blue-400 font-mono text-xs">
+                    {CURRENCY_SYMBOLS[taskCurrency]?.symbol || '$'}
+                  </span>
                   <input
                     type="number"
                     value={clientPay}
                     onChange={(e) => setClientPay(Math.max(0, Number(e.target.value)))}
-                    className="w-full pl-8 pr-4 py-2 bg-zinc-950 text-zinc-200 font-mono text-xs border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
+                    className="w-full pl-9 pr-4 py-2 bg-zinc-950 text-zinc-200 font-mono text-xs border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
                     min="0"
                   />
                 </div>
@@ -314,12 +318,14 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
                   Outbound Sub-Editor Fee
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-zinc-600 text-xs">$</span>
+                  <span className="absolute left-3 top-2.5 text-blue-400 font-mono text-xs">
+                    {CURRENCY_SYMBOLS[taskCurrency]?.symbol || '$'}
+                  </span>
                   <input
                     type="number"
                     value={subPay}
                     onChange={(e) => setSubPay(Math.max(0, Number(e.target.value)))}
-                    className="w-full pl-8 pr-4 py-2 bg-zinc-950 text-zinc-200 font-mono text-xs border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
+                    className="w-full pl-9 pr-4 py-2 bg-zinc-950 text-zinc-200 font-mono text-xs border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
                     min="0"
                   />
                 </div>
@@ -363,7 +369,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
             <div className="pt-3 border-t border-zinc-900/50 flex justify-between items-center text-xs font-mono text-emerald-500">
               <span>Simulated Net Margin:</span>
               <span>
-                ${clientPay - subPay} (
+                {formatTaskCurrency(clientPay - subPay, taskCurrency)} (
                 {clientPay > 0 ? (((clientPay - subPay) / clientPay) * 100).toFixed(0) : 0}% efficiency)
               </span>
             </div>

@@ -19,6 +19,7 @@ import TaskCalendar from './components/TaskCalendar';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import ProfileSettingsModal, { UserProfile } from './components/ProfileSettingsModal';
 import InvoiceGeneratorModal from './components/InvoiceGeneratorModal';
+import { convertToUSD } from './utils/currency';
 
 import { 
   auth,
@@ -298,8 +299,8 @@ export default function App() {
 
   // 2. Financial Summary Computations (Part 3 formulas) based on filtered tasks
   const getFinancialSummary = (): FinancialSummary => {
-    const grossRevenue = tasksFilteredByMonth.reduce((sum, t) => sum + t.clientPay, 0);
-    const subEditorPayout = tasksFilteredByMonth.reduce((sum, t) => sum + t.subPay, 0);
+    const grossRevenue = tasksFilteredByMonth.reduce((sum, t) => sum + convertToUSD(t.clientPay || 0, t.currency || 'USD'), 0);
+    const subEditorPayout = tasksFilteredByMonth.reduce((sum, t) => sum + convertToUSD(t.subPay || 0, t.currency || 'USD'), 0);
     const netProfit = grossRevenue - subEditorPayout;
     const arbitrageEfficiency = grossRevenue > 0 ? (netProfit / grossRevenue) * 100 : 0;
 
