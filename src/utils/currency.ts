@@ -8,20 +8,37 @@ export const CURRENCY_SYMBOLS: Record<CurrencyCode, { symbol: string; prefix: bo
   CAD: { symbol: 'C$', prefix: true },
   SGD: { symbol: 'S$', prefix: true },
   JPY: { symbol: '¥', prefix: true },
-  VND: { symbol: ' ₫', prefix: false }
+  VND: { symbol: ' ₫', prefix: false },
+  THB: { symbol: '฿', prefix: true },
+  CHF: { symbol: 'CHF ', prefix: true },
+  HKD: { symbol: 'HK$', prefix: true },
+  CNY: { symbol: '¥', prefix: true },
+  KRW: { symbol: '₩', prefix: true }
 };
 
-// Exchange rates relative to USD (1 USD = rate * Currency)
-export const USD_RATES: Record<CurrencyCode, number> = {
-  USD: 1.0,
-  EUR: 1.08,     // 1 EUR ≈ 1.08 USD
-  GBP: 1.27,     // 1 GBP ≈ 1.27 USD
-  AUD: 0.65,     // 1 AUD ≈ 0.65 USD
-  CAD: 0.73,     // 1 CAD ≈ 0.73 USD
-  SGD: 0.74,     // 1 SGD ≈ 0.74 USD
-  JPY: 0.0067,   // 1 JPY ≈ 0.0067 USD
-  VND: 0.00004   // 1 VND ≈ 0.00004 USD (25,000 VND = 1 USD)
+// Vietcombank Transfer Buy Exchange Rates in VND (Chuyển khoản Vietcombank)
+export const VCB_VND_RATES: Record<CurrencyCode, number> = {
+  VND: 1.0,
+  USD: 26030.00,
+  EUR: 29729.66,
+  GBP: 34700.09,
+  JPY: 161.40,
+  AUD: 18150.06,
+  SGD: 20118.12,
+  THB: 776.49,
+  CAD: 18406.17,
+  CHF: 31804.84,
+  HKD: 3280.74,
+  CNY: 3826.05,
+  KRW: 17.76
 };
+
+// Relative exchange rates to USD base (1 Unit = X USD)
+export const USD_RATES: Record<CurrencyCode, number> = Object.keys(VCB_VND_RATES).reduce((acc, key) => {
+  const code = key as CurrencyCode;
+  acc[code] = VCB_VND_RATES[code] / VCB_VND_RATES.USD;
+  return acc;
+}, {} as Record<CurrencyCode, number>);
 
 export function formatTaskCurrency(val: number, curCode: CurrencyCode = 'USD'): string {
   const cfg = CURRENCY_SYMBOLS[curCode] || CURRENCY_SYMBOLS.USD;
@@ -30,12 +47,11 @@ export function formatTaskCurrency(val: number, curCode: CurrencyCode = 'USD'): 
 }
 
 export function convertToUSD(val: number, fromCurrency: CurrencyCode = 'USD'): number {
-  const rate = USD_RATES[fromCurrency] || 1.0;
-  return val * rate;
+  const vndVal = val * (VCB_VND_RATES[fromCurrency] || 26030.00);
+  return vndVal / VCB_VND_RATES.USD;
 }
 
 export function convertFromUSD(valInUSD: number, toCurrency: CurrencyCode = 'USD'): number {
-  if (toCurrency === 'VND') return Math.round(valInUSD * 25000);
-  const rate = USD_RATES[toCurrency] || 1.0;
-  return valInUSD / rate;
+  const vndVal = valInUSD * VCB_VND_RATES.USD;
+  return vndVal / (VCB_VND_RATES[toCurrency] || 1.0);
 }

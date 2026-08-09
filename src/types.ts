@@ -5,7 +5,7 @@
 
 export type ClientTier = 'High-Ticket' | 'Volume-Arbitrage';
 
-export type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CAD' | 'SGD' | 'JPY' | 'VND';
+export type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CAD' | 'SGD' | 'JPY' | 'VND' | 'THB' | 'CHF' | 'HKD' | 'CNY' | 'KRW';
 
 export interface ClientObject {
   id: string;

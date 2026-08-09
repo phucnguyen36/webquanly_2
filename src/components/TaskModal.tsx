@@ -288,6 +288,11 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
                   <option value="SGD">SGD (S$)</option>
                   <option value="JPY">JPY (¥)</option>
                   <option value="VND">VND (₫)</option>
+                  <option value="THB">THB (฿)</option>
+                  <option value="CHF">CHF (CHF)</option>
+                  <option value="HKD">HKD (HK$)</option>
+                  <option value="CNY">CNY (¥)</option>
+                  <option value="KRW">KRW (₩)</option>
                 </select>
               </div>
             </div>
