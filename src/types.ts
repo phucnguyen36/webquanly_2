@@ -5,11 +5,14 @@
 
 export type ClientTier = 'High-Ticket' | 'Volume-Arbitrage';
 
+export type CurrencyCode = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CAD' | 'SGD' | 'JPY' | 'VND';
+
 export interface ClientObject {
   id: string;
   displayName: string;
   tier: ClientTier;
   contractValue?: number; // default inbound payment for standard tasks
+  currency?: CurrencyCode;
 }
 
 export type TaskStatus = 'Unassigned' | 'Rough Cut' | 'Final Polish' | 'Client Review' | 'Approved';
@@ -31,6 +34,7 @@ export interface VideoTaskObject {
   subPaidStatus: 'Unpaid' | 'Paid';
   roughCutUrl?: string; // Stage 1 URL uploaded by sub-editor
   finalUrl?: string; // Stage 2 final deploy link
+  currency?: CurrencyCode;
 }
 
 export interface StaffObject {

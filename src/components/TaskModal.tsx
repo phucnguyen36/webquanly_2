@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { VideoTaskObject, ClientObject, StaffObject, TaskStatus, PaymentStatus } from '../types';
-import { X, Calendar, DollarSign, FileText, Link, User } from 'lucide-react';
+import { VideoTaskObject, ClientObject, StaffObject, TaskStatus, PaymentStatus, CurrencyCode } from '../types';
+import { X, Calendar, DollarSign, FileText, Link, User, Globe } from 'lucide-react';
 
 interface TaskModalProps {
   task?: VideoTaskObject; // if provided, we are editing
@@ -26,6 +26,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
   const [notes, setNotes] = useState('');
   const [clientPay, setClientPay] = useState(0);
   const [subPay, setSubPay] = useState(0);
+  const [taskCurrency, setTaskCurrency] = useState<CurrencyCode>('USD');
   const [clientPaidStatus, setClientPaidStatus] = useState<PaymentStatus>('Unpaid');
   const [subPaidStatus, setSubPaidStatus] = useState<'Unpaid' | 'Paid'>('Unpaid');
   const [roughCutUrl, setRoughCutUrl] = useState('');
@@ -44,6 +45,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
       setNotes(task.notes);
       setClientPay(task.clientPay);
       setSubPay(task.subPay);
+      setTaskCurrency(task.currency || 'USD');
       setClientPaidStatus(task.clientPaidStatus);
       setSubPaidStatus(task.subPaidStatus);
       setRoughCutUrl(task.roughCutUrl || '');
@@ -62,6 +64,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
       setNotes('');
       setClientPay(500);
       setSubPay(150);
+      setTaskCurrency('USD');
       setClientPaidStatus('Unpaid');
       setSubPaidStatus('Unpaid');
       setRoughCutUrl('');
@@ -87,6 +90,7 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
       notes: notes.trim(),
       clientPay: Number(clientPay),
       subPay: Number(subPay),
+      currency: taskCurrency,
       clientPaidStatus,
       subPaidStatus,
       roughCutUrl: roughCutUrl.trim(),
@@ -264,9 +268,28 @@ export default function TaskModal({ task, clients, staff, onSave, onClose, selec
           </div>
 
           <div className="bg-zinc-950/40 p-5 rounded-none border border-zinc-900 space-y-4">
-            <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 block">
-              Financial Arbitrage Parameters (USD)
-            </span>
+            <div className="flex justify-between items-center">
+              <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 block">
+                Financial Arbitrage & Multi-Currency Settings
+              </span>
+              <div className="flex items-center gap-1.5 font-mono text-xs">
+                <Globe size={13} className="text-blue-400" />
+                <select
+                  value={taskCurrency}
+                  onChange={(e) => setTaskCurrency(e.target.value as CurrencyCode)}
+                  className="bg-black border border-zinc-800 text-blue-400 font-mono text-xs p-1 rounded focus:outline-none focus:border-blue-500"
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                  <option value="AUD">AUD (A$)</option>
+                  <option value="CAD">CAD (C$)</option>
+                  <option value="SGD">SGD (S$)</option>
+                  <option value="JPY">JPY (¥)</option>
+                  <option value="VND">VND (₫)</option>
+                </select>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Client Pay */}
               <div>
