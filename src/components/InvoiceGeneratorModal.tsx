@@ -171,7 +171,7 @@ export default function InvoiceGeneratorModal({
                 <h1 className="font-black text-xl tracking-tight uppercase">THOMAS NGUYEN VISUAL STUDIO</h1>
               </div>
               <p className="text-xs text-slate-600 font-medium">High-Retention Short-Form Video & Post-Production Command Center</p>
-              <p className="text-xs text-slate-500 font-mono">Website: thomasvisual.vercel.app | Email: billing@thomasvisual.com</p>
+              <p className="text-xs text-slate-500 font-mono">Website: thomasnguyen.online | Email: thomasnguyen.editor@gmail.com</p>
             </div>
 
             <div className="text-right font-mono">
