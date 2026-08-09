@@ -581,7 +581,7 @@ export default function ProjectMatrix({
       <div className="flex flex-wrap items-center gap-2 p-2 bg-zinc-950/20 border border-zinc-900 rounded-none text-[11px] font-mono select-none">
         <div className="flex items-center gap-1.5 text-zinc-500 mr-1 shrink-0">
           <ListFilter className="w-3.5 h-3.5" />
-          <span className="uppercase text-[9px] tracking-wider font-bold">Bộ Lọc:</span>
+          <span className="uppercase text-[9px] tracking-wider font-bold">FILTERS:</span>
         </div>
 
         {/* 1. STATUS FILTER PILL */}
@@ -594,12 +594,12 @@ export default function ProjectMatrix({
                 : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
             }`}
           >
-            <span>Trạng thái: </span>
+            <span>Status: </span>
             <span className="text-white">
-              {statusFilter === 'all' && 'Tất cả'}
-              {statusFilter === 'done' && 'Đã xong (Approved) ✓'}
-              {statusFilter === 'not-done' && 'Chưa xong (In Progress) ⏳'}
-              {statusFilter === 'custom' && `Tùy chọn (${selectedStatuses.length})`}
+              {statusFilter === 'all' && 'All'}
+              {statusFilter === 'done' && 'Approved ✓'}
+              {statusFilter === 'not-done' && 'In Progress ⏳'}
+              {statusFilter === 'custom' && `Custom (${selectedStatuses.length})`}
             </span>
             <ChevronDown className="w-3 h-3 text-zinc-500" />
           </button>
@@ -609,13 +609,13 @@ export default function ProjectMatrix({
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
               <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
                 <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
-                  Chọn bộ lọc trạng thái
+                  Filter by Status
                 </div>
                 {[
-                  { value: 'all', label: 'Tất cả trạng thái (Show All)' },
-                  { value: 'not-done', label: 'Chưa xong (In Progress / Active)' },
-                  { value: 'done', label: 'Đã xong (Approved / Done)' },
-                  { value: 'custom', label: 'Chọn thủ công (Custom Selection...)' }
+                  { value: 'all', label: 'All Statuses (Show All)' },
+                  { value: 'not-done', label: 'In Progress (Active)' },
+                  { value: 'done', label: 'Approved (Finished)' },
+                  { value: 'custom', label: 'Custom Selection...' }
                 ].map(opt => (
                   <button
                     key={opt.value}
@@ -679,10 +679,10 @@ export default function ProjectMatrix({
                 : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
             }`}
           >
-            <span>Người dựng: </span>
+            <span>Operator: </span>
             <span className="text-white">
-              {editorFilter === 'all' && 'Tất cả'}
-              {editorFilter === 'Unassigned' && 'Claimable Pool (Chưa nhận)'}
+              {editorFilter === 'all' && 'All'}
+              {editorFilter === 'Unassigned' && 'Unassigned Pool'}
               {editorFilter === 'Phuc' && 'Phuc (Lead)'}
               {editorFilter !== 'all' && editorFilter !== 'Unassigned' && editorFilter !== 'Phuc' && (staff.find(s => s.id === editorFilter)?.name || editorFilter)}
             </span>
@@ -694,7 +694,7 @@ export default function ProjectMatrix({
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
               <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 max-h-72 overflow-y-auto animate-fade-in">
                 <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
-                  Lọc theo Người Dựng (Editor)
+                  Filter by Operator
                 </div>
                 <button
                   onClick={() => {
@@ -705,7 +705,7 @@ export default function ProjectMatrix({
                     editorFilter === 'all' ? 'text-[#F97316] font-bold' : 'text-zinc-400'
                   }`}
                 >
-                  <span>Tất cả người dựng (Show All)</span>
+                  <span>All Operators</span>
                   {editorFilter === 'all' && <Check className="w-3 h-3 text-[#F97316]" />}
                 </button>
                 <button
@@ -717,7 +717,7 @@ export default function ProjectMatrix({
                     editorFilter === 'Unassigned' ? 'text-[#F97316] font-bold' : 'text-zinc-400'
                   }`}
                 >
-                  <span>Claimable Pool (Chưa ai nhận)</span>
+                  <span>Unassigned Pool</span>
                   {editorFilter === 'Unassigned' && <Check className="w-3 h-3 text-[#F97316]" />}
                 </button>
                 <button
@@ -762,12 +762,12 @@ export default function ProjectMatrix({
                 : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
             }`}
           >
-            <span>Thanh toán khách: </span>
+            <span>Client Pay: </span>
             <span className="text-white">
-              {clientPaidFilter === 'all' && 'Tất cả'}
-              {clientPaidFilter === 'Paid' && 'Đã trả (Paid)'}
-              {clientPaidFilter === 'Unpaid' && 'Chưa trả (Unpaid)'}
-              {clientPaidFilter === 'Invoiced' && 'Đã xuất hóa đơn (Invoiced)'}
+              {clientPaidFilter === 'all' && 'All'}
+              {clientPaidFilter === 'Paid' && 'Paid'}
+              {clientPaidFilter === 'Unpaid' && 'Unpaid'}
+              {clientPaidFilter === 'Invoiced' && 'Invoiced'}
             </span>
             <ChevronDown className="w-3 h-3 text-zinc-500" />
           </button>
@@ -777,13 +777,13 @@ export default function ProjectMatrix({
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
               <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
                 <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
-                  Lọc Trạng thái Khách Thanh Toán
+                  Filter Client Payment
                 </div>
                 {[
-                  { value: 'all', label: 'Tất cả thanh toán (Show All)' },
-                  { value: 'Unpaid', label: 'Chưa thanh toán (Unpaid)' },
-                  { value: 'Invoiced', label: 'Đã gửi hóa đơn (Invoiced)' },
-                  { value: 'Paid', label: 'Đã thanh toán (Paid)' }
+                  { value: 'all', label: 'All Payments' },
+                  { value: 'Unpaid', label: 'Unpaid' },
+                  { value: 'Invoiced', label: 'Invoiced' },
+                  { value: 'Paid', label: 'Paid' }
                 ].map(opt => (
                   <button
                     key={opt.value}
@@ -814,11 +814,11 @@ export default function ProjectMatrix({
                 : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
             }`}
           >
-            <span>Thanh toán Editor: </span>
+            <span>Editor Pay: </span>
             <span className="text-white">
-              {subPaidFilter === 'all' && 'Tất cả'}
-              {subPaidFilter === 'Paid' && 'Đã trả (Paid)'}
-              {subPaidFilter === 'Unpaid' && 'Chưa trả (Unpaid)'}
+              {subPaidFilter === 'all' && 'All'}
+              {subPaidFilter === 'Paid' && 'Paid'}
+              {subPaidFilter === 'Unpaid' && 'Unpaid'}
             </span>
             <ChevronDown className="w-3 h-3 text-zinc-500" />
           </button>
@@ -828,12 +828,12 @@ export default function ProjectMatrix({
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
               <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
                 <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
-                  Lọc Trạng thái Editor Thanh Toán
+                  Filter Editor Payment
                 </div>
                 {[
-                  { value: 'all', label: 'Tất cả (Show All)' },
-                  { value: 'Unpaid', label: 'Chưa thanh toán (Unpaid)' },
-                  { value: 'Paid', label: 'Đã thanh toán (Paid)' }
+                  { value: 'all', label: 'All Payments' },
+                  { value: 'Unpaid', label: 'Unpaid' },
+                  { value: 'Paid', label: 'Paid' }
                 ].map(opt => (
                   <button
                     key={opt.value}
@@ -868,7 +868,7 @@ export default function ProjectMatrix({
             className="flex items-center gap-1 px-2.5 py-1 rounded-sm border border-[#ef4444]/30 hover:border-[#ef4444] bg-[#ef4444]/5 hover:bg-[#ef4444]/20 text-[#ef4444] text-[10px] uppercase font-bold cursor-pointer transition-all ml-auto shrink-0"
           >
             <X className="w-3 h-3" />
-            <span>Xóa bộ lọc (Reset)</span>
+            <span>Reset Filters</span>
           </button>
         )}
       </div>

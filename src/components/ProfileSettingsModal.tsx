@@ -180,7 +180,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
               [SYSTEM PREFERENCES]
             </h2>
             <h3 className="text-base font-extrabold text-white uppercase tracking-tight mt-0.5">
-              Cài đặt Profile & Chế độ Workspace
+              Profile & Workspace Mode Settings
             </h3>
           </div>
           <button 
@@ -202,7 +202,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
             }`}
           >
             <User className="w-3.5 h-3.5" />
-            Thông tin Cá nhân
+            Personal Profile
           </button>
           <button
             onClick={() => { setActiveTab('modes'); if (soundEnabled) playSynthChime('click'); }}
@@ -213,7 +213,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
-            Các chế độ cài đặt
+            Operational Modes
           </button>
         </div>
 
@@ -224,7 +224,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
               {/* Avatar section */}
               <div className="space-y-3">
                 <label className="block text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
-                  Ảnh đại diện (Profile Image)
+                  Profile Avatar Image
                 </label>
                 
                 <div className="flex items-center gap-4">
@@ -238,7 +238,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                   />
                   <div className="flex-1 space-y-2">
                     <p className="text-[10px] text-zinc-400 font-mono">
-                      Chọn nhanh từ thư viện Preset chất lượng cao, hoặc dán URL ảnh tùy chỉnh ở dưới.
+                      Choose from preset high-res avatars or paste a custom image URL below.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {AVATAR_PRESETS.map((preset, index) => (
@@ -268,7 +268,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                       value={customAvatarInput}
                       onChange={(e) => setCustomAvatarInput(e.target.value)}
                       onBlur={handleCustomAvatarBlur}
-                      placeholder="Dán link ảnh Unsplash hoặc bất kỳ URL nào..."
+                      placeholder="Paste Unsplash image link or direct URL..."
                       className="bg-transparent text-xs text-zinc-300 focus:outline-none w-full font-mono"
                     />
                   </div>
@@ -278,8 +278,8 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                   <label className="flex items-center justify-center gap-3 border border-dashed border-zinc-700 hover:border-blue-500 bg-white/[0.02] hover:bg-white/[0.05] p-3 cursor-pointer transition-all rounded-[6px]">
                     <Upload className="w-4 h-4 text-blue-400" />
                     <div className="text-left">
-                      <span className="text-xs text-zinc-300 font-medium block">Tải ảnh đại diện mới</span>
-                      <span className="text-[9px] text-zinc-400 font-mono">Chấp nhận PNG, JPG, WebP tối đa 1MB</span>
+                      <span className="text-xs text-zinc-300 font-medium block">Upload New Avatar</span>
+                      <span className="text-[9px] text-zinc-400 font-mono">Accepts PNG, JPG, WebP up to 1MB</span>
                     </div>
                     <input
                       type="file"
@@ -295,7 +295,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-1">
-                    Họ và Tên
+                    Full Name
                   </label>
                   <input
                     type="text"
@@ -309,7 +309,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
 
                 <div>
                   <label className="block text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-1">
-                    Vai trò (Role Title)
+                    Role Title
                   </label>
                   <input
                     type="text"
@@ -324,12 +324,12 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
               {/* Bio description */}
               <div>
                 <label className="block text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-1">
-                  Tiểu sử / Khẩu hiệu cá nhân (Tagline)
+                  Personal Tagline / Bio
                 </label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Viết một câu mô tả ngắn về bản thân..."
+                  placeholder="Write a brief tagline about your studio..."
                   rows={3}
                   className="w-full px-3 py-2 bg-[#09090b] text-zinc-300 font-sans text-xs border border-zinc-800 rounded-[6px] focus:outline-none focus:border-blue-500 resize-none"
                 />
@@ -354,16 +354,16 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                 />
                 <div className="flex-1">
                   <label htmlFor="mode-focus" className="text-xs font-bold text-zinc-200 block cursor-pointer">
-                    CHẾ ĐỘ TẬP TRUNG (FOCUS MODE)
+                    FOCUS MODE
                   </label>
                   <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                    Ẩn bớt các mục phụ trên sidebar (Hộp Quick-Add) và bảng thống kê rườm rà dưới footer để bạn hoàn toàn tập trung vào xử lý bảng ma trận dự án.
+                    Hide secondary sidebar widgets and focus purely on managing the matrix workspace.
                   </p>
                 </div>
                 {focusMode ? (
-                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Kích hoạt</span>
+                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Active</span>
                 ) : (
-                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Tắt</span>
+                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Disabled</span>
                 )}
               </div>
 
@@ -378,16 +378,16 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                 />
                 <div className="flex-1">
                   <label htmlFor="mode-dense" className="text-xs font-bold text-zinc-200 block cursor-pointer">
-                    GIAO DIỆN SIÊU THU GỌN (DENSE WORKSPACE)
+                    DENSE WORKSPACE LAYOUT
                   </label>
                   <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                    Thu nhỏ kích thước hàng trong bảng ma trận, giảm lề đệm giúp hiển thị nhiều dữ liệu hơn trên cùng một màn hình điều khiển.
+                    Compact row heights and padding to maximize visible data on screen.
                   </p>
                 </div>
                 {denseLayout ? (
-                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Kích hoạt</span>
+                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Active</span>
                 ) : (
-                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Tắt</span>
+                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Disabled</span>
                 )}
               </div>
 
@@ -402,16 +402,16 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                 />
                 <div className="flex-1">
                   <label htmlFor="mode-low-margin" className="text-xs font-bold text-zinc-200 block cursor-pointer">
-                    CẢNH BÁO LỢI NHUẬN THẤP (LOW MARGIN ALERTS)
+                    LOW MARGIN ALERTS
                   </label>
                   <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                    Tự động gắn thẻ cảnh báo màu cam nhấp nháy cho bất kỳ dự án Video nào có biên lợi nhuận chênh lệch dưới 35% giúp bảo toàn ngân sách.
+                    Automatically flag video tasks with profit yield under 35% to protect studio revenue.
                   </p>
                 </div>
                 {lowMarginAlert ? (
-                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Kích hoạt</span>
+                  <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase rounded-[4px]">Active</span>
                 ) : (
-                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Tắt</span>
+                  <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase rounded-[4px]">Disabled</span>
                 )}
               </div>
 
@@ -426,19 +426,19 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
                 />
                 <div className="flex-1">
                   <label htmlFor="mode-sound" className="text-xs font-bold text-zinc-200 block cursor-pointer">
-                    HIỆU ỨNG ÂM THANH TỔNG HỢP (SOUND SYNTH)
+                    SOUND SYNTHESIS EFFECTS
                   </label>
                   <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                    Phát các âm thanh bíp công nghệ cao (được tổng hợp trực tiếp qua chip Web Audio API) mỗi khi click, lưu cài đặt, hoặc đổi chế độ.
+                    Play synthesized Audio API feedback chimes when clicking, saving, or toggling preferences.
                   </p>
                 </div>
                 {soundEnabled ? (
                   <span className="text-[9px] font-mono bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 uppercase flex items-center gap-1 rounded-[4px]">
-                    <Volume2 className="w-2.5 h-2.5" /> Bật
+                    <Volume2 className="w-2.5 h-2.5" /> ON
                   </span>
                 ) : (
                   <span className="text-[9px] font-mono bg-zinc-900 text-zinc-500 px-1.5 py-0.5 uppercase flex items-center gap-1 rounded-[4px]">
-                    <VolumeX className="w-2.5 h-2.5" /> Tắt
+                    <VolumeX className="w-2.5 h-2.5" /> OFF
                   </span>
                 )}
               </div>
@@ -453,7 +453,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
             onClick={onClose}
             className="px-4 py-2 bg-transparent hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs uppercase rounded-[6px] border border-zinc-800 cursor-pointer transition-colors"
           >
-            Hủy (Cancel)
+            Cancel
           </button>
           <button
             type="button"
@@ -461,7 +461,7 @@ export default function ProfileSettingsModal({ profile, onSave, onClose }: Profi
             className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs uppercase font-extrabold rounded-[6px] cursor-pointer transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-1.5"
           >
             <Check className="w-3.5 h-3.5" />
-            Lưu cài đặt (Save)
+            Save Settings
           </button>
         </div>
       </div>

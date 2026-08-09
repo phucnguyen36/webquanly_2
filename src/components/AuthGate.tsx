@@ -118,21 +118,21 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
       }
     } catch (err: any) {
       console.error('Authentication Error:', err);
-      let VietnameseMessage = 'Đăng nhập không thành công. Vui lòng kiểm tra lại.';
+      let EnglishMessage = 'Authentication failed. Please verify your credentials.';
       if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-        VietnameseMessage = 'Sai mật khẩu hoặc tài khoản chưa chính xác.';
+        EnglishMessage = 'Wrong password or invalid user account.';
       } else if (err.code === 'auth/user-not-found') {
-        VietnameseMessage = 'Tài khoản chưa tồn tại. Vui lòng đổi sang chế độ "ĐĂNG KÝ" để tạo.';
+        EnglishMessage = 'Account does not exist. Switch to SIGN UP mode to create.';
       } else if (err.code === 'auth/email-already-in-use') {
-        VietnameseMessage = 'Email này đã được sử dụng bởi tài khoản khác.';
+        EnglishMessage = 'This email is already in use by another account.';
       } else if (err.code === 'auth/weak-password') {
-        VietnameseMessage = 'Mật khẩu quá ngắn, yêu cầu tối thiểu 6 ký tự.';
+        EnglishMessage = 'Password is too short (minimum 6 characters).';
       } else if (err.code === 'auth/unauthorized-domain') {
-        VietnameseMessage = 'Tên miền này chưa được cấp phép truy cập Auth trong Firebase Console (Authorized Domains).';
+        EnglishMessage = 'Domain not authorized in Firebase Console (Authorized Domains).';
       } else if (err.code === 'auth/invalid-email') {
-        VietnameseMessage = 'Định dạng email không hợp lệ.';
+        EnglishMessage = 'Invalid email format.';
       }
-      setError(VietnameseMessage);
+      setError(EnglishMessage);
     } finally {
       setIsLoading(false);
     }
@@ -168,21 +168,21 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             onClick={() => { setIsSignUp(false); setError(''); }}
             className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${!isSignUp ? 'border-b-2 border-[#3b82f6] text-white' : 'text-[#71717a] hover:text-zinc-300'}`}
           >
-            Đăng nhập
+            Sign In
           </button>
           <button 
             type="button"
             onClick={() => { setIsSignUp(true); setError(''); }}
             className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${isSignUp ? 'border-b-2 border-[#3b82f6] text-white' : 'text-[#71717a] hover:text-zinc-300'}`}
           >
-            Đăng ký
+            Sign Up
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4 text-left">
           <div>
             <label className="block text-[10px] font-mono text-[#71717a] uppercase mb-1.5">
-              Email (Tài khoản)
+              Account Email
             </label>
             <div className="relative">
               <span className="absolute left-3 top-3 text-[#71717a]">
@@ -203,7 +203,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
 
           <div>
             <label className="block text-[10px] font-mono text-[#71717a] uppercase mb-1.5">
-              Mật khẩu
+              Password
             </label>
             <div className="relative">
               <span className="absolute left-3 top-3 text-[#71717a]">
@@ -245,12 +245,12 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             {isLoading ? (
               <>
                 <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                Vui lòng đợi...
+                Authenticating...
               </>
             ) : isSignUp ? (
-              'Đăng ký tài khoản'
+              'Register Account'
             ) : (
-              'Đăng nhập hệ thống'
+              'Authenticate Session'
             )}
           </button>
         </form>

@@ -183,12 +183,12 @@ export default function ClientSettingsHub({ clients, onAddClient, onUpdateClient
                           <button
                             onClick={() => {
                               if (!editingName.trim()) {
-                                setEditError('Tên không được để trống.');
+                                setEditError('Client name cannot be empty.');
                                 return;
                               }
                               const otherExists = clients.some(c => c.id !== client.id && c.displayName.toLowerCase() === editingName.trim().toLowerCase());
                               if (otherExists) {
-                                setEditError('Tên client đã tồn tại.');
+                                setEditError('Client name already exists.');
                                 return;
                               }
                               onUpdateClient({
@@ -200,7 +200,7 @@ export default function ClientSettingsHub({ clients, onAddClient, onUpdateClient
                               setEditError('');
                             }}
                             className="p-1.5 text-emerald-400 hover:bg-emerald-950/20 rounded transition-colors cursor-pointer"
-                            title="Lưu thay đổi"
+                            title="Save Changes"
                           >
                             <Check className="w-4 h-4" />
                           </button>
@@ -210,7 +210,7 @@ export default function ClientSettingsHub({ clients, onAddClient, onUpdateClient
                               setEditError('');
                             }}
                             className="p-1.5 text-zinc-400 hover:bg-zinc-800 rounded transition-colors cursor-pointer"
-                            title="Hủy"
+                            title="Cancel"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -225,7 +225,7 @@ export default function ClientSettingsHub({ clients, onAddClient, onUpdateClient
                               setEditError('');
                             }}
                             className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition-colors cursor-pointer"
-                            title="Sửa thông tin Client"
+                            title="Edit Client Specs"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>

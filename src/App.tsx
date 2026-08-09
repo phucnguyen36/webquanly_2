@@ -966,10 +966,10 @@ export default function App() {
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Reset về dữ liệu mẫu"
+              title="Reset to initial demo database"
             >
               <Database className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>RESET DATABASE (MẪU)</span>}
+              {!isSidebarCollapsed && <span>RESET DEMO DATABASE</span>}
             </button>
 
             <button
@@ -977,10 +977,10 @@ export default function App() {
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Xóa tất cả để tạo mới"
+              title="Purge all workspace data"
             >
               <Trash2 className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>XÓA SẠCH DỮ LIỆU</span>}
+              {!isSidebarCollapsed && <span>PURGE ALL DATA</span>}
             </button>
           </nav>
 
@@ -1004,7 +1004,7 @@ export default function App() {
             <button 
               onClick={() => setIsProfileModalOpen(true)}
               className="flex items-center gap-3 text-left flex-1 min-w-0 group cursor-pointer"
-              title="Cấu hình Profile & Workspace"
+              title="Configure Profile & Workspace"
             >
               <img 
                 src={profile.avatarUrl} 
@@ -1047,9 +1047,9 @@ export default function App() {
                   <CloudOff className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-black text-orange-400 uppercase tracking-wider">THÔNG BÁO: CHƯA ĐỒNG BỘ CLOUD FIRESTORE</h4>
+                  <h4 className="font-black text-orange-400 uppercase tracking-wider">NOTIFICATION: CLOUD FIRESTORE DISCONNECTED</h4>
                   <p className="text-[10px] text-orange-300/80 mt-0.5 leading-normal max-w-xl">
-                    Hệ thống hiện đang chạy ở chế độ Offline Local Storage. Firebase Database vừa được cấu hình và kích hoạt thành công trên Cloud! Vui lòng nhấn nút <strong className="text-white">KẾT NỐI CLOUD</strong> bên cạnh hoặc tải lại trang để bắt đầu đồng bộ và lưu trữ dữ liệu an toàn trên Cloud Firestore.
+                    System is running in Offline Local Storage mode. Firebase Database has been configured on Cloud. Click <strong className="text-white">CONNECT CLOUD</strong> to initiate realtime data synchronization.
                   </p>
                 </div>
               </div>
@@ -1058,11 +1058,11 @@ export default function App() {
                   onClick={loadData}
                   className="px-3 py-1.5 bg-[#F97316] hover:bg-[#ea6c0a] text-white font-mono font-black text-[10px] uppercase rounded-sm shadow-[0_0_10px_rgba(249,115,22,0.3)] cursor-pointer transition-all hover:scale-105 active:scale-95"
                 >
-                  KẾT NỐI CLOUD
+                  CONNECT CLOUD
                 </button>
                 <div className="hidden sm:flex items-center gap-2">
                   <span className="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
-                  <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">NGOẠI TUYẾN</span>
+                  <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">OFFLINE</span>
                 </div>
               </div>
             </div>
@@ -1092,10 +1092,10 @@ export default function App() {
                 <button
                   onClick={loadData}
                   className="flex items-center gap-1.5 px-3 py-1 bg-orange-950/40 hover:bg-orange-900/40 border border-orange-500/30 rounded-none text-[10px] font-mono text-orange-400 cursor-pointer transition-colors"
-                  title="Không thể kết nối Firestore Cloud. Click để thử lại."
+                  title="Firestore Cloud connection failed. Click to retry."
                 >
                   <CloudOff className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
-                  <span>CLOUD: OFFLINE (THỬ LẠI KẾT NỐI)</span>
+                  <span>CLOUD: OFFLINE (RETRY)</span>
                 </button>
               ) : (
                 <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-950/40 border border-emerald-500/30 rounded-none text-[10px] font-mono text-emerald-400">
@@ -1109,16 +1109,16 @@ export default function App() {
             <div className="flex items-center gap-2">
               {/* Year Selector */}
               <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-950 border border-zinc-900 rounded-none text-xs font-mono text-zinc-300">
-                <span className="text-zinc-500 font-bold text-[10px] uppercase">Năm:</span>
+                <span className="text-zinc-500 font-bold text-[10px] uppercase">Year:</span>
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
                   className="bg-transparent text-zinc-300 font-bold border-none focus:outline-none cursor-pointer text-xs"
                 >
-                  <option value="all" className="bg-zinc-950 text-zinc-300">Tất cả năm (All)</option>
+                  <option value="all" className="bg-zinc-950 text-zinc-300">All Years</option>
                   {availableYears.map(yr => (
                     <option key={yr} value={yr} className="bg-zinc-950 text-zinc-300">
-                      Năm {yr}
+                      Year {yr}
                     </option>
                   ))}
                 </select>
@@ -1126,16 +1126,16 @@ export default function App() {
 
               {/* Month Selector */}
               <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-950 border border-zinc-900 rounded-none text-xs font-mono text-zinc-300">
-                <span className="text-zinc-500 font-bold text-[10px] uppercase">Tháng:</span>
+                <span className="text-zinc-500 font-bold text-[10px] uppercase">Month:</span>
                 <select
                   value={selectedMonthOnly}
                   onChange={(e) => setSelectedMonthOnly(e.target.value)}
                   className="bg-transparent text-zinc-300 font-bold border-none focus:outline-none cursor-pointer text-xs"
                 >
-                  <option value="all" className="bg-zinc-950 text-zinc-300">Tất cả tháng (All)</option>
+                  <option value="all" className="bg-zinc-950 text-zinc-300">All Months</option>
                   {availableMonths.filter(m => m !== 'all').map(mo => (
                     <option key={mo} value={mo} className="bg-zinc-950 text-zinc-300">
-                      Tháng {mo}
+                      Month {mo}
                     </option>
                   ))}
                 </select>
