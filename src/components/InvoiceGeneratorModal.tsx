@@ -189,9 +189,10 @@ export default function InvoiceGeneratorModal({
             <div className="p-4 bg-slate-50 rounded border border-slate-200">
               <span className="font-bold text-slate-400 uppercase text-[10px] block mb-1 font-mono">REMIT PAYMENT TO:</span>
               <strong className="text-sm font-bold text-slate-900 block">THOMAS NGUYEN MEDIA APEX CO., LTD</strong>
-              <p className="text-slate-600 mt-1">Bank: Techcombank - Account No: 1903 8888 6868</p>
-              <p className="text-slate-600">Account Holder: NGUYEN XUAN PHUC</p>
-              <p className="text-slate-600">SWIFT / BIC Code: TCOBVNVX</p>
+              <p className="text-slate-600 mt-1">Bank Name: <strong>Joint Stock Commercial Bank for Foreign Trade of Vietnam (Vietcombank)</strong></p>
+              <p className="text-slate-600">Account Number: <strong className="font-mono text-slate-900">9842485854</strong></p>
+              <p className="text-slate-600">Account Holder Name: <strong>NGUYEN XUAN PHUC</strong></p>
+              <p className="text-slate-600">SWIFT / BIC Code: <strong className="font-mono text-slate-900">BFTVVNVX</strong></p>
             </div>
           </div>
 
