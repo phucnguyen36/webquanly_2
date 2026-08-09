@@ -33,6 +33,8 @@ export default function InvoiceGeneratorModal({
   currency: globalCurrency
 }: InvoiceGeneratorModalProps) {
   const [selectedClientId, setSelectedClientId] = useState<string>(clients[0]?.id || 'all');
+  const [selectedYear, setSelectedYear] = useState<string>('2026');
+  const [selectedMonth, setSelectedMonth] = useState<string>('08');
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>('USD');
   const [invoiceNumber, setInvoiceNumber] = useState(`INV-2026-${Math.floor(100 + Math.random() * 900)}`);
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().slice(0, 10));
@@ -44,10 +46,34 @@ export default function InvoiceGeneratorModal({
   const [taxPercent, setTaxPercent] = useState<number>(0);
   const [notes, setNotes] = useState('Thank you for partnering with Thomas Nguyen Visual Studio. Please remit payment via bank wire transfer before the due date.');
 
-  // Filter tasks for selected client
-  const clientTasks = selectedClientId === 'all' 
-    ? tasks 
-    : tasks.filter(t => t.clientId === selectedClientId);
+  // Dynamically extract unique years from active tasks list
+  const availableYears = Array.from(new Set(['2025', '2026', '2027', ...tasks.map(t => t.internalDeadline ? t.internalDeadline.substring(0, 4) : '').filter(Boolean)])).sort();
+
+  const monthOptions = [
+    { value: 'all', label: 'All Months' },
+    { value: '01', label: '01 - January' },
+    { value: '02', label: '02 - February' },
+    { value: '03', label: '03 - March' },
+    { value: '04', label: '04 - April' },
+    { value: '05', label: '05 - May' },
+    { value: '06', label: '06 - June' },
+    { value: '07', label: '07 - July' },
+    { value: '08', label: '08 - August' },
+    { value: '09', label: '09 - September' },
+    { value: '10', label: '10 - October' },
+    { value: '11', label: '11 - November' },
+    { value: '12', label: '12 - December' }
+  ];
+
+  // Filter tasks for selected client, year, and month
+  const clientTasks = tasks.filter(t => {
+    const matchClient = selectedClientId === 'all' || t.clientId === selectedClientId;
+    const taskYear = t.internalDeadline ? t.internalDeadline.substring(0, 4) : '';
+    const taskMonth = t.internalDeadline ? t.internalDeadline.substring(5, 7) : '';
+    const matchYear = selectedYear === 'all' || taskYear === selectedYear;
+    const matchMonth = selectedMonth === 'all' || taskMonth === selectedMonth;
+    return matchClient && matchYear && matchMonth;
+  });
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
 
@@ -99,7 +125,7 @@ export default function InvoiceGeneratorModal({
         <div className="p-4 px-6 bg-black/40 border-b border-white/10 flex flex-wrap items-center justify-between gap-4 print:hidden">
           <div className="flex flex-wrap items-center gap-4">
             <div>
-              <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">SELECT CLIENT:</label>
+              <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">CLIENT:</label>
               <select 
                 value={selectedClientId} 
                 onChange={(e) => setSelectedClientId(e.target.value)}
@@ -108,6 +134,33 @@ export default function InvoiceGeneratorModal({
                 <option value="all">-- All Client Projects --</option>
                 {clients.map(c => (
                   <option key={c.id} value={c.id}>{c.displayName} ({c.tier})</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">BILLING YEAR:</label>
+              <select 
+                value={selectedYear} 
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="bg-black border border-white/15 text-white font-mono text-xs p-1.5 rounded outline-none focus:border-blue-500"
+              >
+                <option value="all">All Years</option>
+                {availableYears.map(y => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">BILLING MONTH:</label>
+              <select 
+                value={selectedMonth} 
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="bg-black border border-white/15 text-blue-400 font-mono text-xs font-bold p-1.5 rounded outline-none focus:border-blue-500"
+              >
+                {monthOptions.map(m => (
+                  <option key={m.value} value={m.value}>{m.label}</option>
                 ))}
               </select>
             </div>
@@ -177,6 +230,7 @@ export default function InvoiceGeneratorModal({
             <div className="text-right font-mono">
               <span className="text-2xl font-black text-slate-900 uppercase tracking-wider block mb-1 font-sans">COMMERCIAL INVOICE</span>
               <span className="text-xs text-slate-600 block">INVOICE NO: <strong>{invoiceNumber}</strong></span>
+              <span className="text-xs text-slate-600 block">STATEMENT PERIOD: <strong>{selectedYear === 'all' ? 'All Years' : selectedYear}-{selectedMonth === 'all' ? 'All Months' : selectedMonth}</strong></span>
               <span className="text-xs text-slate-600 block">DATE: {invoiceDate}</span>
               <span className="text-xs text-slate-600 block">DUE DATE: {dueDate}</span>
             </div>
