@@ -129,7 +129,7 @@ export default function VideoProofingModal({
             <div className="grid grid-cols-2 gap-3 font-mono text-xs">
               <div className="p-3 bg-black/40 border border-white/10 rounded flex justify-between items-center">
                 <div>
-                  <span className="text-slate-400 text-[10px] uppercase block">Lợi Nhuận Ròng (Margin Yield)</span>
+                  <span className="text-slate-400 text-[10px] uppercase block">Net Profit (Margin Yield)</span>
                   <strong className={`text-sm ${isLowMargin ? 'text-amber-400' : 'text-emerald-400'}`}>
                     ${netProfit} ({profitMarginPercent}%)
                   </strong>
@@ -139,7 +139,7 @@ export default function VideoProofingModal({
 
               <div className="p-3 bg-black/40 border border-white/10 rounded flex justify-between items-center">
                 <div>
-                  <span className="text-slate-400 text-[10px] uppercase block">Dự Báo Retention AVD</span>
+                  <span className="text-slate-400 text-[10px] uppercase block">Retention Forecast AVD</span>
                   <strong className="text-sm text-sky-400">86.5% AUDIENCE</strong>
                 </div>
                 <TrendingUp size={20} className="text-sky-400" />
@@ -177,7 +177,7 @@ export default function VideoProofingModal({
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-extrabold text-xs uppercase tracking-wider text-white flex items-center gap-2">
                   <MessageSquare size={14} className="text-sky-400" />
-                  <span>Ghi Chú Review Timeline ({comments.length})</span>
+                  <span>Timeline Review Notes ({comments.length})</span>
                 </h4>
               </div>
 
@@ -189,7 +189,7 @@ export default function VideoProofingModal({
                   </span>
                   <input 
                     type="text" 
-                    placeholder="Gõ nhận xét cho khung hình này..." 
+                    placeholder="Type feedback for this timestamp frame..." 
                     value={newCommentText}
                     onChange={(e) => setNewCommentText(e.target.value)}
                     className="w-full p-1.5 bg-black/60 border border-white/15 rounded text-xs text-white outline-none focus:border-blue-500"
@@ -199,7 +199,7 @@ export default function VideoProofingModal({
                   type="submit" 
                   className="w-full py-1.5 bg-white/10 hover:bg-white/20 text-slate-200 font-mono text-xs font-bold uppercase rounded flex items-center justify-center gap-1"
                 >
-                  <Plus size={14} /> Thêm Ghi Chú Review
+                  <Plus size={14} /> Add Review Note
                 </button>
               </form>
 
@@ -216,7 +216,7 @@ export default function VideoProofingModal({
                         onClick={() => toggleResolveComment(c.id)} 
                         className={`text-[10px] px-1.5 py-0.5 rounded ${c.resolved ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-400 hover:text-white'}`}
                       >
-                        {c.resolved ? '✓ Sửa xong' : 'Đánh dấu sửa'}
+                        {c.resolved ? '✓ Resolved' : 'Mark as Resolved'}
                       </button>
                     </div>
                     <p className="text-slate-300 text-[11px] leading-relaxed">{c.text}</p>
@@ -234,7 +234,7 @@ export default function VideoProofingModal({
                 }}
                 className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold uppercase rounded shadow flex items-center justify-center gap-2"
               >
-                <CheckCircle2 size={16} /> DUYỆT BẢN DỰNG 4K (APPROVE RENDER)
+                <CheckCircle2 size={16} /> APPROVE 4K MASTER RENDER
               </button>
             </div>
           </div>

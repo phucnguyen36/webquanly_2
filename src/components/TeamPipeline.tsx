@@ -166,7 +166,7 @@ export default function TeamPipeline({
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">Vị trí / Role</label>
+              <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">Role / Specialization Title</label>
               <input
                 type="text"
                 value={newRole}
@@ -177,12 +177,12 @@ export default function TeamPipeline({
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">Số điện thoại</label>
+              <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">Phone Number</label>
               <input
                 type="text"
                 value={newPhone}
                 onChange={(e) => setNewPhone(e.target.value)}
-                placeholder="0912345678"
+                placeholder="+84 912 345 678"
                 className="w-full px-3 py-2 bg-zinc-950/40 border border-zinc-900 rounded-none text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 font-mono"
               />
             </div>
@@ -218,13 +218,13 @@ export default function TeamPipeline({
               onClick={() => setShowAddForm(false)}
               className="px-4 py-2 bg-transparent border border-zinc-800 text-zinc-400 hover:text-white font-mono text-[10px] uppercase rounded-none transition-colors cursor-pointer"
             >
-              Hủy
+              Cancel
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-white hover:bg-zinc-200 text-black font-mono font-bold text-[10px] uppercase rounded-none transition-colors cursor-pointer"
             >
-              Tạo Editor
+              Create Operator
             </button>
           </div>
         </form>
@@ -249,7 +249,7 @@ export default function TeamPipeline({
                     <button
                       onClick={() => startEditing(member)}
                       className="p-1 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-none transition-colors cursor-pointer"
-                      title="Chỉnh sửa Editor"
+                      title="Edit Editor Profile"
                     >
                       <Edit2 className="w-3 h-3" />
                     </button>
@@ -258,7 +258,7 @@ export default function TeamPipeline({
                     <button
                       onClick={() => onDeleteStaff(member.id)}
                       className="p-1 text-zinc-500 hover:text-red-500 hover:bg-zinc-900 rounded-none transition-colors cursor-pointer"
-                      title="Xóa Editor"
+                      title="Delete Editor"
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
@@ -270,19 +270,19 @@ export default function TeamPipeline({
                 /* Inline Editor Form */
                 <div className="space-y-4 font-mono">
                   <div className="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2">
-                    <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">CHỈNH SỬA EDITOR</span>
+                    <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">EDIT EDITOR PROFILE</span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleSaveEdit(member)}
                         className="p-1.5 bg-white text-black hover:bg-zinc-200 rounded-none cursor-pointer transition-colors"
-                        title="Lưu"
+                        title="Save Changes"
                       >
                         <Check className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
                         className="p-1.5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 rounded-none cursor-pointer transition-colors"
-                        title="Hủy"
+                        title="Cancel"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -291,7 +291,7 @@ export default function TeamPipeline({
 
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
-                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Tên hiển thị</label>
+                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Display Name</label>
                       <input
                         type="text"
                         value={editName}
@@ -300,7 +300,7 @@ export default function TeamPipeline({
                       />
                     </div>
                     <div>
-                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Vị trí / Role</label>
+                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Role / Specialization</label>
                       <input
                         type="text"
                         value={editRole}
@@ -309,7 +309,7 @@ export default function TeamPipeline({
                       />
                     </div>
                     <div>
-                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Số điện thoại</label>
+                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Phone Number</label>
                       <input
                         type="text"
                         value={editPhone}
@@ -318,7 +318,7 @@ export default function TeamPipeline({
                       />
                     </div>
                     <div>
-                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Điểm chất lượng</label>
+                      <label className="block text-[8px] text-zinc-500 uppercase mb-0.5">Quality Score</label>
                       <input
                         type="number"
                         step="0.1"
@@ -451,20 +451,20 @@ export default function TeamPipeline({
         </div>
 
         <p className="text-xs text-zinc-500 font-sans mb-4 leading-relaxed">
-          Nếu một editor bị quá tải hoặc chậm trễ tiến độ so với Deadline, hãy sử dụng Shunt để lập tức chuyển giao công việc đó cho tài nguyên rảnh rỗi khác.
+          If an editor is overloaded or experiencing deadline bottlenecks, use Shunt Control to immediately re-assign tasks to available team resources.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-zinc-950/40 p-4 border border-zinc-900 rounded-none">
           <div>
             <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">
-              Chọn Task nghẽn
+              Select Bottleneck Task
             </label>
             <select
               value={selectedTaskToReassign}
               onChange={(e) => { setSelectedTaskToReassign(e.target.value); setShuntError(''); }}
               className="w-full px-2.5 py-1.5 bg-zinc-950 text-zinc-300 font-mono text-[10px] uppercase tracking-wider border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
             >
-              <option value="" className="text-zinc-600">-- Chọn video task --</option>
+              <option value="" className="text-zinc-600">-- Select video task --</option>
               {getBottleneckTasks().map(t => (
                 <option key={t.id} value={t.id} className="text-zinc-300">
                   {t.title.substring(0, 30)}... ({t.id.replace('task_', 'TX_')})
@@ -475,15 +475,15 @@ export default function TeamPipeline({
 
           <div>
             <label className="block text-[9px] font-mono text-zinc-500 uppercase mb-1">
-              Chuyển sang Editor mới
+              Reassign to Editor
             </label>
             <select
               value={targetEditorId}
               onChange={(e) => { setTargetEditorId(e.target.value); setShuntError(''); }}
               className="w-full px-2.5 py-1.5 bg-zinc-950 text-zinc-300 font-mono text-[10px] uppercase tracking-wider border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700"
             >
-              <option value="" className="text-zinc-600">-- Chọn Editor nhận việc --</option>
-              <option value="Unassigned" className="text-zinc-300">Khu vực rảnh (Unassigned)</option>
+              <option value="" className="text-zinc-600">-- Select target editor --</option>
+              <option value="Unassigned" className="text-zinc-300">Unassigned Pool</option>
               <option value="Phuc" className="text-zinc-300">Phuc (Master Editor)</option>
               {staff.filter(s => s.id !== 'Phuc').map(s => (
                 <option key={s.id} value={s.id} className="text-zinc-300">
@@ -497,7 +497,7 @@ export default function TeamPipeline({
             <button
               onClick={() => {
                 if (!selectedTaskToReassign || !targetEditorId) {
-                  setShuntError('Vui lòng chọn đầy đủ video task và editor để shunt.');
+                  setShuntError('Please select both a video task and a target editor to shunt.');
                   return;
                 }
                 onReassignTask(selectedTaskToReassign, targetEditorId);
@@ -507,7 +507,7 @@ export default function TeamPipeline({
               }}
               className="w-full py-1.5 bg-white hover:bg-zinc-200 text-black font-mono font-bold text-[10px] uppercase rounded-none transition-colors flex justify-center items-center gap-1 cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.15)]"
             >
-              Áp dụng Shunt Pipeline
+              Execute Shunt Pipeline
             </button>
           </div>
         </div>

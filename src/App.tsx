@@ -358,8 +358,8 @@ export default function App() {
   const handleDeleteTask = (taskId: string) => {
     setConfirmModal({
       isOpen: true,
-      title: 'Xóa Video Task',
-      message: 'Bạn có chắc chắn muốn xóa Video Task này khỏi hệ thống?',
+      title: 'Delete Video Task',
+      message: 'Are you sure you want to delete this Video Task from the system?',
       onConfirm: () => {
         const updated = tasks.filter(t => t.id !== taskId);
         syncTasksToLocal(updated);
@@ -372,8 +372,8 @@ export default function App() {
   const handleDeleteTasks = (taskIds: string[]) => {
     setConfirmModal({
       isOpen: true,
-      title: 'Xóa các Video Task đã chọn',
-      message: `Bạn có chắc chắn muốn xóa ${taskIds.length} Video Task đã chọn khỏi hệ thống?`,
+      title: 'Delete Selected Video Tasks',
+      message: `Are you sure you want to delete ${taskIds.length} selected video tasks from the system?`,
       onConfirm: () => {
         const updated = tasks.filter(t => !taskIds.includes(t.id));
         syncTasksToLocal(updated);
@@ -447,8 +447,8 @@ export default function App() {
   const handleDeleteStaff = (staffId: string) => {
     setConfirmModal({
       isOpen: true,
-      title: 'Xóa Editor',
-      message: 'Bạn có chắc chắn muốn xóa Editor này khỏi hệ thống?',
+      title: 'Delete Operator Profile',
+      message: 'Are you sure you want to delete this editor from the workforce pipeline?',
       onConfirm: () => {
         const updated = staff.filter(s => s.id !== staffId);
         syncStaffToLocal(updated);
@@ -656,12 +656,12 @@ export default function App() {
           }
           syncTasksToLocal(updatedTasks);
           setIsLoading(false);
-          alert(`Đã import thành công ${parsedTasks.length} video tasks và tự động nhận diện/tạo mới ${newClientsCount} khách hàng vào Cloud Firebase!`);
+          alert(`Successfully imported ${parsedTasks.length} video tasks and auto-initialized ${newClientsCount} client matrix segments into Cloud Firebase!`);
         }
       } catch (err) {
         console.error('Error importing CSV:', err);
         setIsLoading(false);
-        alert('Đã xảy ra lỗi khi parse file CSV. Vui lòng kiểm tra định dạng.');
+        alert('An error occurred while parsing the CSV file. Please verify formatting.');
       }
     };
     reader.readAsText(file, 'utf-8');
@@ -670,8 +670,8 @@ export default function App() {
   const handleSeedReset = () => {
     setConfirmModal({
       isOpen: true,
-      title: 'Reset Dữ Liệu Mẫu',
-      message: 'Bạn có chắc chắn muốn reset toàn bộ dữ liệu mẫu ban đầu trên Cloud Firebase? Tất cả thay đổi hiện tại của bạn sẽ bị ghi đè.',
+      title: 'Reset Seed Database',
+      message: 'Are you sure you want to reset to default workspace data on Cloud Firebase? All current modifications will be overwritten.',
       onConfirm: async () => {
         setIsLoading(true);
         try {
@@ -695,8 +695,8 @@ export default function App() {
   const handleClearAllData = () => {
     setConfirmModal({
       isOpen: true,
-      title: 'XÓA SẠCH TOÀN BỘ DỮ LIỆU',
-      message: 'BẠN CÓ CHẮC CHẮN MUỐN XÓA SẠCH TOÀN BỘ DỮ LIỆU TRÊN CLOUD? Hành động này sẽ xóa tất cả các task, editor và client hiện tại của bạn.',
+      title: 'PURGE ALL WORKSPACE DATA',
+      message: 'ARE YOU SURE YOU WANT TO PURGE ALL DATA ON CLOUD? This action will permanently erase all active tasks, operators, and client matrix segments.',
       onConfirm: async () => {
         setIsLoading(true);
         try {
@@ -866,7 +866,7 @@ export default function App() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveTab(item.id as any); setIsMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-xs font-bold transition-all cursor-pointer rounded-[6px] ${
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-bold transition-all cursor-pointer rounded-[6px] ${
                     isActive 
                       ? 'bg-blue-600/20 border-l-2 border-blue-500 text-white font-extrabold shadow-[0_0_12px_rgba(37,99,235,0.3)]' 
                       : 'bg-transparent border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5'
@@ -875,7 +875,7 @@ export default function App() {
                 >
                   <IconComp className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
                   {!isSidebarCollapsed && (
-                    <span className="uppercase tracking-tight truncate">{item.label}</span>
+                    <span className="uppercase tracking-tight truncate text-left">{item.label}</span>
                   )}
                 </button>
               );
@@ -891,34 +891,34 @@ export default function App() {
 
             <button
               onClick={() => setIsInvoiceModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-blue-400 bg-blue-500/10 hover:bg-blue-600 hover:text-white border border-blue-500/30 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold text-blue-400 bg-blue-500/10 hover:bg-blue-600 hover:text-white border border-blue-500/30 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Xuất Hóa đơn PDF / In biên nhận cho Khách hàng cuối tháng"
+              title="Generate & Print Commercial Month-End Invoices"
             >
               <FileText className="w-4 h-4 shrink-0 text-blue-400" />
-              {!isSidebarCollapsed && <span>XUẤT HÓA ĐƠN CUỐI THÁNG</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">MONTH-END INVOICE</span>}
             </button>
 
             <button
               onClick={handleExportToCSV}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Xuất dữ liệu Tasks ra Excel/CSV"
+              title="Export tasks to CSV/Excel"
             >
               <Download className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>XUẤT EXCEL / CSV</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">EXPORT EXCEL / CSV</span>}
             </button>
 
             <label
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Nhập dữ liệu Tasks từ file CSV"
+              title="Import tasks from CSV file"
             >
               <Upload className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>NHẬP EXCEL / CSV</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">IMPORT EXCEL / CSV</span>}
               <input
                 type="file"
                 accept=".csv"
@@ -929,53 +929,53 @@ export default function App() {
 
             <button
               onClick={loadData}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold transition-all cursor-pointer rounded-[6px] text-slate-400 hover:text-white hover:bg-white/5 ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold transition-all cursor-pointer rounded-[6px] text-slate-400 hover:text-white hover:bg-white/5 ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Click để kết nối lại và đồng bộ với Cloud Firestore Database"
+              title="Click to reconnect and sync with Cloud Firestore Database"
             >
               <RefreshCw className={`w-4 h-4 shrink-0 ${isCloudSyncFailed ? 'text-amber-400 animate-spin' : 'text-emerald-400'}`} />
-              {!isSidebarCollapsed && <span>{isCloudSyncFailed ? 'KẾT NỐI CLOUD' : 'ĐÃ ĐỒNG BỘ CLOUD'}</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">{isCloudSyncFailed ? 'CONNECT CLOUD' : 'CLOUD SYNCED'}</span>}
             </button>
 
             <div className="h-px bg-white/10 my-3" />
 
             <button
               onClick={() => setIsClientModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Configure Clients"
             >
               <Settings className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>CONFIGURE CLIENTS</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">CONFIGURE CLIENTS</span>}
             </button>
 
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Profile & Modes"
             >
               <Sliders className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>PROFILE & MODES</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">PROFILE & MODES</span>}
             </button>
 
             <button
               onClick={handleSeedReset}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Reset to initial demo database"
             >
               <Database className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span>RESET DEMO DATABASE</span>}
+              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">RESET DEMO DATABASE</span>}
             </button>
 
             <button
               onClick={handleClearAllData}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Purge all workspace data"
@@ -1364,7 +1364,7 @@ export default function App() {
                 onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
                 className="px-4 py-2 bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-white text-[10px] uppercase rounded-none border border-zinc-800 cursor-pointer transition-colors"
               >
-                Hủy (Cancel)
+                Cancel
               </button>
               <button
                 onClick={() => {
@@ -1373,7 +1373,7 @@ export default function App() {
                 }}
                 className="px-4 py-2 bg-white hover:bg-zinc-200 text-black text-[10px] uppercase font-bold rounded-none cursor-pointer transition-colors shadow-[0_0_15px_rgba(255,255,255,0.15)]"
               >
-                Xác nhận (Confirm)
+                Confirm Action
               </button>
             </div>
           </div>
