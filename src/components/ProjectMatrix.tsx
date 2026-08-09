@@ -9,8 +9,9 @@ import {
   Plus, Edit, Trash2, Link, Calendar, User, 
   Layers, CheckCircle2, PlayCircle, Eye, AlertCircle, Copy, Check, Star,
   Settings, ChevronDown, ChevronUp, ArrowUpDown, EyeOff, Trash, MoveLeft, MoveRight,
-  ListFilter, X
+  ListFilter, X, ShieldCheck
 } from 'lucide-react';
+import VideoProofingModal from './VideoProofingModal';
 
 interface ProjectMatrixProps {
   tasks: VideoTaskObject[];
@@ -85,6 +86,9 @@ export default function ProjectMatrix({
   // Sorting state
   const [sortField, setSortField] = useState<string>('id');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
+
+  // Video Proofing Review Modal state
+  const [proofingTask, setProofingTask] = useState<VideoTaskObject | null>(null);
 
   // Persistence of column configuration
   useEffect(() => {
@@ -1320,7 +1324,14 @@ export default function ProjectMatrix({
                                       style={{ width: colWidth, minWidth: colWidth, maxWidth: colWidth }}
                                       className={`${denseLayout ? 'py-1 px-2' : 'py-2.5 px-3'} truncate`}
                                     >
-                                      <div className="flex items-center gap-2">
+                                      <div className="flex items-center gap-1.5">
+                                        <button
+                                          onClick={() => setProofingTask(task)}
+                                          className="px-2 py-0.5 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/30 rounded text-[9px] font-mono font-bold uppercase transition flex items-center gap-1"
+                                          title="Mở bảng duyệt Video Proof Frame-by-Frame"
+                                        >
+                                          <Eye size={10} /> PROOF
+                                        </button>
                                         <button
                                           onClick={() => onEditTaskClick(task)}
                                           className="p-1 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-sm cursor-pointer transition-colors"

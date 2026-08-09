@@ -18,6 +18,7 @@ import GanttTimeline from './components/GanttTimeline';
 import TaskCalendar from './components/TaskCalendar';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import ProfileSettingsModal, { UserProfile } from './components/ProfileSettingsModal';
+import InvoiceGeneratorModal from './components/InvoiceGeneratorModal';
 
 import { 
   auth,
@@ -38,7 +39,8 @@ import {
   Layers, TrendingUp, Users, Settings, LogOut, 
   Clock, Database, RefreshCw, BarChart3,
   Menu, X, Calendar, Trash2, User, Sliders, Download, Upload,
-  CloudOff, AlertTriangle, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen
+  CloudOff, AlertTriangle, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen,
+  FileText
 } from 'lucide-react';
 
 const THEME_COLORS = [
@@ -114,6 +116,7 @@ export default function App() {
   // Modals
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<VideoTaskObject | undefined>(undefined);
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
@@ -886,6 +889,17 @@ export default function App() {
             )}
 
             <button
+              onClick={() => setIsInvoiceModalOpen(true)}
+              className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-blue-400 bg-blue-500/10 hover:bg-blue-600 hover:text-white border border-blue-500/30 transition-all cursor-pointer rounded-[6px] ${
+                isSidebarCollapsed ? 'justify-center px-0' : ''
+              }`}
+              title="Xuất Hóa đơn PDF / In biên nhận cho Khách hàng cuối tháng"
+            >
+              <FileText className="w-4 h-4 shrink-0 text-blue-400" />
+              {!isSidebarCollapsed && <span>XUẤT HÓA ĐƠN CUỐI THÁNG</span>}
+            </button>
+
+            <button
               onClick={handleExportToCSV}
               className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
@@ -1318,6 +1332,16 @@ export default function App() {
           onSave={handleSaveTask}
           onClose={() => { setIsTaskModalOpen(false); setEditingTask(undefined); }}
           selectedMonth={selectedYear !== 'all' && selectedMonthOnly !== 'all' ? `${selectedYear}-${selectedMonthOnly}` : '2026-07'}
+        />
+      )}
+
+      {/* Automated Invoice & Client Billing Generator Modal */}
+      {isInvoiceModalOpen && (
+        <InvoiceGeneratorModal 
+          clients={clients}
+          tasks={tasks}
+          currency={currency}
+          onClose={() => setIsInvoiceModalOpen(false)}
         />
       )}
 
