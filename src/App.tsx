@@ -490,7 +490,8 @@ export default function App() {
       'Thanh Toan Khach Hang',
       'Thanh Toan Editor',
       'Link Rough Cut',
-      'Link Final'
+      'Link Final',
+      'Loai Tien Te'
     ];
 
     const rows = tasks.map(t => [
@@ -507,7 +508,8 @@ export default function App() {
       t.clientPaidStatus,
       t.subPaidStatus,
       t.roughCutUrl || '',
-      t.finalUrl || ''
+      t.finalUrl || '',
+      t.currency || 'USD'
     ]);
 
     const csvContent = [
@@ -595,6 +597,7 @@ export default function App() {
           const subPaidStatus = (columns[11] || 'Unpaid') as 'Unpaid' | 'Paid';
           const roughCutUrl = columns[12] || '';
           const finalUrl = columns[13] || '';
+          const currency = (columns[14] || 'USD').trim().toUpperCase() as CurrencyCode;
 
           parsedTasks.push({
             id,
@@ -610,7 +613,8 @@ export default function App() {
             clientPaidStatus,
             subPaidStatus,
             roughCutUrl,
-            finalUrl
+            finalUrl,
+            currency: currency || 'USD'
           });
         }
 

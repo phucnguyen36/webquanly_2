@@ -105,6 +105,7 @@ export async function loadWorkspaceData() {
           notes: t.notes,
           clientPay: t.clientPay,
           subPay: t.subPay,
+          currency: t.currency || 'USD',
           clientPaidStatus: t.clientPaidStatus,
           subPaidStatus: t.subPaidStatus,
           roughCutUrl: t.roughCutUrl || '',
@@ -138,7 +139,8 @@ export async function saveClient(client: ClientObject) {
     await setDoc(dRef, {
       displayName: client.displayName,
       tier: client.tier,
-      ...(client.contractValue !== undefined ? { contractValue: client.contractValue } : {})
+      ...(client.contractValue !== undefined ? { contractValue: client.contractValue } : {}),
+      ...(client.currency ? { currency: client.currency } : {})
     });
   } catch (err) {
     console.error('Error saving client to Firestore:', err);
@@ -194,6 +196,7 @@ export async function saveTask(task: VideoTaskObject) {
       notes: task.notes || '',
       clientPay: task.clientPay,
       subPay: task.subPay,
+      currency: task.currency || 'USD',
       clientPaidStatus: task.clientPaidStatus || 'Unpaid',
       subPaidStatus: task.subPaidStatus || 'Unpaid',
       roughCutUrl: task.roughCutUrl || '',
