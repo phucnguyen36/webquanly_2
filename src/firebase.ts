@@ -294,3 +294,76 @@ export async function resetWorkspaceDataToDefault(currentClients: ClientObject[]
     throw err;
   }
 }
+
+// ---------------- SYNC LOCAL DATA TO CLOUD FIRESTORE ----------------
+export async function uploadLocalDataToCloud(clients: ClientObject[], staff: StaffObject[], tasks: VideoTaskObject[], profile?: UserProfile | null) {
+  try {
+    const batch = writeBatch(db);
+
+    (clients || []).forEach(c => {
+      if (c && c.id) {
+        batch.set(doc(db, 'clients', c.id), {
+          displayName: c.displayName,
+          tier: c.tier,
+          ...(c.contractValue !== undefined ? { contractValue: c.contractValue } : {}),
+          ...(c.currency ? { currency: c.currency } : {})
+        });
+      }
+    });
+
+    (staff || []).forEach(s => {
+      if (s && s.id) {
+        const data: any = {
+          name: s.name,
+          avatarUrl: s.avatarUrl,
+          activeTaskCount: s.activeTaskCount,
+          qualityScore: s.qualityScore,
+          totalEarnings: s.totalEarnings
+        };
+        if (s.phone) data.phone = s.phone;
+        if (s.role) data.role = s.role;
+        batch.set(doc(db, 'staff', s.id), data);
+      }
+    });
+
+    (tasks || []).forEach(t => {
+      if (t && t.id) {
+        batch.set(doc(db, 'tasks', t.id), {
+          clientId: t.clientId,
+          title: t.title,
+          rawFootageLink: t.rawFootageLink || '',
+          status: t.status,
+          internalDeadline: t.internalDeadline,
+          assignedEditorId: t.assignedEditorId,
+          notes: t.notes || '',
+          clientPay: t.clientPay,
+          subPay: t.subPay,
+          currency: t.currency || 'USD',
+          clientPaidStatus: t.clientPaidStatus || 'Unpaid',
+          subPaidStatus: t.subPaidStatus || 'Unpaid',
+          roughCutUrl: t.roughCutUrl || '',
+          finalUrl: t.finalUrl || ''
+        });
+      }
+    });
+
+    if (profile) {
+      batch.set(doc(db, 'profile', 'settings'), {
+        name: profile.name,
+        avatarUrl: profile.avatarUrl,
+        role: profile.role,
+        bio: profile.bio || '',
+        focusMode: profile.focusMode,
+        lowMarginAlert: profile.lowMarginAlert,
+        denseLayout: profile.denseLayout,
+        soundEnabled: profile.soundEnabled
+      });
+    }
+
+    await batch.commit();
+    return true;
+  } catch (err) {
+    console.error('Failed to upload local data to Cloud Firestore:', err);
+    throw err;
+  }
+}

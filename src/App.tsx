@@ -32,7 +32,8 @@ import {
   deleteTask, 
   saveProfile,
   clearAllWorkspaceData,
-  resetWorkspaceDataToDefault
+  resetWorkspaceDataToDefault,
+  uploadLocalDataToCloud
 } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
@@ -213,10 +214,32 @@ export default function App() {
       }
     });
 
+    const handleOnline = () => {
+      console.log('Browser online event detected, attempting Cloud Firestore reconnection...');
+      loadData();
+    };
+    window.addEventListener('online', handleOnline);
+
     return () => {
       unsubscribe();
+      window.removeEventListener('online', handleOnline);
     };
   }, [loadData]);
+
+  const handleUploadLocalToCloud = async () => {
+    setIsLoading(true);
+    try {
+      await uploadLocalDataToCloud(clients, staff, tasks, profile);
+      setIsCloudSyncFailed(false);
+      setCloudErrorMsg('');
+      alert('Đã kết nối và đẩy thành công 100% dữ liệu từ máy của bạn lên Cloud Firestore!');
+    } catch (err: any) {
+      console.error('Failed to upload local data to Cloud Firestore:', err);
+      alert('Chưa thể đẩy dữ liệu lên Cloud Firestore. Vui lòng kiểm tra lại kết nối đường truyền mạng hoặc tường lửa.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Sync chosen Year and Month to localStorage
   useEffect(() => {
@@ -1046,29 +1069,33 @@ export default function App() {
           
           {/* Cloud Sync Status Indicator */}
           {isCloudSyncFailed && (
-            <div id="cloud-sync-error-banner" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-orange-950/25 border-2 border-orange-500/30 rounded-sm text-orange-200 text-xs font-mono shadow-[0_0_15px_rgba(249,115,22,0.1)]">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-950/50 border border-orange-500/20 text-orange-500 rounded-sm animate-pulse">
+            <div id="cloud-sync-error-banner" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-orange-950/30 border-2 border-orange-500/40 rounded-[6px] text-orange-200 text-xs font-mono shadow-[0_0_20px_rgba(249,115,22,0.15)] font-haas">
+              <div className="flex items-start md:items-center gap-3">
+                <div className="p-2.5 bg-orange-950/60 border border-orange-500/30 text-orange-400 rounded-[6px] animate-pulse shrink-0">
                   <CloudOff className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-black text-orange-400 uppercase tracking-wider">NOTIFICATION: CLOUD FIRESTORE DISCONNECTED</h4>
-                  <p className="text-[10px] text-orange-300/80 mt-0.5 leading-normal max-w-xl">
-                    System is running in Offline Local Storage mode. Firebase Database has been configured on Cloud. Click <strong className="text-white">CONNECT CLOUD</strong> to initiate realtime data synchronization.
+                  <h4 className="font-extrabold text-orange-400 uppercase tracking-wider text-xs">HỆ THỐNG ĐANG Ở CHẾ ĐỘ OFFLINE LOCAL</h4>
+                  <p className="text-[11px] text-slate-300 mt-1 leading-normal max-w-xl">
+                    Ứng dụng tự động hoạt động an toàn với dữ liệu lưu trên máy bạn. Bạn có thể bấm <strong className="text-white">THỬ KẾT NỐI LẠI</strong> hoặc bấm <strong className="text-emerald-400">ĐỒNG BỘ LOCAL LÊN CLOUD</strong> để đẩy dữ liệu lên Cloud Firestore.
                   </p>
                 </div>
               </div>
-              <div className="shrink-0 flex items-center gap-3">
+              <div className="shrink-0 flex items-center gap-2 flex-wrap">
                 <button
                   onClick={loadData}
-                  className="px-3 py-1.5 bg-[#F97316] hover:bg-[#ea6c0a] text-white font-mono font-black text-[10px] uppercase rounded-sm shadow-[0_0_10px_rgba(249,115,22,0.3)] cursor-pointer transition-all hover:scale-105 active:scale-95"
+                  className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-mono font-extrabold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(37,99,235,0.4)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
                 >
-                  CONNECT CLOUD
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  THỬ KẾT NỐI LẠI
                 </button>
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="inline-block w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
-                  <span className="text-[9px] uppercase tracking-widest text-orange-400 bg-orange-950/60 px-2 py-1 border border-orange-500/20">OFFLINE</span>
-                </div>
+                <button
+                  onClick={handleUploadLocalToCloud}
+                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-extrabold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(16,185,129,0.4)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  ĐỒNG BỘ LOCAL LÊN CLOUD
+                </button>
               </div>
             </div>
           )}
