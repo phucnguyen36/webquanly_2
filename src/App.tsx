@@ -1328,21 +1328,21 @@ export default function App() {
 
       {/* Custom Confirmation Modal */}
       {confirmModal.isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 bg-zinc-950 border border-zinc-900 rounded-none shadow-2xl mx-4">
-            <h3 className="text-xs font-mono font-bold tracking-widest text-zinc-500 uppercase mb-3 flex items-center gap-2">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md animate-fade-in font-haas">
+          <div className="w-full max-w-md p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-2xl mx-4">
+            <h3 className="text-xs font-mono font-bold tracking-widest text-[#9496a1] uppercase mb-3 flex items-center gap-2">
               [SYSTEM CONFIRMATION]
             </h3>
-            <h4 className="text-sm font-serif font-light text-zinc-100 uppercase mb-2">
+            <h4 className="text-base font-bold text-white uppercase tracking-tight mb-2 font-haas">
               {confirmModal.title}
             </h4>
-            <p className="text-xs text-zinc-400 font-sans leading-relaxed mb-6 whitespace-pre-line">
+            <p className="text-xs text-[#9496a1] font-sans leading-relaxed mb-6 whitespace-pre-line">
               {confirmModal.message}
             </p>
             <div className="flex justify-end gap-3 font-mono">
               <button
                 onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
-                className="px-4 py-2 bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-white text-[10px] uppercase rounded-none border border-zinc-800 cursor-pointer transition-colors"
+                className="px-4 py-2 bg-transparent hover:bg-white/[0.05] text-[#9496a1] hover:text-white text-[10px] uppercase rounded-[4px] border border-white/[0.08] cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -1351,7 +1351,7 @@ export default function App() {
                   confirmModal.onConfirm();
                   setConfirmModal(prev => ({ ...prev, isOpen: false }));
                 }}
-                className="px-4 py-2 bg-white hover:bg-zinc-200 text-black text-[10px] uppercase font-bold rounded-none cursor-pointer transition-colors shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+                className="px-4 py-2 bg-[#1591DC] hover:bg-[#1591DC]/90 text-white text-[10px] uppercase font-bold rounded-[4px] cursor-pointer transition-all shadow-[0_0_15px_rgba(21,145,220,0.3)]"
               >
                 Confirm Action
               </button>
