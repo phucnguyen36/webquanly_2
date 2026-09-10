@@ -421,28 +421,28 @@ export default function ProjectMatrix({
   return (
     <div id="project-matrix-panel" className="space-y-6">
       {/* Header Panel */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-900 pb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/[0.08] pb-6 font-haas">
         <div>
-          <h2 className="text-2xl font-serif font-light tracking-tight text-zinc-100 uppercase">
-            Production Matrix Workspace
+          <h2 className="text-xl font-bold tracking-tight text-white uppercase font-haas">
+            Production Matrix Sheet
           </h2>
-          <p className="text-[10px] font-mono text-zinc-500 mt-1 uppercase tracking-wider">
-            Elite custom matrix sheet configured for APEX Editors [SECURED V2]
+          <p className="text-[10px] font-mono text-[#9496a1] mt-0.5 uppercase tracking-wider">
+            High-Retention Client Video Pipeline & Deliverables Matrix
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           {/* View Mode Toggle */}
-          <div className="flex bg-zinc-950/40 border border-zinc-900 p-0.5 rounded-none text-[9px] font-mono">
+          <div className="flex bg-[#12141a] border border-white/[0.08] p-0.5 rounded-[6px] text-[10px] font-mono">
             <button
               onClick={() => setViewMode('table')}
-              className={`px-3 py-1 rounded-none uppercase tracking-wider cursor-pointer transition-colors ${viewMode === 'table' ? 'bg-zinc-900 text-white font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
+              className={`px-3 py-1 rounded-[4px] uppercase tracking-wider cursor-pointer transition-all ${viewMode === 'table' ? 'bg-[#1591DC] text-white font-bold shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'}`}
             >
               Interactive Sheet
             </button>
             <button
               onClick={() => setViewMode('deck')}
-              className={`px-3 py-1 rounded-none uppercase tracking-wider cursor-pointer transition-colors ${viewMode === 'deck' ? 'bg-zinc-900 text-white font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
+              className={`px-3 py-1 rounded-[4px] uppercase tracking-wider cursor-pointer transition-all ${viewMode === 'deck' ? 'bg-[#1591DC] text-white font-bold shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'}`}
             >
               Classic Deck
             </button>
@@ -453,13 +453,13 @@ export default function ProjectMatrix({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm kiếm task, client, editor..."
-            className="px-3 py-1.5 bg-zinc-950/20 text-zinc-200 font-mono placeholder-zinc-600 border border-zinc-900 rounded-none focus:outline-none focus:border-zinc-700 text-[10px] w-full sm:w-44"
+            className="px-3 py-1.5 bg-[#12141a] text-white font-mono placeholder-[#9496a1] border border-white/[0.08] rounded-[6px] focus:outline-none focus:border-[#1591DC] text-[10px] w-full sm:w-44 transition-colors"
           />
 
           <button
             id="add-task-btn"
             onClick={onAddTaskClick}
-            className="px-4 py-1.5 bg-white hover:bg-zinc-200 text-black font-mono font-bold text-[10px] uppercase rounded-none transition-colors flex items-center gap-1 cursor-pointer w-full sm:w-auto justify-center shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+            className="px-4 py-1.5 bg-[#1591DC] hover:bg-[#1591DC]/90 text-white font-mono font-bold text-[10px] uppercase rounded-[6px] transition-all flex items-center gap-1 cursor-pointer w-full sm:w-auto justify-center shadow-[0_0_15px_rgba(21,145,220,0.25)]"
           >
             <Plus className="w-3.5 h-3.5" /> Deploy Project
           </button>
@@ -467,42 +467,42 @@ export default function ProjectMatrix({
           {/* Column Config Dropdown Toggle */}
           <button
             onClick={() => setIsColumnConfigOpen(!isColumnConfigOpen)}
-            className={`px-4 py-1.5 bg-transparent hover:bg-zinc-950 text-zinc-300 font-mono text-[10px] uppercase rounded-none border transition-colors flex items-center gap-1.5 cursor-pointer ${isColumnConfigOpen ? 'border-zinc-400 text-white' : 'border-zinc-800'}`}
+            className={`px-4 py-1.5 bg-[#12141a] hover:bg-white/[0.05] text-[#9496a1] hover:text-white font-mono text-[10px] uppercase rounded-[6px] border border-white/[0.08] transition-all flex items-center gap-1.5 cursor-pointer ${isColumnConfigOpen ? 'border-[#1591DC] text-white' : ''}`}
           >
-            <Settings className="w-3.5 h-3.5 text-zinc-400" /> Customize Columns
+            <Settings className="w-3.5 h-3.5 text-[#9496a1]" /> Customize Columns
           </button>
         </div>
       </div>
 
       {/* Column Customizer Panel (Slide-out menu/Popover style) */}
       {isColumnConfigOpen && (
-        <div className="bg-black/80 border border-[#1e293b] rounded-sm p-4 text-xs space-y-4 shadow-[0_0_20px_rgba(239,68,68,0.08)]">
-          <div className="flex justify-between items-center border-b border-[#1e293b] pb-2">
+        <div className="bg-[#12141a] border border-white/[0.08] rounded-[6px] p-4 text-xs space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+          <div className="flex justify-between items-center border-b border-white/[0.08] pb-2">
             <span className="font-mono text-[10px] uppercase tracking-wider text-white flex items-center gap-1.5">
-              <Settings className="w-3.5 h-3.5 text-[#ef4444]" />
-              APEX Column Configurator Panel
+              <Settings className="w-3.5 h-3.5 text-[#1591DC]" />
+              Production Matrix Column Settings
             </span>
             <button 
               onClick={() => setIsColumnConfigOpen(false)}
-              className="text-[#71717a] hover:text-[#f4f4f5] font-mono text-[9px]"
+              className="text-[#9496a1] hover:text-white font-mono text-[9px] cursor-pointer"
             >
               [CLOSE]
             </button>
           </div>
 
-          <p className="text-[10px] font-sans text-[#71717a] leading-normal">
+          <p className="text-[10px] font-sans text-[#9496a1] leading-normal">
             Configure visible columns, rename column headers, or shift their positions. Your preferences are saved automatically.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {columns.map((col, idx) => (
-              <div key={col.id} className="flex items-center justify-between p-2 bg-[#09090b] border border-zinc-900 rounded-sm">
+              <div key={col.id} className="flex items-center justify-between p-2 bg-[#0b0c10] border border-white/[0.08] rounded-[4px]">
                 <div className="flex items-center gap-2 flex-1 min-w-0 mr-2">
                   <input
                     type="checkbox"
                     checked={col.visible}
                     onChange={() => toggleColumnVisibility(col.id)}
-                    className="accent-[#ef4444] cursor-pointer"
+                    className="accent-[#1591DC] cursor-pointer"
                     id={`col-chk-${col.id}`}
                   />
                   {/* Dynamic Column Label Input */}
@@ -510,7 +510,7 @@ export default function ProjectMatrix({
                     type="text"
                     value={col.label}
                     onChange={(e) => renameColumnLabel(col.id, e.target.value)}
-                    className="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-[#ef4444] text-[#f4f4f5] text-[10px] font-mono focus:outline-none w-full px-1 py-0.5 truncate"
+                    className="bg-transparent border-b border-transparent hover:border-white/[0.1] focus:border-[#1591DC] text-[#EDEDF3] text-[10px] font-mono focus:outline-none w-full px-1 py-0.5 truncate"
                     title="Click to rename"
                   />
                 </div>
@@ -519,7 +519,7 @@ export default function ProjectMatrix({
                   <button
                     disabled={idx === 0}
                     onClick={() => moveColumn(idx, 'left')}
-                    className="p-1 hover:bg-zinc-800 disabled:opacity-30 rounded-sm text-zinc-400 cursor-pointer"
+                    className="p-1 hover:bg-white/[0.06] disabled:opacity-25 rounded-[3px] text-[#9496a1] hover:text-white cursor-pointer"
                     title="Move column left"
                   >
                     <MoveLeft className="w-3 h-3" />
@@ -527,7 +527,7 @@ export default function ProjectMatrix({
                   <button
                     disabled={idx === columns.length - 1}
                     onClick={() => moveColumn(idx, 'right')}
-                    className="p-1 hover:bg-zinc-800 disabled:opacity-30 rounded-sm text-zinc-400 cursor-pointer"
+                    className="p-1 hover:bg-white/[0.06] disabled:opacity-25 rounded-[3px] text-[#9496a1] hover:text-white cursor-pointer"
                     title="Move column right"
                   >
                     <MoveRight className="w-3 h-3" />
@@ -539,14 +539,14 @@ export default function ProjectMatrix({
         </div>
       )}
 
-      {/* APEX-Style Segment Tab Filter */}
-      <div id="apex-segment-tabs" className="flex items-center gap-2 py-1 border-b border-zinc-900 overflow-x-auto select-none">
+      {/* Segment Tab Filter */}
+      <div id="apex-segment-tabs" className="flex items-center gap-2 py-1 border-b border-white/[0.08] overflow-x-auto select-none font-haas">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 text-[10px] font-mono font-bold uppercase rounded-none tracking-wider transition-all shrink-0 ${
+          className={`px-4 py-2 text-[11px] font-mono uppercase tracking-wider transition-all shrink-0 cursor-pointer ${
             activeTab === 'all' 
-              ? 'text-white border-b-2 border-white' 
-              : 'text-zinc-500 hover:text-zinc-300'
+              ? 'text-white border-b-2 border-[#1591DC] font-bold' 
+              : 'text-[#9496a1] hover:text-white'
           }`}
         >
           [ALL MATRIX WORKSPACE]
@@ -555,10 +555,10 @@ export default function ProjectMatrix({
           <button
             key={client.id}
             onClick={() => setActiveTab(client.id)}
-            className={`px-4 py-2 text-[10px] font-mono font-medium rounded-none tracking-wider transition-all shrink-0 ${
+            className={`px-4 py-2 text-[11px] font-mono tracking-wider transition-all shrink-0 cursor-pointer ${
               activeTab === client.id 
-                ? 'text-white border-b-2 border-white font-bold' 
-                : 'text-zinc-500 hover:text-zinc-300'
+                ? 'text-white border-b-2 border-[#1591DC] font-bold' 
+                : 'text-[#9496a1] hover:text-white'
             }`}
           >
             {client.displayName}
@@ -567,10 +567,10 @@ export default function ProjectMatrix({
         {hasOrphanedTasks && (
           <button
             onClick={() => setActiveTab('unassigned')}
-            className={`px-4 py-2 text-[10px] font-mono font-bold uppercase rounded-none tracking-wider transition-all shrink-0 ${
+            className={`px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-wider transition-all shrink-0 cursor-pointer ${
               activeTab === 'unassigned' 
-                ? 'text-red-400 border-b-2 border-red-400' 
-                : 'text-red-500/60 hover:text-red-400'
+                ? 'text-rose-400 border-b-2 border-rose-400' 
+                : 'text-rose-400/60 hover:text-rose-300'
             }`}
           >
             [UNASSIGNED/ORPHANED]
@@ -578,10 +578,10 @@ export default function ProjectMatrix({
         )}
       </div>
 
-      {/* NOTION-STYLE MULTI-FILTER BAR */}
-      <div className="flex flex-wrap items-center gap-2 p-2 bg-zinc-950/20 border border-zinc-900 rounded-none text-[11px] font-mono select-none">
-        <div className="flex items-center gap-1.5 text-zinc-500 mr-1 shrink-0">
-          <ListFilter className="w-3.5 h-3.5" />
+      {/* MULTI-FILTER BAR */}
+      <div className="flex flex-wrap items-center gap-2 p-2 bg-[#12141a]/60 border border-white/[0.08] rounded-[6px] text-[11px] font-mono select-none">
+        <div className="flex items-center gap-1.5 text-[#9496a1] mr-1 shrink-0">
+          <ListFilter className="w-3.5 h-3.5 text-[#1591DC]" />
           <span className="uppercase text-[9px] tracking-wider font-bold">FILTERS:</span>
         </div>
 
@@ -589,10 +589,10 @@ export default function ProjectMatrix({
         <div className="relative">
           <button
             onClick={() => setActiveFilterDropdown(activeFilterDropdown === 'status' ? null : 'status')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-sm border transition-all text-[10px] uppercase font-bold cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] border transition-all text-[10px] uppercase font-bold cursor-pointer ${
               statusFilter !== 'all'
-                ? 'bg-[#F97316]/10 border-[#F97316]/40 text-[#F97316]'
-                : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                ? 'bg-[#1591DC]/15 border-[#1591DC]/40 text-[#1591DC]'
+                : 'bg-[#12141a] border-white/[0.08] text-[#9496a1] hover:text-white hover:border-white/[0.2]'
             }`}
           >
             <span>Status: </span>
@@ -602,14 +602,14 @@ export default function ProjectMatrix({
               {statusFilter === 'not-done' && 'In Progress ⏳'}
               {statusFilter === 'custom' && `Custom (${selectedStatuses.length})`}
             </span>
-            <ChevronDown className="w-3 h-3 text-zinc-500" />
+            <ChevronDown className="w-3 h-3 text-[#9496a1]" />
           </button>
 
           {activeFilterDropdown === 'status' && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
-              <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
-                <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
+              <div className="absolute left-0 mt-1 w-64 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
+                <div className="px-2 py-1 text-[9px] text-[#9496a1] font-bold uppercase border-b border-white/[0.08] mb-1">
                   Filter by Status
                 </div>
                 {[
@@ -629,23 +629,23 @@ export default function ProjectMatrix({
                         setActiveFilterDropdown(null);
                       }
                     }}
-                    className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                      statusFilter === opt.value ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                    className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                      statusFilter === opt.value ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                     }`}
                   >
                     <span>{opt.label}</span>
-                    {statusFilter === opt.value && <Check className="w-3 h-3 text-[#F97316]" />}
+                    {statusFilter === opt.value && <Check className="w-3 h-3 text-[#1591DC]" />}
                   </button>
                 ))}
 
                 {statusFilter === 'custom' && (
-                  <div className="pt-1.5 border-t border-zinc-900 mt-1 space-y-1 pl-1">
+                  <div className="pt-1.5 border-t border-white/[0.08] mt-1 space-y-1 pl-1">
                     {['Unassigned', 'Rough Cut', 'Final Polish', 'Client Review', 'Approved'].map(st => {
                       const isChecked = selectedStatuses.includes(st as TaskStatus);
                       return (
                         <label
                           key={st}
-                          className="flex items-center gap-2 px-2 py-1 text-[10px] text-zinc-400 hover:text-white cursor-pointer select-none"
+                          className="flex items-center gap-2 px-2 py-1 text-[10px] text-[#9496a1] hover:text-white cursor-pointer select-none"
                         >
                           <input
                             type="checkbox"
@@ -657,7 +657,7 @@ export default function ProjectMatrix({
                                 setSelectedStatuses(prev => prev.filter(item => item !== st));
                               }
                             }}
-                            className="accent-[#F97316] cursor-pointer"
+                            className="accent-[#1591DC] cursor-pointer"
                           />
                           <span>{st}</span>
                         </label>
@@ -674,10 +674,10 @@ export default function ProjectMatrix({
         <div className="relative">
           <button
             onClick={() => setActiveFilterDropdown(activeFilterDropdown === 'editor' ? null : 'editor')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-sm border transition-all text-[10px] uppercase font-bold cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] border transition-all text-[10px] uppercase font-bold cursor-pointer ${
               editorFilter !== 'all'
-                ? 'bg-[#F97316]/10 border-[#F97316]/40 text-[#F97316]'
-                : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                ? 'bg-[#1591DC]/15 border-[#1591DC]/40 text-[#1591DC]'
+                : 'bg-[#12141a] border-white/[0.08] text-[#9496a1] hover:text-white hover:border-white/[0.2]'
             }`}
           >
             <span>Operator: </span>
@@ -687,14 +687,14 @@ export default function ProjectMatrix({
               {editorFilter === 'Phuc' && 'Phuc (Lead)'}
               {editorFilter !== 'all' && editorFilter !== 'Unassigned' && editorFilter !== 'Phuc' && (staff.find(s => s.id === editorFilter)?.name || editorFilter)}
             </span>
-            <ChevronDown className="w-3 h-3 text-zinc-500" />
+            <ChevronDown className="w-3 h-3 text-[#9496a1]" />
           </button>
 
           {activeFilterDropdown === 'editor' && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
-              <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 max-h-72 overflow-y-auto animate-fade-in">
-                <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
+              <div className="absolute left-0 mt-1 w-64 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-2xl z-40 p-2 space-y-1 max-h-72 overflow-y-auto animate-fade-in">
+                <div className="px-2 py-1 text-[9px] text-[#9496a1] font-bold uppercase border-b border-white/[0.08] mb-1">
                   Filter by Operator
                 </div>
                 <button
@@ -702,36 +702,36 @@ export default function ProjectMatrix({
                     setEditorFilter('all');
                     setActiveFilterDropdown(null);
                   }}
-                  className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                    editorFilter === 'all' ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                  className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                    editorFilter === 'all' ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                   }`}
                 >
                   <span>All Operators</span>
-                  {editorFilter === 'all' && <Check className="w-3 h-3 text-[#F97316]" />}
+                  {editorFilter === 'all' && <Check className="w-3 h-3 text-[#1591DC]" />}
                 </button>
                 <button
                   onClick={() => {
                     setEditorFilter('Unassigned');
                     setActiveFilterDropdown(null);
                   }}
-                  className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                    editorFilter === 'Unassigned' ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                  className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                    editorFilter === 'Unassigned' ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                   }`}
                 >
                   <span>Unassigned Pool</span>
-                  {editorFilter === 'Unassigned' && <Check className="w-3 h-3 text-[#F97316]" />}
+                  {editorFilter === 'Unassigned' && <Check className="w-3 h-3 text-[#1591DC]" />}
                 </button>
                 <button
                   onClick={() => {
                     setEditorFilter('Phuc');
                     setActiveFilterDropdown(null);
                   }}
-                  className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                    editorFilter === 'Phuc' ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                  className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                    editorFilter === 'Phuc' ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                   }`}
                 >
                   <span>Phuc (Lead)</span>
-                  {editorFilter === 'Phuc' && <Check className="w-3 h-3 text-[#F97316]" />}
+                  {editorFilter === 'Phuc' && <Check className="w-3 h-3 text-[#1591DC]" />}
                 </button>
                 {staff.map(s => (
                   <button
@@ -740,12 +740,12 @@ export default function ProjectMatrix({
                       setEditorFilter(s.id);
                       setActiveFilterDropdown(null);
                     }}
-                    className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                      editorFilter === s.id ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                    className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                      editorFilter === s.id ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                     }`}
                   >
                     <span>{s.name}</span>
-                    {editorFilter === s.id && <Check className="w-3 h-3 text-[#F97316]" />}
+                    {editorFilter === s.id && <Check className="w-3 h-3 text-[#1591DC]" />}
                   </button>
                 ))}
               </div>
@@ -757,10 +757,10 @@ export default function ProjectMatrix({
         <div className="relative">
           <button
             onClick={() => setActiveFilterDropdown(activeFilterDropdown === 'clientPaid' ? null : 'clientPaid')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-sm border transition-all text-[10px] uppercase font-bold cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] border transition-all text-[10px] uppercase font-bold cursor-pointer ${
               clientPaidFilter !== 'all'
-                ? 'bg-[#F97316]/10 border-[#F97316]/40 text-[#F97316]'
-                : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                ? 'bg-[#1591DC]/15 border-[#1591DC]/40 text-[#1591DC]'
+                : 'bg-[#12141a] border-white/[0.08] text-[#9496a1] hover:text-white hover:border-white/[0.2]'
             }`}
           >
             <span>Client Pay: </span>
@@ -770,14 +770,14 @@ export default function ProjectMatrix({
               {clientPaidFilter === 'Unpaid' && 'Unpaid'}
               {clientPaidFilter === 'Invoiced' && 'Invoiced'}
             </span>
-            <ChevronDown className="w-3 h-3 text-zinc-500" />
+            <ChevronDown className="w-3 h-3 text-[#9496a1]" />
           </button>
 
           {activeFilterDropdown === 'clientPaid' && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
-              <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
-                <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
+              <div className="absolute left-0 mt-1 w-64 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
+                <div className="px-2 py-1 text-[9px] text-[#9496a1] font-bold uppercase border-b border-white/[0.08] mb-1">
                   Filter Client Payment
                 </div>
                 {[
@@ -792,12 +792,12 @@ export default function ProjectMatrix({
                       setClientPaidFilter(opt.value);
                       setActiveFilterDropdown(null);
                     }}
-                    className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                      clientPaidFilter === opt.value ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                    className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                      clientPaidFilter === opt.value ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                     }`}
                   >
                     <span>{opt.label}</span>
-                    {clientPaidFilter === opt.value && <Check className="w-3 h-3 text-[#F97316]" />}
+                    {clientPaidFilter === opt.value && <Check className="w-3 h-3 text-[#1591DC]" />}
                   </button>
                 ))}
               </div>
@@ -809,10 +809,10 @@ export default function ProjectMatrix({
         <div className="relative">
           <button
             onClick={() => setActiveFilterDropdown(activeFilterDropdown === 'subPaid' ? null : 'subPaid')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-sm border transition-all text-[10px] uppercase font-bold cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] border transition-all text-[10px] uppercase font-bold cursor-pointer ${
               subPaidFilter !== 'all'
-                ? 'bg-[#F97316]/10 border-[#F97316]/40 text-[#F97316]'
-                : 'bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                ? 'bg-[#1591DC]/15 border-[#1591DC]/40 text-[#1591DC]'
+                : 'bg-[#12141a] border-white/[0.08] text-[#9496a1] hover:text-white hover:border-white/[0.2]'
             }`}
           >
             <span>Editor Pay: </span>
@@ -821,14 +821,14 @@ export default function ProjectMatrix({
               {subPaidFilter === 'Paid' && 'Paid'}
               {subPaidFilter === 'Unpaid' && 'Unpaid'}
             </span>
-            <ChevronDown className="w-3 h-3 text-zinc-500" />
+            <ChevronDown className="w-3 h-3 text-[#9496a1]" />
           </button>
 
           {activeFilterDropdown === 'subPaid' && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setActiveFilterDropdown(null)} />
-              <div className="absolute left-0 mt-1 w-64 bg-zinc-950 border border-zinc-800 rounded-sm shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
-                <div className="px-2 py-1 text-[9px] text-zinc-500 font-bold uppercase border-b border-zinc-900 mb-1">
+              <div className="absolute left-0 mt-1 w-64 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-2xl z-40 p-2 space-y-1 animate-fade-in">
+                <div className="px-2 py-1 text-[9px] text-[#9496a1] font-bold uppercase border-b border-white/[0.08] mb-1">
                   Filter Editor Payment
                 </div>
                 {[
@@ -842,12 +842,12 @@ export default function ProjectMatrix({
                       setSubPaidFilter(opt.value);
                       setActiveFilterDropdown(null);
                     }}
-                    className={`w-full text-left px-2 py-1.5 hover:bg-zinc-900 rounded-sm flex items-center justify-between cursor-pointer transition-colors ${
-                      subPaidFilter === opt.value ? 'text-[#F97316] font-bold' : 'text-zinc-400'
+                    className={`w-full text-left px-2 py-1.5 hover:bg-white/[0.05] rounded-[4px] flex items-center justify-between cursor-pointer transition-colors ${
+                      subPaidFilter === opt.value ? 'text-[#1591DC] font-bold' : 'text-[#9496a1]'
                     }`}
                   >
                     <span>{opt.label}</span>
-                    {subPaidFilter === opt.value && <Check className="w-3 h-3 text-[#F97316]" />}
+                    {subPaidFilter === opt.value && <Check className="w-3 h-3 text-[#1591DC]" />}
                   </button>
                 ))}
               </div>
@@ -1028,7 +1028,7 @@ export default function ProjectMatrix({
                                 <div
                                   onMouseDown={(e) => handleResizeStart(col.id, e)}
                                   onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
-                                  className="absolute top-0 right-0 h-full w-1.5 cursor-col-resize hover:bg-[#F97316]/50 active:bg-[#F97316] transition-colors z-20"
+                                  className="absolute top-0 right-0 h-full w-1.5 cursor-col-resize hover:bg-[#1591DC]/50 active:bg-[#1591DC] transition-colors z-20"
                                   title="Kéo để chỉnh độ rộng cột"
                                 />
                               </th>
@@ -1036,7 +1036,7 @@ export default function ProjectMatrix({
                           })}
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-zinc-900 font-mono text-xs">
+                      <tbody className="divide-y divide-white/[0.06] font-mono text-xs">
                         {clientTasks.map((task, rIdx) => {
                           const profit = task.clientPay - task.subPay;
                           const isSelected = selectedTaskIds.includes(task.id);
@@ -1044,8 +1044,8 @@ export default function ProjectMatrix({
                           return (
                             <tr 
                               key={task.id} 
-                              className={`hover:bg-zinc-950/60 transition-colors ${
-                                isSelected ? 'bg-[#ef4444]/5' : rIdx % 2 === 0 ? 'bg-[#000000]' : 'bg-[#050505]'
+                              className={`hover:bg-white/[0.03] transition-colors ${
+                                isSelected ? 'bg-[#1591DC]/10' : rIdx % 2 === 0 ? 'bg-[#0b0c10]' : 'bg-[#12141a]'
                               }`}
                             >
                               {/* Checkbox Select */}
@@ -1054,7 +1054,7 @@ export default function ProjectMatrix({
                                   type="checkbox"
                                   checked={isSelected}
                                   onChange={(e) => handleSelectRow(task.id, e.target.checked)}
-                                  className="accent-[#ef4444] cursor-pointer"
+                                  className="accent-[#1591DC] cursor-pointer"
                                 />
                               </td>
 
@@ -1066,7 +1066,7 @@ export default function ProjectMatrix({
                                     <td 
                                       key={col.id} 
                                       style={{ width: colWidth, minWidth: colWidth, maxWidth: colWidth }}
-                                      className={`${denseLayout ? 'py-1 px-2' : 'py-2.5 px-3'} text-[#71717a] font-bold text-[10px] truncate`}
+                                      className={`${denseLayout ? 'py-1 px-2' : 'py-2.5 px-3'} text-[#9496a1] font-bold text-[10px] truncate`}
                                     >
                                       {task.id.replace('task_', 'TX_')}
                                     </td>
@@ -1084,7 +1084,7 @@ export default function ProjectMatrix({
                                         type="text"
                                         value={task.title}
                                         onChange={(e) => onUpdateTaskStatus(task.id, task.status, { title: e.target.value })}
-                                        className="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-[#ef4444] text-[#f4f4f5] font-sans text-xs font-semibold focus:outline-none w-full px-1 py-0.5 truncate text-left"
+                                        className="bg-transparent border-b border-transparent hover:border-white/[0.1] focus:border-[#1591DC] text-white font-sans text-xs font-semibold focus:outline-none w-full px-1 py-0.5 truncate text-left"
                                         title="Click to edit name directly"
                                       />
                                     </td>
@@ -1100,12 +1100,12 @@ export default function ProjectMatrix({
                                       className={`${denseLayout ? 'py-0.5 px-2' : 'py-1 px-3'} text-right truncate`}
                                     >
                                       <div className="flex items-center justify-end w-full">
-                                        <span className="text-zinc-500 font-mono text-[10px] mr-0.5">{curSymbol}</span>
+                                        <span className="text-[#9496a1] font-mono text-[10px] mr-0.5">{curSymbol}</span>
                                         <input
                                           type="number"
                                           value={task.clientPay}
                                           onChange={(e) => onUpdateTaskStatus(task.id, task.status, { clientPay: Number(e.target.value) })}
-                                          className="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-[#F97316] text-[#F0E6D8] text-right font-mono text-xs focus:outline-none w-full max-w-[80px] px-1"
+                                          className="bg-transparent border-b border-transparent hover:border-white/[0.1] focus:border-[#1591DC] text-white text-right font-mono text-xs focus:outline-none w-full max-w-[80px] px-1"
                                           title="Click to edit client pay directly"
                                         />
                                       </div>
@@ -1122,12 +1122,12 @@ export default function ProjectMatrix({
                                       className={`${denseLayout ? 'py-0.5 px-2' : 'py-1 px-3'} text-right truncate`}
                                     >
                                       <div className="flex items-center justify-end w-full">
-                                        <span className="text-zinc-500 font-mono text-[10px] mr-0.5">{curSymbol}</span>
+                                        <span className="text-[#9496a1] font-mono text-[10px] mr-0.5">{curSymbol}</span>
                                         <input
                                           type="number"
                                           value={task.subPay}
                                           onChange={(e) => onUpdateTaskStatus(task.id, task.status, { subPay: Number(e.target.value) })}
-                                          className="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-[#F97316] text-zinc-300 text-right font-mono text-xs focus:outline-none w-full max-w-[80px] px-1"
+                                          className="bg-transparent border-b border-transparent hover:border-white/[0.1] focus:border-[#1591DC] text-white text-right font-mono text-xs focus:outline-none w-full max-w-[80px] px-1"
                                           title="Click to edit sub pay directly"
                                         />
                                       </div>
@@ -1378,75 +1378,75 @@ export default function ProjectMatrix({
             return (
               <div 
                 key={task.id}
-                className={`relative bg-[#161210] border-2 rounded-sm p-4 transition-all duration-300 flex flex-col justify-between ${
+                className={`relative bg-[#12141a] border rounded-[6px] p-4 transition-all duration-300 flex flex-col justify-between ${
                   task.status === 'Approved' 
                     ? 'border-emerald-500/30' 
                     : task.status === 'Final Polish'
-                    ? 'border-[#F97316] shadow-[0_0_15px_rgba(249,115,22,0.15)] bg-[#1E1810]'
-                    : 'border-[rgba(249,115,22,0.15)] hover:border-[#F97316]/50'
+                    ? 'border-[#1591DC]/40 shadow-[0_0_15px_rgba(21,145,220,0.1)]'
+                    : 'border-white/[0.08] hover:border-[#1591DC]/50'
                 }`}
               >
                 {/* Status Badge */}
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 bg-black/80 border border-zinc-800 rounded-sm text-[9px] font-mono tracking-wider uppercase text-[#F0E6D8]">
-                  <span className={`w-1 h-1 rounded-full ${
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 bg-[#0b0c10] border border-white/[0.08] rounded-[4px] text-[9px] font-mono tracking-wider uppercase text-white">
+                  <span className={`w-1.5 h-1.5 rounded-full ${
                     task.status === 'Approved' ? 'bg-emerald-400' :
                     task.status === 'Client Review' ? 'bg-amber-400' :
-                    task.status === 'Final Polish' ? 'bg-[#F97316]' : 'bg-[#F97316]'
+                    task.status === 'Final Polish' ? 'bg-[#1591DC]' : 'bg-[#1591DC]'
                   }`}></span>
                   {task.status}
                 </div>
 
                 <div>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[8px] font-mono bg-zinc-900 text-[#71717a] border border-zinc-800 px-1 py-0.2 rounded-sm">
+                    <span className="text-[8px] font-mono bg-[#0b0c10] text-[#9496a1] border border-white/[0.08] px-1.5 py-0.5 rounded-[3px]">
                       ID: {task.id.replace('task_', 'TX_')}
                     </span>
-                    <span className="text-xs font-mono text-[#F97316] font-bold">
+                    <span className="text-xs font-mono text-[#1591DC] font-bold">
                       {clientName}
                     </span>
-                    <span className="text-[8px] font-mono uppercase px-1 py-0.2 bg-zinc-800 text-zinc-400 rounded-sm border border-zinc-900">
+                    <span className="text-[8px] font-mono uppercase px-1.5 py-0.5 bg-white/[0.06] text-[#EDEDF3] rounded-[3px] border border-white/[0.08]">
                       {clientTier}
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-black tracking-tight text-white mt-2 font-sans leading-tight">
+                  <h3 className="text-sm font-bold tracking-tight text-white mt-2 font-haas leading-tight">
                     {task.title}
                   </h3>
 
                   {task.notes && (
-                    <div className="mt-2.5 p-2 bg-black/60 border border-zinc-900 rounded-sm text-[11px] font-sans text-zinc-500">
-                      <span className="text-[8px] font-mono text-[#F97316] uppercase block mb-0.5">// GUIDELINES:</span>
+                    <div className="mt-2.5 p-2 bg-[#0b0c10] border border-white/[0.08] rounded-[4px] text-[11px] font-sans text-[#9496a1]">
+                      <span className="text-[8px] font-mono text-[#1591DC] uppercase block mb-0.5 font-bold">// GUIDELINES:</span>
                       {task.notes}
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-zinc-900">
+                  <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-white/[0.08]">
                     <div>
-                      <span className="text-[8px] font-mono uppercase text-[#71717a] block">
+                      <span className="text-[8px] font-mono uppercase text-[#9496a1] block">
                         Operator
                       </span>
                       <div className="flex items-center gap-1 mt-0.5 text-xs font-mono font-bold text-white">
-                        <User className="w-3 h-3 text-zinc-500" />
+                        <User className="w-3 h-3 text-[#9496a1]" />
                         <span>{editorName}</span>
                       </div>
                     </div>
 
                     <div>
-                      <span className="text-[8px] font-mono uppercase text-[#71717a] block">
+                      <span className="text-[8px] font-mono uppercase text-[#9496a1] block">
                         Target Deadline
                       </span>
-                      <div className="inline-flex items-center gap-1 mt-0.5 text-[10px] font-mono text-zinc-300">
-                        <Calendar className="w-3 h-3 text-[#F97316]" />
+                      <div className="inline-flex items-center gap-1 mt-0.5 text-[10px] font-mono text-[#EDEDF3]">
+                        <Calendar className="w-3 h-3 text-[#1591DC]" />
                         <span className={getDeadlineStyle(task.internalDeadline, task.status)}>{task.internalDeadline}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Resource Link box */}
-                  <div className="mt-3 flex items-center gap-2 justify-between bg-[#0C0A08] px-2.5 py-1.5 rounded-sm border border-[rgba(249,115,22,0.1)]">
+                  <div className="mt-3 flex items-center gap-2 justify-between bg-[#0b0c10] px-2.5 py-1.5 rounded-[4px] border border-white/[0.08]">
                     <div className="flex items-center gap-1.5 overflow-hidden">
-                      <Link className="w-3 h-3 text-[#F97316] shrink-0" />
-                      <span className="text-[9px] font-mono text-zinc-500 truncate">
+                      <Link className="w-3 h-3 text-[#1591DC] shrink-0" />
+                      <span className="text-[9px] font-mono text-[#9496a1] truncate">
                         {task.rawFootageLink}
                       </span>
                     </div>
@@ -1455,7 +1455,7 @@ export default function ProjectMatrix({
                         href={task.rawFootageLink}
                         target="_blank" 
                         rel="noreferrer"
-                        className="px-1.5 py-0.5 bg-zinc-900 hover:bg-zinc-800 text-[9px] font-mono text-white rounded-sm border border-zinc-800 uppercase"
+                        className="px-2 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] text-[9px] font-mono text-white rounded-[3px] border border-white/[0.08] uppercase cursor-pointer transition-colors"
                       >
                         Open
                       </a>
@@ -1464,23 +1464,23 @@ export default function ProjectMatrix({
                 </div>
 
                 {/* Card footer details */}
-                <div className="mt-4 pt-3 border-t border-zinc-900 space-y-2">
-                  <div className="flex justify-between items-center text-[9px] font-mono text-zinc-500 bg-black/40 px-2.5 py-1 rounded-sm border border-zinc-900">
-                    <span>Client Pay: <strong className="text-zinc-300">{formatPrice(task.clientPay)}</strong></span>
-                    <span>Sub Pay: <strong className="text-zinc-300">{formatPrice(task.subPay)}</strong></span>
-                    <span>Profit: <strong className="text-[#F97316] font-bold">{formatPrice(profit)}</strong></span>
+                <div className="mt-4 pt-3 border-t border-white/[0.08] space-y-2">
+                  <div className="flex justify-between items-center text-[9px] font-mono text-[#9496a1] bg-[#0b0c10] px-2.5 py-1.5 rounded-[4px] border border-white/[0.08]">
+                    <span>Client Pay: <strong className="text-white">{formatPrice(task.clientPay)}</strong></span>
+                    <span>Sub Pay: <strong className="text-white">{formatPrice(task.subPay)}</strong></span>
+                    <span>Profit: <strong className="text-[#1591DC] font-bold">{formatPrice(profit)}</strong></span>
                   </div>
 
                   <div className="flex justify-end gap-3 pt-1 text-[10px]">
                     <button
                       onClick={() => onEditTaskClick(task)}
-                      className="text-[#B8967D] hover:text-[#F97316] font-mono flex items-center gap-0.5 cursor-pointer"
+                      className="text-[#9496a1] hover:text-[#1591DC] font-mono flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <Edit className="w-3 h-3" /> Edit Specs
                     </button>
                     <button
                       onClick={() => onDeleteTask(task.id)}
-                      className="text-zinc-500 hover:text-red-500 font-mono flex items-center gap-0.5 cursor-pointer"
+                      className="text-[#9496a1] hover:text-rose-400 font-mono flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <Trash2 className="w-3 h-3" /> Delete
                     </button>

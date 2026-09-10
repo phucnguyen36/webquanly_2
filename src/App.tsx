@@ -46,11 +46,10 @@ import {
 } from 'lucide-react';
 
 const THEME_COLORS = [
-  { id: 'sapphire', name: 'ThomasVisual Sapphire Blue', hexColor: '#2563EB', hoverColor: '#1d4ed8' },
-  { id: 'amber', name: 'Cyberpunk Amber', hexColor: '#F97316', hoverColor: '#ea6c0a' },
-  { id: 'emerald', name: 'Forest Emerald', hexColor: '#10B981', hoverColor: '#059669' },
+  { id: 'cyan', name: 'Thomas Electric Cyan', hexColor: '#1591DC', hoverColor: '#0e7bc0' },
+  { id: 'emerald', name: 'Studio Emerald', hexColor: '#10B981', hoverColor: '#059669' },
   { id: 'violet', name: 'Royal Violet', hexColor: '#8B5CF6', hoverColor: '#7C3AED' },
-  { id: 'cyan', name: 'Electric Ice', hexColor: '#06B6D4', hoverColor: '#0891B2' },
+  { id: 'amber', name: 'Studio Amber', hexColor: '#F59E0B', hoverColor: '#d97706' },
 ];
 
 export default function App() {
@@ -756,24 +755,17 @@ export default function App() {
   // Loading screen for Cloud Database synchronization
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0C0A08] flex flex-col items-center justify-center p-6 text-center select-none antialiased">
+      <div className="min-h-screen bg-[#0b0c10] flex flex-col items-center justify-center p-6 text-center select-none antialiased">
         <div className="relative mb-6">
-          <div className="absolute inset-0 rounded-full border border-[#F97316]/20 animate-ping duration-1000"></div>
-          <div className="w-16 h-16 rounded-full border-t-2 border-r-2 border-[#F97316] animate-spin flex items-center justify-center">
-            <Database className="w-6 h-6 text-[#F97316]" />
+          <div className="w-12 h-12 rounded-full border-2 border-white/[0.08] border-t-[#1591DC] animate-spin flex items-center justify-center shadow-[0_0_20px_rgba(21,145,220,0.2)]">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#1591DC] shadow-[0_0_12px_#1591DC]"></div>
           </div>
         </div>
-        <h2 className="text-sm font-black tracking-widest text-[#F0E6D8] uppercase mb-2">
-          DEEP FOCUS CLOUD SYSTEM
+        <h2 className="text-xs font-bold tracking-widest text-white uppercase mb-1 font-haas">
+          DEEP FOCUS OS
         </h2>
-        <div className="text-[10px] font-mono text-[#F97316]/80 tracking-widest animate-pulse uppercase flex items-center gap-1.5">
-          <RefreshCw className="w-3 h-3 animate-spin" />
-          ESTABLISHING FIREBASE CLOUD SYNC...
-        </div>
-        <div className="mt-8 border border-[rgba(249,115,22,0.15)] bg-[#161210]/60 p-3 rounded-sm text-[8px] font-mono text-zinc-500 max-w-xs text-left uppercase leading-relaxed">
-          <p className="mb-1 text-emerald-500">▶ SYS_INIT: Connecting to gen-lang-client...</p>
-          <p className="mb-1 text-emerald-500">▶ DB_AUTH: Accessing custom secure database...</p>
-          <p>▶ SYNC_STATE: Synchronizing client pipelines, sub-editor balances, and active video segments...</p>
+        <div className="text-[10px] font-mono text-[#9496a1] tracking-wider uppercase">
+          Synchronizing Workspace Data...
         </div>
       </div>
     );
@@ -782,70 +774,40 @@ export default function App() {
   const summary = getFinancialSummary();
 
   return (
-    <div id="app-root" className="min-h-screen bg-black text-white font-sans flex flex-col md:flex-row antialiased select-none tracking-tight relative overflow-x-hidden">
+    <div id="app-root" className="min-h-screen bg-[#0b0c10] text-[#ededf3] font-sans flex flex-col md:flex-row antialiased select-none tracking-tight relative overflow-x-hidden">
       {/* Tactile Film Grain Noise & Ambient Edit Blur Spots from Portfolio */}
       <div className="noise-overlay" />
       <div className="bg-edit-blur-1 top-10 left-1/4" />
       <div className="bg-edit-blur-2 top-1/2 -right-20" />
-      <div className="bg-edit-blur-amber bottom-20 left-10" />
       <style dangerouslySetInnerHTML={{ __html: `
         :root {
           --primary-accent: ${activeThemeColor.hexColor};
           --primary-accent-glow: ${activeThemeColor.hexColor}40;
           --primary-accent-border: ${activeThemeColor.hexColor}20;
         }
-        /* Override orange text and background classes dynamically */
-        .text-\\[\\#F97316\\] { color: ${activeThemeColor.hexColor} !important; }
-        .text-\\[rgba\\(249\\,115\\,22\\,0\\.8\\)\\] { color: ${activeThemeColor.hexColor}cc !important; }
-        .hover\\:text-\\[\\#F97316\\]:hover { color: ${activeThemeColor.hexColor} !important; }
-        .bg-\\[\\#F97316\\] { background-color: ${activeThemeColor.hexColor} !important; }
-        .hover\\:bg-\\[\\#ea6c0a\\]:hover { background-color: ${activeThemeColor.hoverColor} !important; }
-        .bg-\\[\\#F97316\\]\\/5 { background-color: ${activeThemeColor.hexColor}0d !important; }
-        .bg-\\[\\#F97316\\]\\/2 { background-color: ${activeThemeColor.hexColor}05 !important; }
-        .bg-\\[\\#F97316\\]\\/10 { background-color: ${activeThemeColor.hexColor}1a !important; }
-        .border-\\[\\#F97316\\] { border-color: ${activeThemeColor.hexColor} !important; }
-        .border-\\[\\#F97316\\]\\/20 { border-color: ${activeThemeColor.hexColor}33 !important; }
-        .border-\\[\\#F97316\\]\\/50 { border-color: ${activeThemeColor.hexColor}80 !important; }
-        .ring-\\[\\#F97316\\]\\/50 { --tw-ring-color: ${activeThemeColor.hexColor}80 !important; }
-        .ring-\\[\\#F97316\\]\\/10 { --tw-ring-color: ${activeThemeColor.hexColor}1a !important; }
-        .shadow-\\[\\#F97316\\] { --tw-shadow-color: ${activeThemeColor.hexColor} !important; }
-        .shadow-\\[0_0_15px_rgba\\(249\\,115\\,22\\,0\\.5\\)\\] { box-shadow: 0 0 15px ${activeThemeColor.hexColor}80 !important; }
-        .shadow-\\[0_0_10px_rgba\\(249\\,115\\,22\\,0\\.3\\)\\] { box-shadow: 0 0 10px ${activeThemeColor.hexColor}4d !important; }
-        .shadow-\\[0_0_15px_rgba\\(249\\,115\\,22\\,0\\.1\\)\\] { box-shadow: 0 0 15px ${activeThemeColor.hexColor}1a !important; }
-        .border-\\[rgba\\(249\\,115\\,22\\,0\\.15\\)\\] { border-color: ${activeThemeColor.hexColor}26 !important; }
-        .from-\\[\\#F97316\\] { --tw-gradient-from: ${activeThemeColor.hexColor} !important; }
-        .to-\\[\\#F97316\\] { --tw-gradient-to: ${activeThemeColor.hexColor} !important; }
-        /* Extra styles to ensure complete branding takeover */
-        .border-t-2.border-r-2.border-\\[\\#F97316\\] { border-color: ${activeThemeColor.hexColor} !important; }
-        .text-\\[\\#F97316\\]\\/80 { color: ${activeThemeColor.hexColor}cc !important; }
-        .border-\\[rgba\\(249\\,115\\,22\\,0\\.15\\)\\] { border-color: ${activeThemeColor.hexColor}26 !important; }
-        .text-\\[\\#E8B849\\] { color: ${activeThemeColor.hexColor} !important; }
-        .border-\\[\\#E8B849\\] { border-color: ${activeThemeColor.hexColor} !important; }
-        .bg-\\[\\#1E1810\\] { background-color: ${activeThemeColor.hexColor}15 !important; }
-        .bg-\\[\\#1E1810\\]\\/40 { background-color: ${activeThemeColor.hexColor}08 !important; }
       `}} />
       
       {/* 1. Left Sidebar Navigation Panel - Translucent Glass, Minimal Icon + Name & Collapsible */}
       <aside 
         id="sidebar-panel" 
-        className={`bg-black/60 border-r border-white/10 backdrop-blur-2xl flex flex-col justify-between shrink-0 font-haas relative z-20 transition-all duration-300 ${
+        className={`bg-[#0b0c10] border-r border-white/[0.08] flex flex-col justify-between shrink-0 font-haas relative z-20 transition-all duration-300 ${
           isSidebarCollapsed ? 'w-full md:w-16' : 'w-full md:w-64'
         }`}
       >
         <div>
           {/* Logo Brand Header & Collapse Toggle */}
-          <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+          <div className="p-4 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.01]">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-[6px] shadow-[0_0_15px_rgba(37,99,235,0.6)] shrink-0">
-                <span className="text-white font-black text-xs italic tracking-tighter">DF</span>
+              <div className="w-8 h-8 bg-[#1591DC] flex items-center justify-center rounded-full shadow-[0_0_12px_rgba(21,145,220,0.4)] ring-1 ring-white/20 shrink-0">
+                <span className="text-white font-black text-xs tracking-tighter">DF</span>
               </div>
               {!isSidebarCollapsed && (
                 <div className="min-w-0">
-                  <h1 className="text-xs font-extrabold tracking-tight uppercase leading-none text-white font-haas truncate">
+                  <h1 className="text-xs font-bold tracking-tight uppercase leading-none text-white font-haas truncate">
                     DEEP FOCUS OS
                   </h1>
-                  <p className="text-[9px] text-slate-400 font-mono tracking-widest mt-1 uppercase truncate">
-                    COMMAND v4.0.26
+                  <p className="text-[9px] text-[#9496a1] font-mono tracking-widest mt-1 uppercase truncate">
+                    STUDIO COMMAND
                   </p>
                 </div>
               )}
@@ -855,10 +817,10 @@ export default function App() {
               {/* Collapse/Expand Toggle Button */}
               <button
                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="hidden md:flex p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-[6px] transition-colors cursor-pointer"
+                className="hidden md:flex p-1.5 text-[#9496a1] hover:text-white hover:bg-white/[0.06] rounded-[6px] transition-colors cursor-pointer"
                 title={isSidebarCollapsed ? "Mở rộng Panel" : "Thu gọn Panel"}
               >
-                {isSidebarCollapsed ? <PanelLeftOpen className="w-4 h-4 text-blue-400" /> : <PanelLeftClose className="w-4 h-4" />}
+                {isSidebarCollapsed ? <PanelLeftOpen className="w-4 h-4 text-[#1591DC]" /> : <PanelLeftClose className="w-4 h-4" />}
               </button>
 
               {/* Mobile Hamburger toggle */}
@@ -895,12 +857,12 @@ export default function App() {
                   onClick={() => { setActiveTab(item.id as any); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-bold transition-all cursor-pointer rounded-[6px] ${
                     isActive 
-                      ? 'bg-blue-600/20 border-l-2 border-blue-500 text-white font-extrabold shadow-[0_0_12px_rgba(37,99,235,0.3)]' 
-                      : 'bg-transparent border-l-2 border-transparent text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-[#1591DC]/15 border-l-2 border-[#1591DC] text-white font-bold shadow-[0_0_12px_rgba(21,145,220,0.25)]' 
+                      : 'bg-transparent border-l-2 border-transparent text-[#9496a1] hover:text-white hover:bg-white/[0.04]'
                   } ${isSidebarCollapsed ? 'justify-center px-0' : ''}`}
                   title={isSidebarCollapsed ? item.label : undefined}
                 >
-                  <IconComp className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
+                  <IconComp className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#1591DC]' : 'text-[#9496a1]'}`} />
                   {!isSidebarCollapsed && (
                     <span className="uppercase tracking-tight truncate text-left">{item.label}</span>
                   )}
@@ -908,43 +870,43 @@ export default function App() {
               );
             })}
 
-            <div className="h-px bg-white/10 my-3" />
+            <div className="h-px bg-white/[0.08] my-3" />
 
             {!isSidebarCollapsed && (
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 px-2 block mb-2">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#9496a1] px-2 block mb-2">
                 DATA & SYSTEM
               </span>
             )}
 
             <button
               onClick={() => setIsInvoiceModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold text-blue-400 bg-blue-500/10 hover:bg-blue-600 hover:text-white border border-blue-500/30 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold text-[#1591DC] bg-[#1591DC]/10 hover:bg-[#1591DC] hover:text-white border border-[#1591DC]/30 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Generate & Print Commercial Month-End Invoices"
             >
-              <FileText className="w-4 h-4 shrink-0 text-blue-400" />
+              <FileText className="w-4 h-4 shrink-0 text-[#1591DC]" />
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">MONTH-END INVOICE</span>}
             </button>
 
             <button
               onClick={handleExportToCSV}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-white hover:bg-white/[0.04] transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Export tasks to CSV/Excel"
             >
-              <Download className="w-4 h-4 shrink-0 text-slate-400" />
+              <Download className="w-4 h-4 shrink-0 text-[#9496a1]" />
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">EXPORT EXCEL / CSV</span>}
             </button>
 
             <label
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-white hover:bg-white/[0.04] transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Import tasks from CSV file"
             >
-              <Upload className="w-4 h-4 shrink-0 text-slate-400" />
+              <Upload className="w-4 h-4 shrink-0 text-[#9496a1]" />
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">IMPORT EXCEL / CSV</span>}
               <input
                 type="file"
@@ -956,7 +918,7 @@ export default function App() {
 
             <button
               onClick={loadData}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold transition-all cursor-pointer rounded-[6px] text-slate-400 hover:text-white hover:bg-white/5 ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-semibold transition-all cursor-pointer rounded-[6px] text-[#9496a1] hover:text-white hover:bg-white/[0.04] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Click to reconnect and sync with Cloud Firestore Database"
@@ -965,60 +927,60 @@ export default function App() {
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">{isCloudSyncFailed ? 'CONNECT CLOUD' : 'CLOUD SYNCED'}</span>}
             </button>
 
-            <div className="h-px bg-white/10 my-3" />
+            <div className="h-px bg-white/[0.08] my-3" />
 
             <button
               onClick={() => setIsClientModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-white hover:bg-white/[0.04] transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Configure Clients"
             >
-              <Settings className="w-4 h-4 shrink-0 text-slate-400" />
+              <Settings className="w-4 h-4 shrink-0 text-[#9496a1]" />
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">CONFIGURE CLIENTS</span>}
             </button>
 
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-white hover:bg-white/[0.04] transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Profile & Modes"
             >
-              <Sliders className="w-4 h-4 shrink-0 text-slate-400" />
+              <Sliders className="w-4 h-4 shrink-0 text-[#9496a1]" />
               {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">PROFILE & MODES</span>}
             </button>
 
             <button
               onClick={handleSeedReset}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-amber-300 hover:bg-amber-950/20 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
-              title="Reset to initial demo database"
+              title="Reset to default workspace dataset"
             >
-              <Database className="w-4 h-4 shrink-0 text-slate-400" />
-              {!isSidebarCollapsed && <span className="uppercase tracking-tight truncate text-left">RESET DEMO DATABASE</span>}
+              <RefreshCw className="w-4 h-4 shrink-0 text-[#9496a1]" />
+              {!isSidebarCollapsed && <span>RESET DEMO DATABASE</span>}
             </button>
 
             <button
               onClick={handleClearAllData}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 transition-all cursor-pointer rounded-[6px] ${
+              className={`w-full flex items-center gap-3 px-3 py-2 text-[11px] font-medium text-[#9496a1] hover:text-red-400 hover:bg-red-950/20 transition-all cursor-pointer rounded-[6px] ${
                 isSidebarCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Purge all workspace data"
             >
-              <Trash2 className="w-4 h-4 shrink-0 text-slate-400" />
+              <Trash2 className="w-4 h-4 shrink-0 text-[#9496a1]" />
               {!isSidebarCollapsed && <span>PURGE ALL DATA</span>}
             </button>
           </nav>
 
           {/* Quick task-add micro container */}
           {!profile.focusMode && !isSidebarCollapsed && (
-            <div className="p-3 mx-3 my-2 bg-white/[0.02] border border-white/10 rounded-[6px] hidden md:block">
-              <h4 className="text-[10px] font-mono font-bold uppercase text-slate-400 mb-2 tracking-widest">PROJECT QUICK-ADD</h4>
+            <div className="p-3 mx-3 my-2 bg-[#12141a] border border-white/[0.08] rounded-[6px] hidden md:block">
+              <h4 className="text-[10px] font-mono font-bold uppercase text-[#9496a1] mb-2 tracking-widest">PROJECT QUICK-ADD</h4>
               <button 
                 onClick={() => { setEditingTask(undefined); setIsTaskModalOpen(true); }}
-                className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-extrabold uppercase rounded-[6px] transition-all cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.5)]"
+                className="w-full py-2 bg-[#1591DC] hover:bg-[#0e7bc0] text-white text-[11px] font-bold uppercase rounded-[6px] transition-all cursor-pointer shadow-[0_0_12px_rgba(21,145,220,0.3)]"
               >
                 Deploy New Task
               </button>
@@ -1027,7 +989,7 @@ export default function App() {
         </div>
 
         {/* User profile footer bar */}
-        <div className="p-3 border-t border-white/10 bg-black/40">
+        <div className="p-3 border-t border-white/[0.08] bg-[#0b0c10]">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsProfileModalOpen(true)}
@@ -1037,14 +999,14 @@ export default function App() {
               <img 
                 src={profile.avatarUrl} 
                 alt={profile.name} 
-                className="w-8 h-8 rounded-full object-cover border border-slate-700 group-hover:border-blue-400 transition-all shrink-0"
+                className="w-8 h-8 rounded-full object-cover border border-white/20 group-hover:border-[#1591DC] transition-all shrink-0"
               />
               {!isSidebarCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white truncate group-hover:text-blue-400 transition-colors">
+                  <p className="text-xs font-bold text-white truncate group-hover:text-[#1591DC] transition-colors font-haas">
                     {profile.name}
                   </p>
-                  <span className="text-[9px] font-mono text-slate-400 block uppercase tracking-wider group-hover:text-slate-300 transition-colors">
+                  <span className="text-[9px] font-mono text-[#9496a1] block uppercase tracking-wider group-hover:text-slate-300 transition-colors">
                     {profile.role || (userRole === 'admin' ? 'SYS_ADMIN' : 'CONTRACTOR')}
                   </span>
                 </div>
@@ -1053,7 +1015,7 @@ export default function App() {
             {!isSidebarCollapsed && (
               <button 
                 onClick={handleLogout}
-                className="p-1.5 hover:bg-white/10 text-slate-400 hover:text-white rounded-[6px] transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-white/[0.06] text-[#9496a1] hover:text-white rounded-[6px] transition-colors cursor-pointer"
                 title="Terminate session Connection"
               >
                 <LogOut className="w-4 h-4" />
@@ -1064,34 +1026,34 @@ export default function App() {
       </aside>
 
       {/* 2. Main Executive Workspace Content Area */}
-      <main id="main-content-panel" className="flex-1 bg-[#0C0A08] overflow-y-auto">
+      <main id="main-content-panel" className="flex-1 bg-[#0b0c10] overflow-y-auto">
         <div className="max-w-6xl mx-auto w-full p-8 md:p-10 space-y-10">
           
           {/* Cloud Sync Status Indicator */}
           {isCloudSyncFailed && (
-            <div id="cloud-sync-error-banner" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-orange-950/30 border-2 border-orange-500/40 rounded-[6px] text-orange-200 text-xs font-mono shadow-[0_0_20px_rgba(249,115,22,0.15)] font-haas">
+            <div id="cloud-sync-error-banner" className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-[#12141a] border border-white/[0.08] rounded-[6px] text-[#ededf3] text-xs font-haas shadow-[0_0_20px_rgba(0,0,0,0.5)]">
               <div className="flex items-start md:items-center gap-3">
-                <div className="p-2.5 bg-orange-950/60 border border-orange-500/30 text-orange-400 rounded-[6px] animate-pulse shrink-0">
+                <div className="p-2.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-[6px] shrink-0">
                   <CloudOff className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-orange-400 uppercase tracking-wider text-xs">HỆ THỐNG ĐANG Ở CHẾ ĐỘ OFFLINE LOCAL</h4>
-                  <p className="text-[11px] text-slate-300 mt-1 leading-normal max-w-xl">
-                    Ứng dụng tự động hoạt động an toàn với dữ liệu lưu trên máy bạn. Bạn có thể bấm <strong className="text-white">THỬ KẾT NỐI LẠI</strong> hoặc bấm <strong className="text-emerald-400">ĐỒNG BỘ LOCAL LÊN CLOUD</strong> để đẩy dữ liệu lên Cloud Firestore.
+                  <h4 className="font-bold text-white uppercase tracking-wider text-xs">CHẾ ĐỘ OFFLINE LOCAL STORAGE</h4>
+                  <p className="text-[11px] text-[#9496a1] mt-0.5 leading-normal max-w-xl">
+                    Dữ liệu đang được lưu trữ an toàn trên thiết bị của bạn. Bấm <strong className="text-white">THỬ KẾT NỐI LẠI</strong> hoặc <strong className="text-[#1591DC]">ĐỒNG BỘ LOCAL LÊN CLOUD</strong> để cập nhật dữ liệu lên server.
                   </p>
                 </div>
               </div>
               <div className="shrink-0 flex items-center gap-2 flex-wrap">
                 <button
                   onClick={loadData}
-                  className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-mono font-extrabold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(37,99,235,0.4)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                  className="px-3.5 py-2 bg-[#1591DC] hover:bg-[#0e7bc0] text-white font-mono font-bold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(21,145,220,0.3)] cursor-pointer transition-all flex items-center gap-1.5"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   THỬ KẾT NỐI LẠI
                 </button>
                 <button
                   onClick={handleUploadLocalToCloud}
-                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-extrabold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(16,185,129,0.4)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-[11px] uppercase rounded-[6px] shadow-[0_0_12px_rgba(16,185,129,0.3)] cursor-pointer transition-all flex items-center gap-1.5"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   ĐỒNG BỘ LOCAL LÊN CLOUD
@@ -1101,118 +1063,106 @@ export default function App() {
           )}
 
           {/* Top Control Header bar */}
-          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border-b border-zinc-900 pb-8">
+          <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border-b border-white/[0.08] pb-8">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-white flex items-center justify-center rounded-none shadow-[0_0_15px_rgba(255,255,255,0.15)]">
-                <span className="text-black font-serif font-bold text-lg italic">df</span>
+              <div className="w-10 h-10 bg-[#1591DC] flex items-center justify-center rounded-full shadow-[0_0_15px_rgba(21,145,220,0.4)] ring-2 ring-white/10 shrink-0">
+                <span className="text-white font-bold text-sm tracking-tighter">DF</span>
               </div>
               <div>
-                <h1 className="text-3xl font-serif font-light tracking-tight text-zinc-100">
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white font-haas">
                   Deep Focus OS
                 </h1>
-                <p className="text-[10px] text-[#71717a] font-mono tracking-widest mt-1 uppercase">
-                  Production Command Center v4.0.26
+                <p className="text-[10px] text-[#9496a1] font-mono tracking-widest mt-0.5 uppercase">
+                  Production Command & Video Retention Matrix
                 </p>
               </div>
             </div>
 
-          <div className="flex items-center gap-4 flex-wrap w-full lg:w-auto lg:justify-end">
-            
-            {/* Cloud Database Status Badge */}
-            <div className="flex items-center">
-              {isCloudSyncFailed ? (
-                <button
-                  onClick={loadData}
-                  className="flex items-center gap-1.5 px-3 py-1 bg-orange-950/40 hover:bg-orange-900/40 border border-orange-500/30 rounded-none text-[10px] font-mono text-orange-400 cursor-pointer transition-colors"
-                  title="Firestore Cloud connection failed. Click to retry."
-                >
-                  <CloudOff className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
-                  <span>CLOUD: OFFLINE (RETRY)</span>
-                </button>
-              ) : (
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-950/40 border border-emerald-500/30 rounded-none text-[10px] font-mono text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]"></span>
-                  <span>CLOUD: ONLINE</span>
+            <div className="flex items-center gap-3 flex-wrap w-full lg:w-auto lg:justify-end">
+              {/* Cloud Database Status Badge */}
+              <div className="flex items-center">
+                {isCloudSyncFailed ? (
+                  <button
+                    onClick={loadData}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-[6px] text-[10px] font-mono text-amber-400 cursor-pointer transition-colors"
+                    title="Firestore Cloud connection failed. Click to retry."
+                  >
+                    <CloudOff className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    <span>CLOUD: OFFLINE (RETRY)</span>
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#12141a] border border-white/[0.08] rounded-[6px] text-[10px] font-mono text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                    <span>CLOUD: ONLINE</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Realtime Year & Month Filters */}
+              <div className="flex items-center gap-2">
+                {/* Year Selector */}
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#12141a] border border-white/[0.08] rounded-[6px] text-xs font-mono text-[#ededf3]">
+                  <span className="text-[#9496a1] font-bold text-[10px] uppercase">Year:</span>
+                  <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                    className="bg-transparent text-white font-bold border-none focus:outline-none cursor-pointer text-xs"
+                  >
+                    <option value="all" className="bg-[#12141a] text-white">All Years</option>
+                    {availableYears.map(yr => (
+                      <option key={yr} value={yr} className="bg-[#12141a] text-white">
+                        Year {yr}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              )}
-            </div>
 
-            {/* Realtime Year & Month Filters */}
-            <div className="flex items-center gap-2">
-              {/* Year Selector */}
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-950 border border-zinc-900 rounded-none text-xs font-mono text-zinc-300">
-                <span className="text-zinc-500 font-bold text-[10px] uppercase">Year:</span>
-                <select
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value)}
-                  className="bg-transparent text-zinc-300 font-bold border-none focus:outline-none cursor-pointer text-xs"
-                >
-                  <option value="all" className="bg-zinc-950 text-zinc-300">All Years</option>
-                  {availableYears.map(yr => (
-                    <option key={yr} value={yr} className="bg-zinc-950 text-zinc-300">
-                      Year {yr}
-                    </option>
-                  ))}
-                </select>
+                {/* Month Selector */}
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#12141a] border border-white/[0.08] rounded-[6px] text-xs font-mono text-[#ededf3]">
+                  <span className="text-[#9496a1] font-bold text-[10px] uppercase">Month:</span>
+                  <select
+                    value={selectedMonthOnly}
+                    onChange={(e) => setSelectedMonthOnly(e.target.value)}
+                    className="bg-transparent text-white font-bold border-none focus:outline-none cursor-pointer text-xs"
+                  >
+                    <option value="all" className="bg-[#12141a] text-white">All Months</option>
+                    {availableMonths.filter(m => m !== 'all').map(mo => (
+                      <option key={mo} value={mo} className="bg-[#12141a] text-white">
+                        Month {mo}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              {/* Month Selector */}
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-950 border border-zinc-900 rounded-none text-xs font-mono text-zinc-300">
-                <span className="text-zinc-500 font-bold text-[10px] uppercase">Month:</span>
-                <select
-                  value={selectedMonthOnly}
-                  onChange={(e) => setSelectedMonthOnly(e.target.value)}
-                  className="bg-transparent text-zinc-300 font-bold border-none focus:outline-none cursor-pointer text-xs"
+              <div className="h-6 w-[1px] bg-white/[0.08] hidden lg:block"></div>
+
+              {/* Realtime Clock */}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#12141a] border border-white/[0.08] rounded-[6px] text-[10px] font-mono text-[#9496a1]">
+                <Clock className="w-3.5 h-3.5 text-[#9496a1]" />
+                <span>{time || 'Syncing Local Time...'}</span>
+              </div>
+
+              {/* Currency selector parameter */}
+              <div className="flex items-center gap-0.5 bg-[#12141a] border border-white/[0.08] p-0.5 rounded-[6px] text-[10px] font-mono">
+                <button
+                  onClick={() => setCurrency('USD')}
+                  className={`px-2.5 py-1 rounded-[4px] cursor-pointer transition-all ${currency === 'USD' ? 'bg-[#1591DC] text-white font-bold shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'}`}
                 >
-                  <option value="all" className="bg-zinc-950 text-zinc-300">All Months</option>
-                  {availableMonths.filter(m => m !== 'all').map(mo => (
-                    <option key={mo} value={mo} className="bg-zinc-950 text-zinc-300">
-                      Month {mo}
-                    </option>
-                  ))}
-                </select>
+                  USD ($)
+                </button>
+                <button
+                  onClick={() => setCurrency('VND')}
+                  className={`px-2.5 py-1 rounded-[4px] cursor-pointer transition-all ${currency === 'VND' ? 'bg-[#1591DC] text-white font-bold shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'}`}
+                >
+                  VND (₫)
+                </button>
               </div>
             </div>
+          </header>
 
-            <div className="h-6 w-[1px] bg-zinc-900 hidden lg:block"></div>
-
-            {/* Session tracking parameters */}
-            <div className="flex flex-col items-end text-right">
-              <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-wider">Session Active</span>
-              <span className="text-xs font-mono text-zinc-300">SYS_ADMIN: {userRole.toUpperCase()}</span>
-            </div>
-
-            <div className="h-6 w-[1px] bg-zinc-900 hidden lg:block"></div>
-
-            {/* Realtime Clock */}
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-950 border border-zinc-900 rounded-none text-[10px] font-mono text-zinc-400">
-              <Clock className="w-3 h-3 text-zinc-500" />
-              <span>{time || 'Syncing Local Time...'}</span>
-            </div>
-
-            {/* Currency selector parameter */}
-            <div className="flex items-center gap-0.5 bg-zinc-950 border border-zinc-900 p-0.5 rounded-none text-[9px] font-mono">
-              <button
-                onClick={() => setCurrency('USD')}
-                className={`px-2 py-1 rounded-none cursor-pointer ${currency === 'USD' ? 'bg-white text-black font-bold' : 'text-zinc-600 hover:text-white'}`}
-              >
-                USD ($)
-              </button>
-              <button
-                onClick={() => setCurrency('VND')}
-                className={`px-2 py-1 rounded-none cursor-pointer ${currency === 'VND' ? 'bg-white text-black font-bold' : 'text-zinc-600 hover:text-white'}`}
-              >
-                VND (₫)
-              </button>
-            </div>
-          </div>
-        </header>
-
-        {/* Real-Time Executive KPIs Dashboard (Part 3) */}
-        <KpiRibbon summary={summary} currency={currency} />
-
-        {/* Dynamic Display Panels switcher */}
-        <section id="workspace-dynamic-view" className="bg-zinc-950/20 border-none p-0">
+          {/* Real-Time Executive KPIs Dashboard */}
+          <KpiRibbon summary={summary} currency={currency} />
           {activeTab === 'analytics' && (
             <AnalyticsDashboard
               clients={clients}
@@ -1290,22 +1240,21 @@ export default function App() {
               currency={currency}
             />
           )}
-        </section>
 
         </div>
 
         {/* Footer info block */}
-        <div className="max-w-6xl mx-auto px-8 md:px-10 pb-8">
-          <footer className="flex flex-col sm:flex-row justify-between items-center py-4 border-t border-zinc-900 gap-3">
-            <div className="flex flex-wrap items-center gap-6 text-[10px] text-[#71717a] font-mono uppercase tracking-widest">
+        <div className="max-w-6xl mx-auto px-8 md:px-10 pb-8 font-haas">
+          <footer className="flex flex-col sm:flex-row justify-between items-center py-4 border-t border-white/[0.08] gap-3">
+            <div className="flex flex-wrap items-center gap-6 text-[10px] text-[#9496a1] font-mono uppercase tracking-widest">
               <div className="flex items-center gap-2">
                 {isCloudSyncFailed ? (
                   <>
-                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316] animate-pulse"></span>
-                    <span className="text-orange-400 font-bold">DATABASE OFFLINE (LOCAL CACHE)</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b] animate-pulse"></span>
+                    <span className="text-amber-400 font-bold">DATABASE OFFLINE (LOCAL CACHE)</span>
                     <button 
                       onClick={loadData}
-                      className="ml-1 px-1.5 py-0.5 bg-orange-950/40 text-orange-400 hover:text-white border border-orange-800/40 text-[9px] font-mono uppercase tracking-wider cursor-pointer transition-colors"
+                      className="ml-1 px-2 py-0.5 bg-[#1591DC]/15 text-[#1591DC] hover:bg-[#1591DC]/30 border border-[#1591DC]/30 rounded-[3px] text-[9px] font-mono uppercase tracking-wider cursor-pointer transition-colors"
                       title="Thử lại đồng bộ Cloud Firestore"
                     >
                       THỬ LẠI KẾT NỐI (RETRY)
@@ -1313,13 +1262,13 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
                     <span className="text-emerald-400 font-bold">DATABASE CLOUD SYNCED</span>
                   </>
                 )}
               </div>
               {profile.focusMode ? (
-                <div className="text-[#10b981] font-bold tracking-widest animate-pulse">[FOCUS WORKSPACE ACTIVE]</div>
+                <div className="text-emerald-400 font-bold tracking-widest animate-pulse">[FOCUS WORKSPACE ACTIVE]</div>
               ) : (
                 <>
                   <div>Uptime: 242:12:05</div>
@@ -1327,8 +1276,8 @@ export default function App() {
                 </>
               )}
             </div>
-            <div className="text-[10px] text-zinc-600 font-mono tracking-widest uppercase">
-              PROPRIETARY TECHNOLOGY OF APEX EDITORS &copy; 2026
+            <div className="text-[10px] text-[#9496a1] font-mono tracking-widest uppercase">
+              DEEP FOCUS OS &bull; THOMAS NGUYEN MEDIA &copy; 2026
             </div>
           </footer>
         </div>

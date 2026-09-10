@@ -266,27 +266,27 @@ export default function AnalyticsDashboard({
   return (
     <div className="space-y-6 animate-fadeIn pb-16 select-none font-haas">
       {/* 1. Header Greeting & Sub-Navigation Pill Tabs */}
-      <div className="spatial-card p-6 border border-white/10 bg-black/80 backdrop-blur-2xl">
+      <div className="spatial-card p-6 border border-white/[0.08] bg-[#12141a]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <div className="w-6 h-6 rounded-[6px] bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.6)] flex items-center justify-center font-extrabold text-white text-xs">
+              <div className="w-6 h-6 rounded-[4px] bg-[#1591DC] shadow-[0_0_15px_rgba(21,145,220,0.4)] flex items-center justify-center font-extrabold text-white text-xs">
                 T
               </div>
-              <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
+              <span className="text-xs font-mono font-bold text-[#1591DC] uppercase tracking-widest">
                 EXECUTIVE PRODUCTION DASHBOARD
               </span>
             </div>
             <h1 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight font-haas leading-[1.08]">
-              {greetingTime}, <span className="gradient-heading">Thomas Nguyen</span>
+              {greetingTime}, <span className="text-white">Thomas Nguyen</span>
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#9496a1] mt-1">
               Stay on top of your video tasks, monitor gross yield, and track editor pipeline.
             </p>
           </div>
 
           {/* Sub-Nav Pill Controls (Clicking switches views dynamically) */}
-          <div className="flex items-center gap-1.5 bg-black/90 p-1.5 rounded-[8px] border border-white/10 overflow-x-auto">
+          <div className="flex items-center gap-1.5 bg-[#0b0c10] p-1.5 rounded-[6px] border border-white/[0.08] overflow-x-auto">
             {[
               { id: 'overview', label: 'OVERVIEW' },
               { id: 'activity', label: 'ACTIVITY' },
@@ -296,10 +296,10 @@ export default function AnalyticsDashboard({
               <button
                 key={tab.id}
                 onClick={() => setActiveSubTab(tab.id as any)}
-                className={`px-4 py-2 text-xs font-extrabold rounded-[6px] transition-all uppercase tracking-wider whitespace-nowrap cursor-pointer ${
+                className={`px-4 py-2 text-xs font-extrabold rounded-[4px] transition-all uppercase tracking-wider whitespace-nowrap cursor-pointer ${
                   activeSubTab === tab.id 
-                    ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.6)]' 
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-[#1591DC] text-white shadow-[0_0_12px_rgba(21,145,220,0.3)]' 
+                    : 'text-[#9496a1] hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 {tab.label}
@@ -318,13 +318,11 @@ export default function AnalyticsDashboard({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Widget 1: Total Balance / Vault Overview Card (4 cols) */}
-            <div className="lg:col-span-4 spatial-card p-6 flex flex-col justify-between relative overflow-hidden bg-white/[0.02]">
-              <div className="bg-edit-blur-1 -right-20 -top-20 pointer-events-none opacity-40" />
-              
+            <div className="lg:col-span-4 spatial-card p-6 flex flex-col justify-between relative overflow-hidden bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <div>
-                <div className="flex items-center justify-between text-xs text-slate-400 font-mono uppercase tracking-widest mb-1">
+                <div className="flex items-center justify-between text-xs text-[#9496a1] font-mono uppercase tracking-widest mb-1">
                   <span>TOTAL VAULT BALANCE</span>
-                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px] font-bold border border-blue-500/20">
+                  <span className="px-2 py-0.5 rounded-[3px] bg-[#1591DC]/10 text-[#1591DC] text-[10px] font-bold border border-[#1591DC]/20">
                     {currency}
                   </span>
                 </div>
@@ -338,22 +336,22 @@ export default function AnalyticsDashboard({
 
               {/* Real Financial Vaults Sub-Cards */}
               <div className="mt-6">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 block mb-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#9496a1] block mb-2">
                   PRODUCTION FINANCIAL VAULTS
                 </span>
                 <div className="grid grid-cols-3 gap-2">
-                  <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">GROSS REV</div>
+                  <div className="p-2.5 bg-[#0b0c10] rounded-[4px] border border-white/[0.08]">
+                    <div className="text-[9px] font-mono text-[#9496a1] font-bold uppercase">GROSS REV</div>
                     <div className="text-xs font-black text-white font-mono mt-1">{formatMoney(grossYield)}</div>
-                    <span className="text-[9px] text-blue-400 font-bold block mt-0.5">Client Pay</span>
+                    <span className="text-[9px] text-[#1591DC] font-bold block mt-0.5">Client Pay</span>
                   </div>
-                  <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">EDITOR PAY</div>
-                    <div className="text-xs font-black text-slate-300 font-mono mt-1">{formatMoney(payoutQueue)}</div>
+                  <div className="p-2.5 bg-[#0b0c10] rounded-[4px] border border-white/[0.08]">
+                    <div className="text-[9px] font-mono text-[#9496a1] font-bold uppercase">EDITOR PAY</div>
+                    <div className="text-xs font-black text-[#EDEDF3] font-mono mt-1">{formatMoney(payoutQueue)}</div>
                     <span className="text-[9px] text-amber-400 font-bold block mt-0.5">Outsource</span>
                   </div>
-                  <div className="p-2.5 bg-black/60 rounded-[6px] border border-white/10">
-                    <div className="text-[9px] font-mono text-slate-400 font-bold uppercase">NET PROFIT</div>
+                  <div className="p-2.5 bg-[#0b0c10] rounded-[4px] border border-white/[0.08]">
+                    <div className="text-[9px] font-mono text-[#9496a1] font-bold uppercase">NET PROFIT</div>
                     <div className="text-xs font-black text-emerald-400 font-mono mt-1">{formatMoney(netYieldVal)}</div>
                     <span className="text-[9px] text-emerald-400 font-bold block mt-0.5">Yield</span>
                   </div>
@@ -364,10 +362,10 @@ export default function AnalyticsDashboard({
             {/* Widget 2: 4-Grid Metric Mini Cards (4 cols) */}
             <div className="lg:col-span-4 grid grid-cols-2 gap-3">
               {/* Card A */}
-              <div className="spatial-card p-5 bg-gradient-to-br from-blue-600/30 to-blue-900/20 border border-blue-500/30 hover:border-blue-500/60 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs text-blue-300 font-mono font-bold uppercase tracking-wider">
+              <div className="spatial-card p-5 bg-[#12141a] border border-[#1591DC]/30 hover:border-[#1591DC]/60 flex flex-col justify-between rounded-[6px]">
+                <div className="flex items-center justify-between text-xs text-[#1591DC] font-mono font-bold uppercase tracking-wider">
                   <span>Gross Earnings</span>
-                  <DollarSign className="w-4 h-4 text-blue-400" />
+                  <DollarSign className="w-4 h-4 text-[#1591DC]" />
                 </div>
                 <div className="my-2">
                   <div className="text-2xl font-black text-white font-mono">{formatMoney(grossYield)}</div>
@@ -376,10 +374,10 @@ export default function AnalyticsDashboard({
               </div>
 
               {/* Card B */}
-              <div className="spatial-card p-5 bg-white/[0.02] hover:border-white/20 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs text-slate-400 font-mono font-bold uppercase tracking-wider">
+              <div className="spatial-card p-5 bg-[#12141a] border border-white/[0.08] hover:border-white/[0.2] flex flex-col justify-between rounded-[6px]">
+                <div className="flex items-center justify-between text-xs text-[#9496a1] font-mono font-bold uppercase tracking-wider">
                   <span>Editor Payout</span>
-                  <Users className="w-4 h-4 text-slate-400" />
+                  <Users className="w-4 h-4 text-[#9496a1]" />
                 </div>
                 <div className="my-2">
                   <div className="text-2xl font-black text-white font-mono">{formatMoney(payoutQueue)}</div>
@@ -388,8 +386,8 @@ export default function AnalyticsDashboard({
               </div>
 
               {/* Card C */}
-              <div className="spatial-card p-5 bg-white/[0.02] hover:border-white/20 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs text-slate-400 font-mono font-bold uppercase tracking-wider">
+              <div className="spatial-card p-5 bg-[#12141a] border border-white/[0.08] hover:border-white/[0.2] flex flex-col justify-between rounded-[6px]">
+                <div className="flex items-center justify-between text-xs text-[#9496a1] font-mono font-bold uppercase tracking-wider">
                   <span>Net Profit</span>
                   <Crown className="w-4 h-4 text-emerald-400" />
                 </div>
@@ -402,10 +400,10 @@ export default function AnalyticsDashboard({
               </div>
 
               {/* Card D */}
-              <div className="spatial-card p-5 bg-white/[0.02] hover:border-white/20 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs text-slate-400 font-mono font-bold uppercase tracking-wider">
+              <div className="spatial-card p-5 bg-[#12141a] border border-white/[0.08] hover:border-white/[0.2] flex flex-col justify-between rounded-[6px]">
+                <div className="flex items-center justify-between text-xs text-[#9496a1] font-mono font-bold uppercase tracking-wider">
                   <span>Active Tasks</span>
-                  <Video className="w-4 h-4 text-sky-400" />
+                  <Video className="w-4 h-4 text-[#1591DC]" />
                 </div>
                 <div className="my-2">
                   <div className="text-2xl font-black text-white font-mono">{tasks.length} Reels</div>
@@ -415,26 +413,26 @@ export default function AnalyticsDashboard({
             </div>
 
             {/* Widget 3: Total Income Stacked Bar Chart (4 cols) */}
-            <div className="lg:col-span-4 spatial-card p-6 flex flex-col justify-between">
+            <div className="lg:col-span-4 spatial-card p-6 flex flex-col justify-between bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-sm font-extrabold text-white uppercase tracking-wider font-haas">
                     TOTAL INCOME & PAYOUT
                   </h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5">View profit vs editor payout over months</p>
+                  <p className="text-[11px] text-[#9496a1] mt-0.5">View profit vs editor payout over months</p>
                 </div>
                 <div className="flex items-center gap-3 text-[10px] font-mono font-bold">
-                  <span className="flex items-center gap-1 text-blue-400">
-                    <span className="w-2 h-2 rounded-full bg-blue-500" /> Profit
+                  <span className="flex items-center gap-1 text-[#1591DC]">
+                    <span className="w-2 h-2 rounded-full bg-[#1591DC]" /> Profit
                   </span>
-                  <span className="flex items-center gap-1 text-slate-400">
-                    <span className="w-2 h-2 rounded-full bg-slate-600" /> Payout
+                  <span className="flex items-center gap-1 text-[#9496a1]">
+                    <span className="w-2 h-2 rounded-full bg-white/20" /> Payout
                   </span>
                 </div>
               </div>
 
               {/* Bar Chart Visualization */}
-              <div className="h-44 flex items-end justify-between gap-1.5 pt-4 border-b border-white/10 pb-2">
+              <div className="h-44 flex items-end justify-between gap-1.5 pt-4 border-b border-white/[0.08] pb-2">
                 {monthlyChartData.slice(0, 8).map((d, idx) => {
                   const revH = Math.min(Math.round((d.revenue / maxMonthlyVal) * 100), 100);
                   const payH = Math.min(Math.round((d.payout / maxMonthlyVal) * 100), 100);
@@ -449,25 +447,25 @@ export default function AnalyticsDashboard({
                     >
                       {/* Tooltip */}
                       {isHovered && (
-                        <div className="absolute -top-12 bg-black border border-blue-500/50 p-1.5 rounded text-[10px] font-mono text-white whitespace-nowrap z-20 shadow-xl">
-                          <div className="text-blue-400 font-bold">{d.month}: ${d.revenue.toLocaleString()}</div>
-                          <div className="text-slate-400">Payout: ${d.payout.toLocaleString()}</div>
+                        <div className="absolute -top-12 bg-[#0b0c10] border border-[#1591DC]/40 p-1.5 rounded-[4px] text-[10px] font-mono text-white whitespace-nowrap z-20 shadow-xl">
+                          <div className="text-[#1591DC] font-bold">{d.month}: ${d.revenue.toLocaleString()}</div>
+                          <div className="text-[#9496a1]">Payout: ${d.payout.toLocaleString()}</div>
                         </div>
                       )}
 
                       <div className="w-full flex justify-center items-end gap-1 h-32">
                         {/* Revenue Bar */}
                         <div 
-                          className="w-2.5 bg-gradient-to-t from-blue-700 to-blue-500 rounded-t-[2px] transition-all duration-300 group-hover:bg-blue-400"
+                          className="w-2.5 bg-[#1591DC] rounded-t-[2px] transition-all duration-300 group-hover:brightness-110"
                           style={{ height: `${Math.max(revH, 8)}%` }}
                         />
                         {/* Payout Bar */}
                         <div 
-                          className="w-2.5 bg-slate-700 rounded-t-[2px] transition-all duration-300 group-hover:bg-slate-500"
+                          className="w-2.5 bg-white/20 rounded-t-[2px] transition-all duration-300 group-hover:bg-white/30"
                           style={{ height: `${Math.max(payH, 5)}%` }}
                         />
                       </div>
-                      <span className="text-[9px] font-mono font-bold text-slate-400 group-hover:text-white">
+                      <span className="text-[9px] font-mono font-bold text-[#9496a1] group-hover:text-white">
                         {d.month}
                       </span>
                     </div>
@@ -489,38 +487,38 @@ export default function AnalyticsDashboard({
           <div className="lg:col-span-4 space-y-6">
             
             {/* Widget 4: Monthly Capacity Limit Bar */}
-            <div className="spatial-card p-6">
+            <div className="spatial-card p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider mb-2">
                 <span className="text-white">MONTHLY PRODUCTION CAPACITY</span>
-                <span className="text-blue-400">{completedTasksCount} / {targetCapacity} Tasks</span>
+                <span className="text-[#1591DC]">{completedTasksCount} / {targetCapacity} Tasks</span>
               </div>
               
-              <div className="h-3 w-full bg-black/80 rounded-full overflow-hidden p-0.5 border border-white/10 my-3">
+              <div className="h-2.5 w-full bg-[#0b0c10] rounded-full overflow-hidden p-0.5 border border-white/[0.08] my-3">
                 <div 
-                  className="h-full bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 rounded-full transition-all duration-500"
+                  className="h-full bg-[#1591DC] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(21,145,220,0.5)]"
                   style={{ width: `${capacityPercent}%` }}
                 />
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+              <div className="flex items-center justify-between text-[11px] text-[#9496a1] font-mono">
                 <span>{capacityPercent}% completed out of capacity</span>
                 <span className="text-white font-bold">{formatMoney(grossYield)}</span>
               </div>
             </div>
 
             {/* Status Breakdown Grid */}
-            <div className="spatial-card p-6">
+            <div className="spatial-card p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <h3 className="text-xs font-extrabold text-white uppercase tracking-wider flex items-center gap-2 mb-4 font-mono">
-                <Video className="w-4 h-4 text-sky-400" />
+                <Video className="w-4 h-4 text-[#1591DC]" />
                 WORKFLOW STATUS DISTRIBUTION
               </h3>
 
               <div className="grid grid-cols-2 gap-2 font-mono">
                 {Object.entries(statusDistribution).map(([status, count]) => (
-                  <div key={status} className="p-3 bg-white/[0.02] rounded-[6px] border border-white/10 text-left">
-                    <span className="text-[10px] font-bold text-slate-400 block tracking-widest uppercase">{status}</span>
+                  <div key={status} className="p-3 bg-[#0b0c10] rounded-[4px] border border-white/[0.08] text-left">
+                    <span className="text-[10px] font-bold text-[#9496a1] block tracking-widest uppercase">{status}</span>
                     <span className="text-xl font-black text-white mt-1 block">{count}</span>
-                    <span className="text-[10px] text-slate-500 block">video tasks</span>
+                    <span className="text-[10px] text-[#9496a1]/70 block">video tasks</span>
                   </div>
                 ))}
               </div>
@@ -529,34 +527,34 @@ export default function AnalyticsDashboard({
           </div>
 
           {/* Right Side (8 cols): Recent Activities & Tasks Table */}
-          <div className="lg:col-span-8 spatial-card p-6 flex flex-col justify-between">
+          <div className="lg:col-span-8 spatial-card p-6 flex flex-col justify-between bg-[#12141a] border border-white/[0.08] rounded-[6px]">
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
                   <h3 className="text-base font-extrabold text-white uppercase tracking-wider font-haas flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-blue-500" />
+                    <Activity className="w-4 h-4 text-[#1591DC]" />
                     RECENT ACTIVITIES & VIDEO PROJECTS
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Real-time status tracking across editor pipeline ({filteredRecentTasks.length} tasks)</p>
+                  <p className="text-xs text-[#9496a1] mt-0.5">Real-time status tracking across editor pipeline ({filteredRecentTasks.length} tasks)</p>
                 </div>
 
                 {/* Search & Filter Bar */}
                 <div className="flex items-center gap-2">
                   <div className="relative">
-                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                    <Search className="w-3.5 h-3.5 text-[#9496a1] absolute left-3 top-2.5" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
                       placeholder="Search projects..."
-                      className="pl-8 pr-3 py-1.5 bg-black/60 border border-white/10 text-xs text-white rounded-[6px] focus:outline-none focus:border-blue-500 w-36 sm:w-44"
+                      className="pl-8 pr-3 py-1.5 bg-[#0b0c10] border border-white/[0.08] text-xs text-white rounded-[4px] focus:outline-none focus:border-[#1591DC] w-36 sm:w-44"
                     />
                   </div>
 
                   <select
                     value={statusFilter}
                     onChange={e => setStatusFilter(e.target.value)}
-                    className="px-2.5 py-1.5 bg-black/60 border border-white/10 text-xs text-slate-300 rounded-[6px] focus:outline-none focus:border-blue-500 font-mono"
+                    className="px-2.5 py-1.5 bg-[#0b0c10] border border-white/[0.08] text-xs text-[#EDEDF3] rounded-[4px] focus:outline-none focus:border-[#1591DC] font-mono"
                   >
                     <option value="all">All Status</option>
                     <option value="APPROVED">Completed</option>
@@ -571,7 +569,7 @@ export default function AnalyticsDashboard({
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-mono">
                   <thead>
-                    <tr className="border-b border-white/10 text-slate-400 uppercase text-[10px] tracking-widest">
+                    <tr className="border-b border-white/[0.08] text-[#9496a1] uppercase text-[10px] tracking-widest">
                       <th className="py-3 px-3">Task ID</th>
                       <th className="py-3 px-3">Project Title</th>
                       <th className="py-3 px-3">Client Pay</th>
@@ -579,10 +577,10 @@ export default function AnalyticsDashboard({
                       <th className="py-3 px-3 text-right">Deadline</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-white/[0.06]">
                     {filteredRecentTasks.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="py-8 text-center text-slate-500 text-xs font-mono">
+                        <td colSpan={5} className="py-8 text-center text-[#9496a1] text-xs font-mono">
                           No recent video tasks match filter criteria.
                         </td>
                       </tr>
@@ -594,7 +592,7 @@ export default function AnalyticsDashboard({
 
                         return (
                           <tr key={t.id} className="hover:bg-white/[0.03] transition-colors">
-                            <td className="py-3 px-3 font-bold text-blue-400 font-mono">{t.id}</td>
+                            <td className="py-3 px-3 font-bold text-[#1591DC] font-mono">{t.id}</td>
                             <td className="py-3 px-3 font-sans font-bold text-white max-w-[200px] truncate">
                               {t.title}
                             </td>
@@ -603,27 +601,27 @@ export default function AnalyticsDashboard({
                             </td>
                             <td className="py-3 px-3">
                               {isCompleted && (
-                                <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 flex items-center gap-1 w-max">
+                                <span className="px-2 py-0.5 rounded-[3px] text-[10px] bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 flex items-center gap-1 w-max">
                                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Completed
                                 </span>
                               )}
                               {isInProgress && (
-                                <span className="px-2 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20 flex items-center gap-1 w-max">
+                                <span className="px-2 py-0.5 rounded-[3px] text-[10px] bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20 flex items-center gap-1 w-max">
                                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> In Progress
                                 </span>
                               )}
                               {isRoughCut && (
-                                <span className="px-2 py-0.5 rounded text-[10px] bg-blue-500/10 text-blue-400 font-bold border border-blue-500/20 flex items-center gap-1 w-max">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Rough Cut
+                                <span className="px-2 py-0.5 rounded-[3px] text-[10px] bg-[#1591DC]/10 text-[#1591DC] font-bold border border-[#1591DC]/20 flex items-center gap-1 w-max">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#1591DC]" /> Rough Cut
                                 </span>
                               )}
                               {!isCompleted && !isInProgress && !isRoughCut && (
-                                <span className="px-2 py-0.5 rounded text-[10px] bg-slate-500/10 text-slate-400 font-bold border border-slate-500/20 flex items-center gap-1 w-max">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-500" /> {t.status || 'Pending'}
+                                <span className="px-2 py-0.5 rounded-[3px] text-[10px] bg-white/[0.06] text-[#9496a1] font-bold border border-white/[0.08] flex items-center gap-1 w-max">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#9496a1]" /> {t.status || 'Pending'}
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-3 text-right text-slate-400 font-mono">
+                            <td className="py-3 px-3 text-right text-[#9496a1] font-mono">
                               {t.internalDeadline || 'N/A'}
                             </td>
                           </tr>
@@ -647,13 +645,13 @@ export default function AnalyticsDashboard({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Widget 5: Digital VIP Cards Showcase (6 cols - Real Client Data) */}
-            <div className="lg:col-span-6 spatial-card p-6">
+            <div className="lg:col-span-6 spatial-card p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-extrabold text-white uppercase tracking-wider font-mono flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-blue-500" />
+                  <CreditCard className="w-4 h-4 text-[#1591DC]" />
                   TOP VIP CLIENT CARDS
                 </h3>
-                <span className="text-[10px] font-mono text-blue-400 font-bold">
+                <span className="text-[10px] font-mono text-[#1591DC] font-bold">
                   {clientAnalytics.length} Partner Records
                 </span>
               </div>
@@ -665,27 +663,27 @@ export default function AnalyticsDashboard({
                   return (
                     <div 
                       key={client.id}
-                      className={`p-4 rounded-[6px] border relative overflow-hidden flex flex-col justify-between h-32 shadow-xl ${
+                      className={`p-4 rounded-[6px] border relative overflow-hidden flex flex-col justify-between h-32 shadow-lg ${
                         isTop1 
-                          ? 'bg-gradient-to-br from-blue-900/60 via-blue-950/80 to-black border-blue-500/40'
-                          : 'bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border-white/15'
+                          ? 'bg-[#0b0c10] border-[#1591DC]/40' 
+                          : 'bg-[#0b0c10] border-white/[0.08]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase border ${
                           isTop1
-                            ? 'bg-blue-600/30 text-blue-400 border-blue-500/30'
-                            : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                            ? 'bg-[#1591DC]/20 text-[#1591DC] border-[#1591DC]/30'
+                            : 'bg-white/[0.06] text-[#EDEDF3] border-white/[0.08]'
                         }`}>
                           {client.tier.toUpperCase()} VIP
                         </span>
-                        <Crown className={`w-4 h-4 ${isTop1 ? 'text-blue-400' : 'text-amber-400'}`} />
+                        <Crown className={`w-4 h-4 ${isTop1 ? 'text-[#1591DC]' : 'text-amber-400'}`} />
                       </div>
                       <div>
-                        <div className="text-xs font-black text-white font-sans truncate">{client.name}</div>
-                        <div className="text-[10px] font-mono text-slate-400 uppercase mt-0.5">Total Spend: {formatMoney(client.totalPay)}</div>
+                        <div className="text-xs font-bold text-white font-haas truncate">{client.name}</div>
+                        <div className="text-[10px] font-mono text-[#9496a1] uppercase mt-0.5">Total Spend: {formatMoney(client.totalPay)}</div>
                       </div>
-                      <div className="text-[9px] font-mono text-slate-400 tracking-wider flex items-center justify-between">
+                      <div className="text-[9px] font-mono text-[#9496a1] tracking-wider flex items-center justify-between">
                         <span>{client.taskCount} Video Tasks</span>
                         <span className="text-emerald-400 font-bold">Yield: +{formatMoney(client.netYield)}</span>
                       </div>
@@ -694,16 +692,16 @@ export default function AnalyticsDashboard({
                 })}
 
                 {clientAnalytics.length === 0 && (
-                  <div className="col-span-2 p-4 bg-black/40 rounded-[6px] border border-white/10 flex flex-col justify-center items-center text-center h-32">
-                    <Users className="w-5 h-5 text-slate-600 mb-1" />
-                    <span className="text-xs text-slate-400 font-mono">Chưa có dữ liệu Khách Hàng VIP</span>
+                  <div className="col-span-2 p-4 bg-[#0b0c10] rounded-[6px] border border-white/[0.08] flex flex-col justify-center items-center text-center h-32">
+                    <Users className="w-5 h-5 text-[#9496a1] mb-1" />
+                    <span className="text-xs text-[#9496a1] font-mono">Chưa có dữ liệu Khách Hàng VIP</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* VIP Tier Share Breakdown (6 cols) */}
-            <div className="lg:col-span-6 spatial-card p-6">
+            <div className="lg:col-span-6 spatial-card p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px]">
               <h3 className="text-xs font-extrabold text-white uppercase tracking-wider flex items-center gap-2 mb-4 font-haas">
                 <Crown className="w-4 h-4 text-amber-400" />
                 CƠ CẤU PHÂN HẠNG VIP CLIENTS
@@ -711,25 +709,25 @@ export default function AnalyticsDashboard({
 
               <div className="space-y-3">
                 {tierDistribution.length === 0 ? (
-                  <div className="text-center py-6 text-slate-500 text-xs font-mono">Chưa có dữ liệu phân hạng.</div>
+                  <div className="text-center py-6 text-[#9496a1] text-xs font-mono">Chưa có dữ liệu phân hạng.</div>
                 ) : (
                   tierDistribution.map(([tierName, data]) => {
                     const totalRev = grossYield || 1;
                     const percentage = Math.round((data.totalPay / totalRev) * 100);
 
                     return (
-                      <div key={tierName} className="p-3 bg-white/[0.02] rounded-[6px] border border-white/10">
+                      <div key={tierName} className="p-3 bg-[#0b0c10] rounded-[4px] border border-white/[0.08]">
                         <div className="flex items-center justify-between text-xs mb-1.5 font-mono">
                           <span className="font-bold text-white uppercase text-[11px]">{tierName}</span>
-                          <span className="text-blue-400 font-bold">{formatMoney(data.totalPay)} ({percentage}%)</span>
+                          <span className="text-[#1591DC] font-bold">{formatMoney(data.totalPay)} ({percentage}%)</span>
                         </div>
-                        <div className="h-2 bg-black/80 rounded-[2px] overflow-hidden mb-1">
+                        <div className="h-1.5 bg-white/[0.06] rounded-[2px] overflow-hidden mb-1">
                           <div 
-                            className="h-full bg-blue-600 rounded-[2px]"
+                            className="h-full bg-[#1591DC] rounded-[2px]"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
-                        <span className="text-[10px] text-slate-400 font-mono">{data.count} đối tác thuộc nhóm</span>
+                        <span className="text-[10px] text-[#9496a1] font-mono">{data.count} đối tác thuộc nhóm</span>
                       </div>
                     );
                   })
@@ -740,19 +738,19 @@ export default function AnalyticsDashboard({
           </div>
 
           {/* Bottom Leaderboard Table */}
-          <div className="spatial-card p-6">
+          <div className="spatial-card p-6 bg-[#12141a] border border-white/[0.08] rounded-[6px]">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-extrabold text-white uppercase tracking-wider flex items-center gap-2 font-haas">
-                <Award className="w-4 h-4 text-blue-500" />
+                <Award className="w-4 h-4 text-[#1591DC]" />
                 TOP REVENUE PARTNERS & CLIENT LEADERBOARD
               </h3>
-              <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Real-time Data</span>
+              <span className="text-[10px] text-[#9496a1] font-mono uppercase tracking-widest">Real-time Data</span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-white/10 text-slate-400 uppercase text-[10px] tracking-widest">
+                  <tr className="border-b border-white/[0.08] text-[#9496a1] uppercase text-[10px] tracking-widest">
                     <th className="py-3 px-4">Rank</th>
                     <th className="py-3 px-4">Client Partner Name</th>
                     <th className="py-3 px-4">VIP Tier</th>
@@ -761,17 +759,17 @@ export default function AnalyticsDashboard({
                     <th className="py-3 px-4 text-right">Net Yield</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-white/[0.06]">
                   {clientAnalytics.map((c, idx) => (
                     <tr key={c.id} className="hover:bg-white/[0.03] transition-colors">
-                      <td className="py-3 px-4 font-bold text-blue-400">#{idx + 1}</td>
-                      <td className="py-3 px-4 font-sans font-extrabold text-white">{c.name}</td>
+                      <td className="py-3 px-4 font-bold text-[#1591DC]">#{idx + 1}</td>
+                      <td className="py-3 px-4 font-haas font-bold text-white">{c.name}</td>
                       <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded text-[10px] bg-white/10 text-slate-300 font-semibold uppercase">
+                        <span className="px-2 py-0.5 rounded-[3px] text-[10px] bg-white/[0.06] text-[#EDEDF3] font-semibold uppercase border border-white/[0.08]">
                           {c.tier}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-slate-400">{c.taskCount} tasks</td>
+                      <td className="py-3 px-4 text-[#9496a1]">{c.taskCount} tasks</td>
                       <td className="py-3 px-4 text-white font-bold">{formatMoney(c.totalPay)}</td>
                       <td className="py-3 px-4 text-right font-bold text-emerald-400">+{formatMoney(c.netYield)}</td>
                     </tr>

@@ -253,42 +253,40 @@ export default function GanttTimeline({
         }
       });
     }
-
-    return result;
-  }, [sortedAndFilteredTasks, groupBy, staff, clients]);
+}, [sortedAndFilteredTasks, groupBy, staff, clients]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-haas">
       
       {/* View Header & Toggles */}
-      <div className="flex flex-col gap-4 bg-zinc-950 border border-zinc-900 p-4 rounded-none">
+      <div className="flex flex-col gap-4 bg-[#12141a] border border-white/[0.08] p-5 rounded-[6px]">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h2 className="text-sm font-black tracking-widest text-zinc-100 uppercase flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#F97316] animate-pulse" />
+            <h2 className="text-sm font-bold tracking-tight text-white uppercase flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#1591DC]" />
               TIMELINE WORKSPACE (GANTT)
             </h2>
-            <p className="text-[10px] text-zinc-500 font-mono uppercase mt-1">
-              Giao diện trực quan hóa tiến độ & điều chỉnh Deadline cho {monthName} {year}
+            <p className="text-[10px] text-[#9496a1] font-mono uppercase mt-0.5 tracking-wider">
+              Visualized Production Schedule & Deadline Matrix for {monthName} {year}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 font-mono text-[10px]">
             {/* Scale selection */}
-            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
-              <span className="text-zinc-500 font-bold px-2 uppercase text-[9px]">Chia tỉ lệ:</span>
+            <div className="flex items-center gap-1 bg-[#0b0c10] p-0.5 border border-white/[0.08] rounded-[6px]">
+              <span className="text-[#9496a1] font-bold px-2 uppercase text-[9px]">Chia tỉ lệ:</span>
               <button
                 onClick={() => setScale('day')}
-                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
-                  scale === 'day' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
+                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all rounded-[4px] ${
+                  scale === 'day' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
                 }`}
               >
                 Cận Cảnh (Ngày)
               </button>
               <button
                 onClick={() => setScale('week')}
-                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all ${
-                  scale === 'week' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
+                className={`px-3 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all rounded-[4px] ${
+                  scale === 'week' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
                 }`}
               >
                 Tổng Quan (Tuần)
@@ -297,8 +295,8 @@ export default function GanttTimeline({
           </div>
         </div>
 
-        {/* Dynamic Filters cluster (Scientific details) */}
-        <div className="border-t border-zinc-900 pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[10px] font-mono">
+        {/* Dynamic Filters cluster */}
+        <div className="border-t border-white/[0.08] pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[10px] font-mono">
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             {/* Search Input */}
             <div className="relative flex-1 md:flex-initial">
@@ -307,12 +305,12 @@ export default function GanttTimeline({
                 placeholder="Tìm kiếm task, editor, client..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full md:w-56 px-2.5 py-1.5 bg-zinc-900 text-zinc-100 font-mono text-xs border border-zinc-800 rounded-sm focus:outline-none focus:border-[#F97316] placeholder-zinc-600"
+                className="w-full md:w-56 px-2.5 py-1.5 bg-[#0b0c10] text-[#ededf3] font-mono text-xs border border-white/[0.08] rounded-[6px] focus:outline-none focus:border-[#1591DC] placeholder-[#4b5563]"
               />
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2 top-1.5 text-zinc-500 hover:text-white"
+                  className="absolute right-2 top-1.5 text-[#9496a1] hover:text-white"
                 >
                   ✕
                 </button>
@@ -320,69 +318,68 @@ export default function GanttTimeline({
             </div>
 
             {/* Status Filter */}
-            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
-              <span className="text-zinc-500 px-2 font-bold uppercase text-[9px]">Trạng thái:</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#9496a1] uppercase">Trạng thái:</span>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-transparent text-zinc-300 font-mono text-[10px] py-1 px-1 outline-none cursor-pointer"
+                className="bg-[#0b0c10] text-[#ededf3] px-2 py-1 border border-white/[0.08] rounded-[6px] cursor-pointer focus:outline-none focus:border-[#1591DC]"
               >
-                <option value="all" className="bg-zinc-950">Tất cả</option>
-                <option value="Unassigned" className="bg-zinc-950">Unassigned</option>
-                <option value="Rough Cut" className="bg-zinc-950">Rough Cut</option>
-                <option value="Final Polish" className="bg-zinc-950">Final Polish</option>
-                <option value="Client Review" className="bg-zinc-950">Client Review</option>
-                <option value="Approved" className="bg-zinc-950">Approved</option>
+                <option value="all">Tất cả</option>
+                <option value="Unassigned">Chưa giao</option>
+                <option value="Rough Cut">Rough Cut</option>
+                <option value="Final Polish">Final Polish</option>
+                <option value="Client Review">Client Review</option>
+                <option value="Approved">Approved</option>
               </select>
             </div>
 
-            {/* Sort Filter */}
-            <div className="flex items-center gap-1.5 bg-zinc-900/60 p-0.5 border border-zinc-850">
-              <span className="text-zinc-500 px-2 font-bold uppercase text-[9px]">Sắp xếp:</span>
+            {/* Sort order */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#9496a1] uppercase">Sắp xếp:</span>
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortByOption)}
-                className="bg-transparent text-zinc-300 font-mono text-[10px] py-1 px-1 outline-none cursor-pointer"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as any)}
+                className="bg-[#0b0c10] text-[#ededf3] px-2 py-1 border border-white/[0.08] rounded-[6px] cursor-pointer focus:outline-none focus:border-[#1591DC]"
               >
-                <option value="deadline-asc" className="bg-zinc-950">Deadline (Tăng dần)</option>
-                <option value="deadline-desc" className="bg-zinc-950">Deadline (Giảm dần)</option>
-                <option value="value-desc" className="bg-zinc-950">Giá trị (Giảm dần)</option>
-                <option value="title-asc" className="bg-zinc-950">Tên Task (A-Z)</option>
+                <option value="deadline-asc">Deadline (Tăng dần)</option>
+                <option value="deadline-desc">Deadline (Giảm dần)</option>
+                <option value="title-asc">Tên Task (A-Z)</option>
               </select>
             </div>
           </div>
 
           {/* Group by selector */}
-          <div className="flex items-center gap-1 bg-zinc-900/60 p-0.5 border border-zinc-850 w-full md:w-auto overflow-x-auto">
-            <span className="text-zinc-500 font-bold px-2 uppercase shrink-0 text-[9px]">Gom nhóm:</span>
+          <div className="flex items-center gap-1 bg-[#0b0c10] p-0.5 border border-white/[0.08] rounded-[6px] w-full md:w-auto overflow-x-auto">
+            <span className="text-[#9496a1] font-bold px-2 uppercase shrink-0 text-[9px]">Gom nhóm:</span>
             <button
               onClick={() => setGroupBy('none')}
-              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
-                groupBy === 'none' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
+              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 rounded-[4px] ${
+                groupBy === 'none' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
               }`}
             >
               Phẳng
             </button>
             <button
               onClick={() => setGroupBy('staff')}
-              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
-                groupBy === 'staff' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
+              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 rounded-[4px] ${
+                groupBy === 'staff' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
               }`}
             >
               Theo Editor
             </button>
             <button
               onClick={() => setGroupBy('client')}
-              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
-                groupBy === 'client' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
+              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 rounded-[4px] ${
+                groupBy === 'client' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
               }`}
             >
               Theo Client
             </button>
             <button
               onClick={() => setGroupBy('status')}
-              className={`px-2 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 ${
-                groupBy === 'status' ? 'bg-[#F97316] text-white' : 'text-zinc-400 hover:text-white'
+              className={`px-2.5 py-1 text-[9px] uppercase font-bold cursor-pointer transition-all shrink-0 rounded-[4px] ${
+                groupBy === 'status' ? 'bg-[#1591DC] text-white shadow-[0_0_8px_rgba(21,145,220,0.3)]' : 'text-[#9496a1] hover:text-white'
               }`}
             >
               Theo Trạng Thái
@@ -392,7 +389,7 @@ export default function GanttTimeline({
       </div>
 
       {/* Grid Layout Canvas */}
-      <div className="bg-zinc-950 border border-zinc-900 overflow-x-auto">
+      <div className="bg-[#12141a] border border-white/[0.08] rounded-[6px] overflow-x-auto">
         <div className="min-w-[1000px] select-none">
           
           {/* Scale 1: DAY RESOLUTION */}
@@ -415,7 +412,7 @@ export default function GanttTimeline({
                       <div 
                         key={day} 
                         className={`py-3 flex flex-col justify-center items-center ${
-                          isToday ? 'bg-[#F97316]/10 text-[#F97316]' : isWeekend ? 'bg-zinc-900/30 text-zinc-600' : ''
+                          isToday ? 'bg-[#1591DC]/15 text-[#1591DC] font-bold' : isWeekend ? 'bg-zinc-900/30 text-zinc-600' : ''
                         }`}
                         style={{ gridColumn: `span 1 / span 1` }}
                       >
@@ -436,8 +433,8 @@ export default function GanttTimeline({
                     
                     {/* Partition Header */}
                     {groupBy !== 'none' && (
-                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#F97316] font-mono uppercase tracking-wider flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#F97316] shadow-[0_0_8px_#F97316]"></div>
+                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#1591DC] shadow-[0_0_8px_#1591DC]"></div>
                         {group.name} ({group.tasks.length} videos)
                       </div>
                     )}
@@ -580,8 +577,8 @@ export default function GanttTimeline({
                     
                     {/* Group Header */}
                     {groupBy !== 'none' && (
-                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#F97316] font-mono uppercase tracking-wider flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#F97316]"></div>
+                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#1591DC]"></div>
                         {group.name}
                       </div>
                     )}

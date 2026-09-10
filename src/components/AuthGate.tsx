@@ -139,41 +139,35 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
   };
 
   return (
-    <div id="auth-gate-container" className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl">
+    <div id="auth-gate-container" className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0c10]/95 backdrop-blur-xl">
       <div 
         id="auth-card"
-        className="relative w-full max-w-sm p-6 bg-[#09090b] border-2 border-[#3b82f6] rounded-sm shadow-[0_0_20px_rgba(59,130,246,0.15)] text-center mx-4"
+        className="relative w-full max-w-sm p-8 bg-[#12141a] border border-white/[0.08] rounded-[6px] shadow-[0_0_50px_rgba(0,0,0,0.8)] text-center mx-4 font-haas"
       >
-        {/* Decorative corner lines for tech cyberpunk style */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#06b6d4]"></div>
-        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#06b6d4]"></div>
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#06b6d4]"></div>
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#06b6d4]"></div>
-
-        <div className="mb-3 inline-flex p-3 rounded-sm bg-blue-950/40 border border-[#3b82f6]/30 justify-center items-center text-[#3b82f6]">
-          <ShieldCheck className="w-10 h-10" />
+        <div className="mb-4 inline-flex p-3 rounded-[6px] bg-[#1591DC]/10 border border-[#1591DC]/20 justify-center items-center text-[#1591DC] shadow-[0_0_15px_rgba(21,145,220,0.2)]">
+          <ShieldCheck className="w-8 h-8" />
         </div>
 
-        <h1 className="text-xl font-black tracking-tighter text-white font-sans">
+        <h1 className="text-xl font-bold tracking-tight text-white font-haas uppercase">
           DEEP FOCUS OS
         </h1>
-        <p className="text-[10px] font-mono text-[#71717a] mt-0.5 uppercase tracking-widest">
-          Cloud Authentication Protocol
+        <p className="text-[10px] font-mono text-[#9496a1] mt-0.5 uppercase tracking-widest">
+          High-Retention Studio Auth
         </p>
 
         {/* Auth Mode Tabs */}
-        <div className="flex justify-center gap-6 mt-4 border-b border-[#1e293b] pb-2 text-[11px] font-mono">
+        <div className="flex justify-center gap-6 mt-5 border-b border-white/[0.08] pb-2 text-[11px] font-mono">
           <button 
             type="button"
             onClick={() => { setIsSignUp(false); setError(''); }}
-            className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${!isSignUp ? 'border-b-2 border-[#3b82f6] text-white' : 'text-[#71717a] hover:text-zinc-300'}`}
+            className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${!isSignUp ? 'border-b-2 border-[#1591DC] text-white' : 'text-[#9496a1] hover:text-white'}`}
           >
             Sign In
           </button>
           <button 
             type="button"
             onClick={() => { setIsSignUp(true); setError(''); }}
-            className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${isSignUp ? 'border-b-2 border-[#3b82f6] text-white' : 'text-[#71717a] hover:text-zinc-300'}`}
+            className={`pb-1.5 uppercase tracking-wider font-bold transition-all cursor-pointer ${isSignUp ? 'border-b-2 border-[#1591DC] text-white' : 'text-[#9496a1] hover:text-white'}`}
           >
             Sign Up
           </button>
@@ -181,11 +175,11 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4 text-left">
           <div>
-            <label className="block text-[10px] font-mono text-[#71717a] uppercase mb-1.5">
+            <label className="block text-[10px] font-mono text-[#9496a1] uppercase mb-1.5 tracking-wider">
               Account Email
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-3 text-[#71717a]">
+              <span className="absolute left-3 top-3 text-[#9496a1]">
                 <Mail className="w-3.5 h-3.5" />
               </span>
               <input
@@ -194,7 +188,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full pl-9 pr-3 py-2 bg-black text-[#f4f4f5] font-mono placeholder-[#3b3b3b] border border-[#1e293b] rounded-sm focus:outline-none focus:border-[#3b82f6] text-xs"
+                className="w-full pl-9 pr-3 py-2 bg-[#0b0c10] text-[#ededf3] font-mono placeholder-[#4b5563] border border-white/[0.08] rounded-[6px] focus:outline-none focus:border-[#1591DC] text-xs"
                 disabled={isLoading}
                 required
               />
@@ -202,11 +196,11 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
           </div>
 
           <div>
-            <label className="block text-[10px] font-mono text-[#71717a] uppercase mb-1.5">
+            <label className="block text-[10px] font-mono text-[#9496a1] uppercase mb-1.5 tracking-wider">
               Password
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-3 text-[#71717a]">
+              <span className="absolute left-3 top-3 text-[#9496a1]">
                 <Lock className="w-3.5 h-3.5" />
               </span>
               <input
@@ -215,14 +209,14 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-9 py-2 bg-black text-[#f4f4f5] font-mono placeholder-[#3b3b3b] border border-[#1e293b] rounded-sm focus:outline-none focus:border-[#3b82f6] text-xs tracking-widest"
+                className="w-full pl-9 pr-9 py-2 bg-[#0b0c10] text-[#ededf3] font-mono placeholder-[#4b5563] border border-white/[0.08] rounded-[6px] focus:outline-none focus:border-[#1591DC] text-xs tracking-widest"
                 disabled={isLoading}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-[#71717a] hover:text-[#f4f4f5]"
+                className="absolute right-3 top-3 text-[#9496a1] hover:text-white"
               >
                 {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               </button>
@@ -230,7 +224,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 p-2 bg-red-950/20 border border-red-900/50 rounded-sm text-red-400 text-[11px] font-mono leading-normal">
+            <div className="flex items-center gap-2 p-2.5 bg-red-950/30 border border-red-900/50 rounded-[6px] text-red-400 text-[11px] font-mono leading-normal">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{error}</span>
             </div>
@@ -240,7 +234,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             id="auth-submit-btn"
             type="submit"
             disabled={isLoading}
-            className="w-full py-2 bg-[#3b82f6] hover:bg-blue-600 active:bg-blue-700 disabled:bg-blue-900/50 text-white font-mono font-bold text-xs uppercase rounded-sm tracking-wider transition-colors shadow-[0_0_15px_rgba(59,130,246,0.3)] cursor-pointer flex justify-center items-center gap-2"
+            className="w-full py-2.5 bg-[#1591DC] hover:bg-[#0e7bc0] active:scale-[0.99] disabled:opacity-50 text-white font-mono font-bold text-xs uppercase rounded-[6px] tracking-wider transition-all shadow-[0_0_15px_rgba(21,145,220,0.35)] cursor-pointer flex justify-center items-center gap-2 mt-2"
           >
             {isLoading ? (
               <>
@@ -255,9 +249,8 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
           </button>
         </form>
 
-        <div className="mt-8 pt-4 border-t border-[#1e293b]/50 text-[10px] font-mono text-[#71717a]">
+        <div className="mt-6 pt-4 border-t border-white/[0.08] text-[10px] font-mono text-[#9496a1]">
           <p>AUTHORIZED CLOUD DATA SYNCHRONIZATION</p>
-          <p className="mt-1 text-[#3b82f6]/60">ADMIN ACCOUNT DETECTED & AUTOMATED SEED</p>
         </div>
       </div>
     </div>
