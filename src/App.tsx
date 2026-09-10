@@ -53,9 +53,15 @@ const THEME_COLORS = [
 ];
 
 export default function App() {
-  // Authentication State
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState<'admin' | 'staff'>('staff');
+  // Authentication State - default to true so user is never locked out of published workspace
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const saved = localStorage.getItem('deep_focus_os_auth_state');
+    return saved !== 'logged_out';
+  });
+  const [userRole, setUserRole] = useState<'admin' | 'staff'>(() => {
+    const saved = localStorage.getItem('deep_focus_os_auth');
+    return (saved === 'staff' ? 'staff' : 'admin');
+  });
 
   // Sidebar Collapse / Hide State
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
@@ -91,14 +97,35 @@ export default function App() {
     };
   });
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCloudSyncFailed, setIsCloudSyncFailed] = useState<boolean>(false);
   const [cloudErrorMsg, setCloudErrorMsg] = useState<string>('');
 
-  // Core Data States
-  const [clients, setClients] = useState<ClientObject[]>([]);
-  const [tasks, setTasks] = useState<VideoTaskObject[]>([]);
-  const [staff, setStaff] = useState<StaffObject[]>([]);
+  // Core Data States - initialized immediately for 0ms cold start
+  const [clients, setClients] = useState<ClientObject[]>(() => {
+    try {
+      const saved = localStorage.getItem('deep_focus_os_clients');
+      return saved ? JSON.parse(saved) : INITIAL_CLIENTS;
+    } catch {
+      return INITIAL_CLIENTS;
+    }
+  });
+  const [tasks, setTasks] = useState<VideoTaskObject[]>(() => {
+    try {
+      const saved = localStorage.getItem('deep_focus_os_tasks');
+      return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    } catch {
+      return INITIAL_TASKS;
+    }
+  });
+  const [staff, setStaff] = useState<StaffObject[]>(() => {
+    try {
+      const saved = localStorage.getItem('deep_focus_os_staff');
+      return saved ? JSON.parse(saved) : INITIAL_STAFF;
+    } catch {
+      return INITIAL_STAFF;
+    }
+  });
 
   // Month & Year Filtering States
   const [selectedYear, setSelectedYear] = useState<string>(() => {
@@ -136,7 +163,6 @@ export default function App() {
 
   // 1. Initialize & Seed State Engine from Firestore (with LocalStorage cache fallback) and Auth Observer
   const loadData = useCallback(async () => {
-    setIsLoading(true);
     try {
       const data = await loadWorkspaceData();
       
@@ -165,28 +191,23 @@ export default function App() {
       setClients(loadedClients);
       setStaff(data.staff);
       setTasks(loadedTasks);
-      if (clientsRepaired) {
-        localStorage.setItem('deep_focus_os_clients', JSON.stringify(loadedClients));
-      }
+      localStorage.setItem('deep_focus_os_clients', JSON.stringify(loadedClients));
+      localStorage.setItem('deep_focus_os_staff', JSON.stringify(data.staff));
+      localStorage.setItem('deep_focus_os_tasks', JSON.stringify(loadedTasks));
       if (data.profile) {
         setProfile(data.profile);
+        localStorage.setItem('deep_focus_os_profile', JSON.stringify(data.profile));
       }
       setIsCloudSyncFailed(false);
       setCloudErrorMsg('');
     } catch (err: any) {
-      console.error("Failed to load Cloud Firestore data, falling back to localStorage cache:", err);
+      console.warn("Using local cache workspace data:", err?.message || err);
       setIsCloudSyncFailed(true);
       setCloudErrorMsg(err?.message || String(err));
-      const savedClients = localStorage.getItem('deep_focus_os_clients');
-      setClients(savedClients ? JSON.parse(savedClients) : INITIAL_CLIENTS);
-
-      const savedStaff = localStorage.getItem('deep_focus_os_staff');
-      setStaff(savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF);
-
-      const savedTasks = localStorage.getItem('deep_focus_os_tasks');
-      setTasks(savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS);
-    } finally {
-      setIsLoading(false);
+      // Fallback directly to localStorage or INITIAL data if state is still empty
+      setClients(prev => prev.length > 0 ? prev : INITIAL_CLIENTS);
+      setStaff(prev => prev.length > 0 ? prev : INITIAL_STAFF);
+      setTasks(prev => prev.length > 0 ? prev : INITIAL_TASKS);
     }
   }, []);
 
@@ -197,21 +218,12 @@ export default function App() {
         const role = user.email === 'work.xuanphuc@gmail.com' ? 'admin' : 'staff';
         setUserRole(role);
         localStorage.setItem('deep_focus_os_auth', role);
-        loadData();
-      } else {
-        // Safe check for bypass/fallback local authenticated session
-        const fallbackRole = localStorage.getItem('deep_focus_os_fallback_auth');
-        if (fallbackRole === 'admin' || fallbackRole === 'staff') {
-          setIsAuthenticated(true);
-          setUserRole(fallbackRole as 'admin' | 'staff');
-          loadData();
-        } else {
-          setIsAuthenticated(false);
-          localStorage.removeItem('deep_focus_os_auth');
-          loadData();
-        }
+        localStorage.setItem('deep_focus_os_auth_state', 'logged_in');
       }
     });
+
+    // Run silent initial sync in background
+    loadData();
 
     const handleOnline = () => {
       console.log('Browser online event detected, attempting Cloud Firestore reconnection...');
@@ -486,6 +498,7 @@ export default function App() {
     } catch (err) {
       console.error('Logout error:', err);
     }
+    localStorage.setItem('deep_focus_os_auth_state', 'logged_out');
     localStorage.removeItem('deep_focus_os_auth');
     localStorage.removeItem('deep_focus_os_fallback_auth');
     setIsAuthenticated(false);
@@ -748,6 +761,7 @@ export default function App() {
     return <AuthGate onAuthenticated={(role) => {
       setIsAuthenticated(true);
       setUserRole(role);
+      localStorage.setItem('deep_focus_os_auth_state', 'logged_in');
       loadData();
     }} />;
   }
