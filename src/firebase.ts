@@ -15,27 +15,27 @@ import { UserProfile } from './components/ProfileSettingsModal';
 import { INITIAL_CLIENTS, INITIAL_STAFF, INITIAL_TASKS } from './initialData';
 
 const firebaseConfig = {
-  apiKey: firebaseConfigJson.apiKey || "AIzaSyB5nG6cDcxnTMqvT-OXJU8PDsjKy4CLBd0",
-  authDomain: firebaseConfigJson.authDomain || "my-sales-crm-5bfad.firebaseapp.com",
-  projectId: firebaseConfigJson.projectId || "my-sales-crm-5bfad",
-  storageBucket: firebaseConfigJson.storageBucket || "my-sales-crm-5bfad.firebasestorage.app",
-  messagingSenderId: firebaseConfigJson.messagingSenderId || "124927014516",
-  appId: firebaseConfigJson.appId || "1:124927014516:web:b49a27a1922f26a0510321"
+  apiKey: firebaseConfigJson.apiKey || "AIzaSyAD7_8-bDvGEjfFO4jM5ejdMj0dgQvml1o",
+  authDomain: firebaseConfigJson.authDomain || "gen-lang-client-0696138502.firebaseapp.com",
+  projectId: firebaseConfigJson.projectId || "gen-lang-client-0696138502",
+  storageBucket: firebaseConfigJson.storageBucket || "gen-lang-client-0696138502.firebasestorage.app",
+  messagingSenderId: firebaseConfigJson.messagingSenderId || "496717945327",
+  appId: firebaseConfigJson.appId || "1:496717945327:web:0e07107f9440aa1481be1a"
 };
 
 const app = initializeApp(firebaseConfig);
 
-// Connect to default Firestore Database or custom DB ID if specified
-let firestoreDb: any;
-try {
-  const customDbId = (firebaseConfigJson as any)?.firestoreDatabaseId;
-  firestoreDb = customDbId ? getFirestore(app, customDbId) : getFirestore(app);
-} catch (e) {
-  firestoreDb = getFirestore(app);
-}
+// Active Google Cloud Firestore Database ID with permanent read/write access
+const customDbId = (firebaseConfigJson as any)?.firestoreDatabaseId || "ai-studio-phttrinbnthn-8807863b-b799-48b6-9223-f8e98883d044";
 
-export const db = firestoreDb;
+export const db = getFirestore(app, customDbId);
 export const auth = getAuth(app);
+
+// Dedicated namespace collections for Deep Focus OS CRM
+export const COLL_CLIENTS = 'crm_clients';
+export const COLL_STAFF = 'crm_staff';
+export const COLL_TASKS = 'crm_tasks';
+export const COLL_PROFILE = 'crm_profile';
 
 // Enable IndexedDB persistence for offline & background sync
 try {
@@ -44,20 +44,19 @@ try {
 
 /**
  * Loads all data from Firestore Cloud.
- * First attempts to query Google AI Studio's Firestore Database.
- * If network hangs or times out (> 4s), it gracefully falls back to local data cache.
+ * If Cloud database is empty, automatically restores / seeds from user's localStorage (or INITIAL data).
  */
 export async function loadWorkspaceData() {
-  const timeoutMs = 2500;
+  const timeoutMs = 8000;
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('Cloud Firestore connection timeout')), timeoutMs)
   );
 
   const fetchDataPromise = (async () => {
-    const clientsSnap = await getDocs(collection(db, 'clients'));
-    const staffSnap = await getDocs(collection(db, 'staff'));
-    const tasksSnap = await getDocs(collection(db, 'tasks'));
-    const profileDocSnap = await getDoc(doc(db, 'profile', 'settings'));
+    const clientsSnap = await getDocs(collection(db, COLL_CLIENTS));
+    const staffSnap = await getDocs(collection(db, COLL_STAFF));
+    const tasksSnap = await getDocs(collection(db, COLL_TASKS));
+    const profileDocSnap = await getDoc(doc(db, COLL_PROFILE, 'settings'));
 
     let clients: ClientObject[] = [];
     let staff: StaffObject[] = [];
@@ -72,16 +71,41 @@ export async function loadWorkspaceData() {
       profile = profileDocSnap.data() as UserProfile;
     }
 
-    // Seed initial data to Cloud Firestore if database is brand new
+    // If Cloud Firestore is empty, preserve existing user data from localStorage
     if (clients.length === 0 && staff.length === 0 && tasks.length === 0) {
-      console.log('Cloud Firestore is empty. Seeding initial data to Cloud...');
-      const batch = writeBatch(db);
+      let localClients: ClientObject[] = [];
+      let localStaff: StaffObject[] = [];
+      let localTasks: VideoTaskObject[] = [];
+      try {
+        const sc = localStorage.getItem('deep_focus_os_clients');
+        if (sc) localClients = JSON.parse(sc);
+        const ss = localStorage.getItem('deep_focus_os_staff');
+        if (ss) localStaff = JSON.parse(ss);
+        const st = localStorage.getItem('deep_focus_os_tasks');
+        if (st) localTasks = JSON.parse(st);
+      } catch (e) {}
 
-      INITIAL_CLIENTS.forEach(c => {
-        batch.set(doc(db, 'clients', c.id), { displayName: c.displayName, tier: c.tier });
+      const seedClients = localClients.length > 0 ? localClients : INITIAL_CLIENTS;
+      const seedStaff = localStaff.length > 0 ? localStaff : INITIAL_STAFF;
+      const seedTasks = localTasks.length > 0 ? localTasks : INITIAL_TASKS;
+
+      console.log('Cloud Firestore is initializing. Seeding workspace data to Cloud...', {
+        clients: seedClients.length,
+        tasks: seedTasks.length
       });
 
-      INITIAL_STAFF.forEach(s => {
+      const batch = writeBatch(db);
+
+      seedClients.forEach(c => {
+        batch.set(doc(db, COLL_CLIENTS, c.id), { 
+          displayName: c.displayName, 
+          tier: c.tier,
+          ...(c.contractValue !== undefined ? { contractValue: c.contractValue } : {}),
+          ...(c.currency ? { currency: c.currency } : {})
+        });
+      });
+
+      seedStaff.forEach(s => {
         const data: any = {
           name: s.name,
           avatarUrl: s.avatarUrl,
@@ -91,23 +115,23 @@ export async function loadWorkspaceData() {
         };
         if (s.phone) data.phone = s.phone;
         if (s.role) data.role = s.role;
-        batch.set(doc(db, 'staff', s.id), data);
+        batch.set(doc(db, COLL_STAFF, s.id), data);
       });
 
-      INITIAL_TASKS.forEach(t => {
-        batch.set(doc(db, 'tasks', t.id), {
+      seedTasks.forEach(t => {
+        batch.set(doc(db, COLL_TASKS, t.id), {
           clientId: t.clientId,
           title: t.title,
-          rawFootageLink: t.rawFootageLink,
+          rawFootageLink: t.rawFootageLink || '',
           status: t.status,
           internalDeadline: t.internalDeadline,
           assignedEditorId: t.assignedEditorId,
-          notes: t.notes,
+          notes: t.notes || '',
           clientPay: t.clientPay,
           subPay: t.subPay,
           currency: t.currency || 'USD',
-          clientPaidStatus: t.clientPaidStatus,
-          subPaidStatus: t.subPaidStatus,
+          clientPaidStatus: t.clientPaidStatus || 'Unpaid',
+          subPaidStatus: t.subPaidStatus || 'Unpaid',
           roughCutUrl: t.roughCutUrl || '',
           finalUrl: t.finalUrl || ''
         });
@@ -115,9 +139,9 @@ export async function loadWorkspaceData() {
 
       await batch.commit();
 
-      clients = [...INITIAL_CLIENTS];
-      staff = [...INITIAL_STAFF];
-      tasks = [...INITIAL_TASKS];
+      clients = [...seedClients];
+      staff = [...seedStaff];
+      tasks = [...seedTasks];
     }
 
     return { clients, staff, tasks, profile };
@@ -135,7 +159,7 @@ export async function loadWorkspaceData() {
 // ---------------- CLIENT HELPERS ----------------
 export async function saveClient(client: ClientObject) {
   try {
-    const dRef = doc(db, 'clients', client.id);
+    const dRef = doc(db, COLL_CLIENTS, client.id);
     await setDoc(dRef, {
       displayName: client.displayName,
       tier: client.tier,
@@ -149,7 +173,7 @@ export async function saveClient(client: ClientObject) {
 
 export async function deleteClient(clientId: string) {
   try {
-    await deleteDoc(doc(db, 'clients', clientId));
+    await deleteDoc(doc(db, COLL_CLIENTS, clientId));
   } catch (err) {
     console.error('Error deleting client from Firestore:', err);
   }
@@ -158,7 +182,7 @@ export async function deleteClient(clientId: string) {
 // ---------------- STAFF HELPERS ----------------
 export async function saveStaff(staffMember: StaffObject) {
   try {
-    const dRef = doc(db, 'staff', staffMember.id);
+    const dRef = doc(db, COLL_STAFF, staffMember.id);
     const data: any = {
       name: staffMember.name,
       avatarUrl: staffMember.avatarUrl,
@@ -176,7 +200,7 @@ export async function saveStaff(staffMember: StaffObject) {
 
 export async function deleteStaff(staffId: string) {
   try {
-    await deleteDoc(doc(db, 'staff', staffId));
+    await deleteDoc(doc(db, COLL_STAFF, staffId));
   } catch (err) {
     console.error('Error deleting staff from Firestore:', err);
   }
@@ -185,7 +209,7 @@ export async function deleteStaff(staffId: string) {
 // ---------------- TASK HELPERS ----------------
 export async function saveTask(task: VideoTaskObject) {
   try {
-    const dRef = doc(db, 'tasks', task.id);
+    const dRef = doc(db, COLL_TASKS, task.id);
     await setDoc(dRef, {
       clientId: task.clientId,
       title: task.title,
@@ -209,7 +233,7 @@ export async function saveTask(task: VideoTaskObject) {
 
 export async function deleteTask(taskId: string) {
   try {
-    await deleteDoc(doc(db, 'tasks', taskId));
+    await deleteDoc(doc(db, COLL_TASKS, taskId));
   } catch (err) {
     console.error('Error deleting task from Firestore:', err);
   }
@@ -218,7 +242,7 @@ export async function deleteTask(taskId: string) {
 // ---------------- PROFILE HELPERS ----------------
 export async function saveProfile(profile: UserProfile) {
   try {
-    const dRef = doc(db, 'profile', 'settings');
+    const dRef = doc(db, COLL_PROFILE, 'settings');
     await setDoc(dRef, {
       name: profile.name,
       avatarUrl: profile.avatarUrl,
@@ -238,9 +262,9 @@ export async function saveProfile(profile: UserProfile) {
 export async function clearAllWorkspaceData(currentClients: ClientObject[], currentStaff: StaffObject[], currentTasks: VideoTaskObject[]) {
   try {
     const batch = writeBatch(db);
-    currentClients.forEach(c => batch.delete(doc(db, 'clients', c.id)));
-    currentStaff.forEach(s => batch.delete(doc(db, 'staff', s.id)));
-    currentTasks.forEach(t => batch.delete(doc(db, 'tasks', t.id)));
+    currentClients.forEach(c => batch.delete(doc(db, COLL_CLIENTS, c.id)));
+    currentStaff.forEach(s => batch.delete(doc(db, COLL_STAFF, s.id)));
+    currentTasks.forEach(t => batch.delete(doc(db, COLL_TASKS, t.id)));
     await batch.commit();
   } catch (err) {
     console.error('Error clearing workspace data from Firestore:', err);
@@ -251,12 +275,12 @@ export async function clearAllWorkspaceData(currentClients: ClientObject[], curr
 export async function resetWorkspaceDataToDefault(currentClients: ClientObject[], currentStaff: StaffObject[], currentTasks: VideoTaskObject[]) {
   try {
     const batch = writeBatch(db);
-    currentClients.forEach(c => batch.delete(doc(db, 'clients', c.id)));
-    currentStaff.forEach(s => batch.delete(doc(db, 'staff', s.id)));
-    currentTasks.forEach(t => batch.delete(doc(db, 'tasks', t.id)));
+    currentClients.forEach(c => batch.delete(doc(db, COLL_CLIENTS, c.id)));
+    currentStaff.forEach(s => batch.delete(doc(db, COLL_STAFF, s.id)));
+    currentTasks.forEach(t => batch.delete(doc(db, COLL_TASKS, t.id)));
 
     INITIAL_CLIENTS.forEach(c => {
-      batch.set(doc(db, 'clients', c.id), { displayName: c.displayName, tier: c.tier });
+      batch.set(doc(db, COLL_CLIENTS, c.id), { displayName: c.displayName, tier: c.tier });
     });
     INITIAL_STAFF.forEach(s => {
       const data: any = {
@@ -268,10 +292,10 @@ export async function resetWorkspaceDataToDefault(currentClients: ClientObject[]
       };
       if (s.phone) data.phone = s.phone;
       if (s.role) data.role = s.role;
-      batch.set(doc(db, 'staff', s.id), data);
+      batch.set(doc(db, COLL_STAFF, s.id), data);
     });
     INITIAL_TASKS.forEach(t => {
-      batch.set(doc(db, 'tasks', t.id), {
+      batch.set(doc(db, COLL_TASKS, t.id), {
         clientId: t.clientId,
         title: t.title,
         rawFootageLink: t.rawFootageLink,
@@ -281,6 +305,7 @@ export async function resetWorkspaceDataToDefault(currentClients: ClientObject[]
         notes: t.notes,
         clientPay: t.clientPay,
         subPay: t.subPay,
+        currency: t.currency || 'USD',
         clientPaidStatus: t.clientPaidStatus,
         subPaidStatus: t.subPaidStatus,
         roughCutUrl: t.roughCutUrl || '',
@@ -302,7 +327,7 @@ export async function uploadLocalDataToCloud(clients: ClientObject[], staff: Sta
 
     (clients || []).forEach(c => {
       if (c && c.id) {
-        batch.set(doc(db, 'clients', c.id), {
+        batch.set(doc(db, COLL_CLIENTS, c.id), {
           displayName: c.displayName,
           tier: c.tier,
           ...(c.contractValue !== undefined ? { contractValue: c.contractValue } : {}),
@@ -322,13 +347,13 @@ export async function uploadLocalDataToCloud(clients: ClientObject[], staff: Sta
         };
         if (s.phone) data.phone = s.phone;
         if (s.role) data.role = s.role;
-        batch.set(doc(db, 'staff', s.id), data);
+        batch.set(doc(db, COLL_STAFF, s.id), data);
       }
     });
 
     (tasks || []).forEach(t => {
       if (t && t.id) {
-        batch.set(doc(db, 'tasks', t.id), {
+        batch.set(doc(db, COLL_TASKS, t.id), {
           clientId: t.clientId,
           title: t.title,
           rawFootageLink: t.rawFootageLink || '',
@@ -348,7 +373,7 @@ export async function uploadLocalDataToCloud(clients: ClientObject[], staff: Sta
     });
 
     if (profile) {
-      batch.set(doc(db, 'profile', 'settings'), {
+      batch.set(doc(db, COLL_PROFILE, 'settings'), {
         name: profile.name,
         avatarUrl: profile.avatarUrl,
         role: profile.role,

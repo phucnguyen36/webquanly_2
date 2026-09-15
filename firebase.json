@@ -1,6 +1,6 @@
 {
   "firestore": {
-    "databaseId": "ai-studio-deepfocusos-8d2a0c52-22d7-4199-af13-489c44897f8c",
+    "databaseId": "ai-studio-phttrinbnthn-8807863b-b799-48b6-9223-f8e98883d044",
     "rules": "firestore.rules",
     "edition": "ENTERPRISE",
     "dataAccessMode": "FIRESTORE_NATIVE"
