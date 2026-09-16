@@ -37,10 +37,11 @@ export default function AnalyticsDashboard({
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
 
   // Safe Financial Summary extractor
-  const grossYield = summary?.vaultGrossYield ?? summary?.grossRevenue ?? 0;
-  const payoutQueue = summary?.outsourcePayoutQueue ?? summary?.subEditorPayout ?? 0;
-  const netYieldVal = summary?.arbitrageNetYield ?? summary?.netProfit ?? 0;
-  const marginMargin = summary?.marginEfficiency ?? summary?.arbitrageEfficiency ?? 0;
+  const sAny = summary as any;
+  const grossYield = sAny?.vaultGrossYield ?? summary?.grossRevenue ?? 0;
+  const payoutQueue = sAny?.outsourcePayoutQueue ?? summary?.subEditorPayout ?? 0;
+  const netYieldVal = sAny?.arbitrageNetYield ?? summary?.netProfit ?? 0;
+  const marginMargin = sAny?.marginEfficiency ?? summary?.arbitrageEfficiency ?? 0;
 
   // Currency Formatter
   const formatMoney = (val: number | undefined | null) => {

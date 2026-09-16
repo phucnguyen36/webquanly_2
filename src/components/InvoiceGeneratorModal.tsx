@@ -23,7 +23,12 @@ const CURRENCY_SYMBOLS: Record<CurrencyCode, { symbol: string; prefix: boolean }
   CAD: { symbol: 'C$', prefix: true },
   SGD: { symbol: 'S$', prefix: true },
   JPY: { symbol: '¥', prefix: true },
-  VND: { symbol: ' ₫', prefix: false }
+  VND: { symbol: ' ₫', prefix: false },
+  THB: { symbol: '฿', prefix: true },
+  CHF: { symbol: 'CHF ', prefix: true },
+  HKD: { symbol: 'HK$', prefix: true },
+  CNY: { symbol: '¥', prefix: true },
+  KRW: { symbol: '₩', prefix: true }
 };
 
 export default function InvoiceGeneratorModal({

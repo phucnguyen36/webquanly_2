@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ClientObject, VideoTaskObject, StaffObject, TaskStatus, PaymentStatus, FinancialSummary } from './types';
+import { ClientObject, VideoTaskObject, StaffObject, TaskStatus, PaymentStatus, FinancialSummary, CurrencyCode, ClientTier } from './types';
 import { INITIAL_CLIENTS, INITIAL_STAFF, INITIAL_TASKS } from './initialData';
 
 import AuthGate from './components/AuthGate';
@@ -169,7 +169,7 @@ export default function App() {
       // Auto-repair missing clients from task clientId attributes if user deleted clients
       const loadedClients = [...(data.clients || [])];
       const loadedTasks = data.tasks || [];
-      const uniqueTaskClientIds = Array.from(new Set(loadedTasks.map(t => t.clientId))).filter(id => id && id !== 'unassigned');
+      const uniqueTaskClientIds = Array.from(new Set(loadedTasks.map(t => t.clientId))).filter((id): id is string => Boolean(id && id !== 'unassigned'));
       
       let clientsRepaired = false;
       for (const cId of uniqueTaskClientIds) {
@@ -177,9 +177,7 @@ export default function App() {
           const newClient: ClientObject = {
             id: cId,
             displayName: cId,
-            tier: 'Standard',
-            avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-            totalSpend: 0,
+            tier: 'Volume-Arbitrage',
             contractValue: 0
           };
           loadedClients.push(newClient);
@@ -669,9 +667,7 @@ export default function App() {
               const newClient: ClientObject = {
                 id: cId,
                 displayName: cId,
-                tier: 'Standard',
-                avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-                totalSpend: 0,
+                tier: 'Volume-Arbitrage',
                 contractValue: 0
               };
               updatedClients.push(newClient);

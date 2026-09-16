@@ -338,12 +338,13 @@ export default function GanttTimeline({
             <div className="flex items-center gap-1.5">
               <span className="text-[#9496a1] uppercase">Sắp xếp:</span>
               <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as any)}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortByOption)}
                 className="bg-[#0b0c10] text-[#ededf3] px-2 py-1 border border-white/[0.08] rounded-[6px] cursor-pointer focus:outline-none focus:border-[#1591DC]"
               >
                 <option value="deadline-asc">Deadline (Tăng dần)</option>
                 <option value="deadline-desc">Deadline (Giảm dần)</option>
+                <option value="value-desc">Giá trị (Giảm dần)</option>
                 <option value="title-asc">Tên Task (A-Z)</option>
               </select>
             </div>
@@ -396,12 +397,12 @@ export default function GanttTimeline({
           {scale === 'day' && (
             <>
               {/* Timeline Ruler Header */}
-              <div className="flex border-b border-zinc-900 bg-zinc-900/10 font-mono text-[9px] text-zinc-500 font-bold">
-                <div className="w-56 px-4 py-3 shrink-0 border-r border-zinc-900 flex items-center bg-zinc-950 text-zinc-300">
+              <div className="flex border-b border-white/[0.08] bg-[#0b0c10] font-mono text-[9px] text-[#9496a1] font-bold">
+                <div className="w-56 px-4 py-3 shrink-0 border-r border-white/[0.08] flex items-center bg-[#0b0c10] text-white">
                   THÔNG TIN VIDEO TASK
                 </div>
                 
-                <div className="flex-1 grid text-center divide-x divide-zinc-900/60" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
+                <div className="flex-1 grid text-center divide-x divide-white/[0.06]" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
                   {daysArray.map(day => {
                     // Check if weekend
                     const dayDate = new Date(year, monthIdx, day);
@@ -412,12 +413,12 @@ export default function GanttTimeline({
                       <div 
                         key={day} 
                         className={`py-3 flex flex-col justify-center items-center ${
-                          isToday ? 'bg-[#1591DC]/15 text-[#1591DC] font-bold' : isWeekend ? 'bg-zinc-900/30 text-zinc-600' : ''
+                          isToday ? 'bg-[#1591DC]/15 text-[#1591DC] font-bold' : isWeekend ? 'bg-white/[0.02] text-[#9496a1]/50' : 'text-[#9496a1]'
                         }`}
                         style={{ gridColumn: `span 1 / span 1` }}
                       >
                         <span>{String(day).padStart(2, '0')}</span>
-                        <span className="text-[7px] text-zinc-600 mt-0.5 uppercase">
+                        <span className="text-[7px] text-[#9496a1]/60 mt-0.5 uppercase">
                           {dayDate.toLocaleString('vi-VN', { weekday: 'narrow' })}
                         </span>
                       </div>
@@ -427,55 +428,55 @@ export default function GanttTimeline({
               </div>
 
               {/* Tracks (Groups and Bars) */}
-              <div className="divide-y divide-zinc-900">
+              <div className="divide-y divide-white/[0.08]">
                 {groups.map(group => (
-                  <div key={group.id} className="bg-zinc-950">
+                  <div key={group.id} className="bg-[#0b0c10]">
                     
                     {/* Partition Header */}
                     {groupBy !== 'none' && (
-                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
+                      <div className="px-4 py-2.5 bg-[#12141a] border-b border-white/[0.08] text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#1591DC] shadow-[0_0_8px_#1591DC]"></div>
                         {group.name} ({group.tasks.length} videos)
                       </div>
                     )}
 
                     {group.tasks.length === 0 ? (
-                      <div className="flex items-center text-zinc-600 py-6 px-4 text-xs font-mono">
+                      <div className="flex items-center text-[#9496a1] py-6 px-4 text-xs font-mono">
                         Không có task nào trong bộ lọc này.
                       </div>
                     ) : (
-                      <div className="divide-y divide-zinc-900/40">
+                      <div className="divide-y divide-white/[0.06]">
                         {group.tasks.map(task => {
                           const statusStyle = getStatusStyle(task.status);
                           
                           return (
                             <div 
                               key={task.id} 
-                              className="flex group hover:bg-zinc-900/10 items-stretch min-h-[50px] transition-all cursor-pointer"
+                              className="flex group hover:bg-white/[0.02] items-stretch min-h-[50px] transition-all cursor-pointer"
                               onClick={() => onEditTaskClick(task)}
                             >
                               {/* Sidebar Details Block */}
-                              <div className="w-56 p-3 shrink-0 border-r border-zinc-900 flex flex-col justify-between bg-zinc-950/40 font-sans z-10">
+                              <div className="w-56 p-3 shrink-0 border-r border-white/[0.08] flex flex-col justify-between bg-[#12141a]/90 font-sans z-10">
                                 <div className="truncate">
-                                  <h4 className="text-[11px] font-bold text-zinc-200 group-hover:text-white truncate" title={task.title}>
+                                  <h4 className="text-[11px] font-bold text-white group-hover:text-[#1591DC] transition-colors truncate" title={task.title}>
                                     {task.title}
                                   </h4>
-                                  <p className="text-[9px] font-mono text-zinc-500 truncate mt-0.5">
+                                  <p className="text-[9px] font-mono text-[#9496a1] truncate mt-0.5">
                                     {getClientName(task.clientId)} • {getEditorName(task.assignedEditorId)}
                                   </p>
                                 </div>
                                 <div className="flex items-center justify-between text-[8px] font-mono mt-1.5">
-                                  <span className={`px-1 rounded-sm border ${statusStyle.badge} uppercase text-[7px] font-black tracking-wider`}>
+                                  <span className={`px-1.5 py-0.5 rounded-[4px] border ${statusStyle.badge} uppercase text-[7px] font-black tracking-wider`}>
                                     {task.status}
                                   </span>
-                                  <span className="text-zinc-500 font-bold">
+                                  <span className="text-[#ededf3] font-bold">
                                     {currency === 'USD' ? `$${task.clientPay}` : `${task.clientPay.toLocaleString()}₫`}
                                   </span>
                                 </div>
                               </div>
 
                               {/* Gantt Bar Grid Row */}
-                              <div className="flex-1 grid relative divide-x divide-zinc-900/30 bg-[#070605]" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
+                              <div className="flex-1 grid relative divide-x divide-white/[0.04] bg-[#0b0c10]" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
                                 
                                 {/* Background Weekend Shading */}
                                 {daysArray.map(day => {
@@ -484,14 +485,14 @@ export default function GanttTimeline({
                                   return (
                                     <div 
                                       key={day} 
-                                      className={`h-full pointer-events-none ${isWeekend ? 'bg-zinc-900/10' : ''}`} 
+                                      className={`h-full pointer-events-none ${isWeekend ? 'bg-white/[0.02]' : ''}`} 
                                     />
                                   );
                                 })}
 
                                 {/* Absolute Floating Gantt Bar */}
                                 <div 
-                                  className={`absolute top-2.5 bottom-2.5 rounded-sm border flex flex-col justify-center px-3 select-none transition-all group/bar z-10 ${statusStyle.bg}`}
+                                  className={`absolute top-2.5 bottom-2.5 rounded-[4px] border flex flex-col justify-center px-3 select-none transition-all group/bar z-10 ${statusStyle.bg}`}
                                   style={{
                                     left: `${((task.startDay - 1) / daysInMonth) * 100}%`,
                                     width: `${(task.span / daysInMonth) * 100}%`,
@@ -500,22 +501,22 @@ export default function GanttTimeline({
                                   title={`Deadline: ${task.internalDeadline}`}
                                 >
                                   <div className="flex items-center justify-between overflow-hidden gap-1 text-[10px] font-sans">
-                                    <span className="font-bold truncate pointer-events-none drop-shadow-sm select-none">
+                                    <span className="font-bold truncate pointer-events-none drop-shadow-sm select-none text-white">
                                       {task.title}
                                     </span>
                                     
                                     {/* Action shift day controls */}
-                                    <div className="flex items-center gap-0.5 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-zinc-950/80 p-0.5 rounded-sm shrink-0">
+                                    <div className="flex items-center gap-0.5 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-[#0b0c10]/90 p-0.5 rounded-[4px] border border-white/[0.1] shrink-0">
                                       <button
                                         onClick={(e) => handleShiftDeadline(task, -1, e)}
-                                        className="p-0.5 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-none cursor-pointer"
+                                        className="p-0.5 hover:bg-white/10 text-[#9496a1] hover:text-white rounded-[2px] cursor-pointer"
                                         title="-1 ngày"
                                       >
                                         <ChevronLeft className="w-2.5 h-2.5" />
                                       </button>
                                       <button
                                         onClick={(e) => handleShiftDeadline(task, 1, e)}
-                                        className="p-0.5 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-none cursor-pointer"
+                                        className="p-0.5 hover:bg-white/10 text-[#9496a1] hover:text-white rounded-[2px] cursor-pointer"
                                         title="+1 ngày"
                                       >
                                         <ChevronRight className="w-2.5 h-2.5" />
@@ -555,40 +556,40 @@ export default function GanttTimeline({
           {scale === 'week' && (
             <>
               {/* Timeline Week Ruler Header */}
-              <div className="flex border-b border-zinc-900 bg-zinc-900/10 font-mono text-[9px] text-zinc-500 font-bold">
-                <div className="w-56 px-4 py-3 shrink-0 border-r border-zinc-900 flex items-center bg-zinc-950 text-zinc-300">
+              <div className="flex border-b border-white/[0.08] bg-[#0b0c10] font-mono text-[9px] text-[#9496a1] font-bold">
+                <div className="w-56 px-4 py-3 shrink-0 border-r border-white/[0.08] flex items-center bg-[#0b0c10] text-white">
                   THÔNG TIN VIDEO TASK
                 </div>
                 
-                <div className="flex-1 grid grid-cols-5 text-center divide-x divide-zinc-900/60">
+                <div className="flex-1 grid grid-cols-5 text-center divide-x divide-white/[0.06]">
                   {['Tuần 1 (Day 1-7)', 'Tuần 2 (Day 8-14)', 'Tuần 3 (Day 15-21)', 'Tuần 4 (Day 22-28)', 'Tuần 5 (Day 29+)'].map((wk, idx) => (
                     <div key={idx} className="py-3 flex flex-col justify-center items-center">
-                      <span className="uppercase text-[9px] tracking-wider text-zinc-400 font-bold">{wk}</span>
-                      <span className="text-[7px] text-zinc-600 mt-0.5">{monthName} {year}</span>
+                      <span className="uppercase text-[9px] tracking-wider text-[#ededf3] font-bold">{wk}</span>
+                      <span className="text-[7px] text-[#9496a1] mt-0.5">{monthName} {year}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Tracks */}
-              <div className="divide-y divide-zinc-900">
+              <div className="divide-y divide-white/[0.08]">
                 {groups.map(group => (
-                  <div key={group.id} className="bg-zinc-950">
+                  <div key={group.id} className="bg-[#0b0c10]">
                     
                     {/* Group Header */}
                     {groupBy !== 'none' && (
-                      <div className="px-4 py-2 bg-zinc-900/30 border-b border-zinc-900/80 text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#1591DC]"></div>
+                      <div className="px-4 py-2.5 bg-[#12141a] border-b border-white/[0.08] text-[10px] font-bold text-[#1591DC] font-mono uppercase tracking-wider flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#1591DC] shadow-[0_0_8px_#1591DC]"></div>
                         {group.name}
                       </div>
                     )}
 
                     {group.tasks.length === 0 ? (
-                      <div className="flex items-center text-zinc-600 py-6 px-4 text-xs font-mono">
+                      <div className="flex items-center text-[#9496a1] py-6 px-4 text-xs font-mono">
                         Không có video task nào trong bộ lọc này.
                       </div>
                     ) : (
-                      <div className="divide-y divide-zinc-900/40">
+                      <div className="divide-y divide-white/[0.06]">
                         {group.tasks.map(task => {
                           const statusStyle = getStatusStyle(task.status);
                           
@@ -608,38 +609,38 @@ export default function GanttTimeline({
                           return (
                             <div 
                               key={task.id} 
-                              className="flex group hover:bg-zinc-900/10 items-stretch min-h-[50px] transition-all cursor-pointer"
+                              className="flex group hover:bg-white/[0.02] items-stretch min-h-[50px] transition-all cursor-pointer"
                               onClick={() => onEditTaskClick(task)}
                             >
                               {/* Sidebar details */}
-                              <div className="w-56 p-3 shrink-0 border-r border-zinc-900 flex flex-col justify-between bg-zinc-950/40 font-sans z-10">
+                              <div className="w-56 p-3 shrink-0 border-r border-white/[0.08] flex flex-col justify-between bg-[#12141a]/90 font-sans z-10">
                                 <div>
-                                  <h4 className="text-[11px] font-bold text-zinc-200 group-hover:text-white truncate">
+                                  <h4 className="text-[11px] font-bold text-white group-hover:text-[#1591DC] transition-colors truncate">
                                     {task.title}
                                   </h4>
-                                  <p className="text-[9px] font-mono text-zinc-500 truncate">
+                                  <p className="text-[9px] font-mono text-[#9496a1] truncate">
                                     Dl: {task.internalDeadline.split(' ')[0]}
                                   </p>
                                 </div>
-                                <span className={`px-1 self-start rounded-sm border ${statusStyle.badge} uppercase text-[7px] font-black mt-1`}>
+                                <span className={`px-1.5 py-0.5 self-start rounded-[4px] border ${statusStyle.badge} uppercase text-[7px] font-black mt-1`}>
                                   {task.status}
                                 </span>
                               </div>
 
                               {/* Grid representation */}
-                              <div className="flex-1 grid grid-cols-5 relative divide-x divide-zinc-900/30 bg-[#070605]">
+                              <div className="flex-1 grid grid-cols-5 relative divide-x divide-white/[0.04] bg-[#0b0c10]">
                                 {Array.from({ length: 5 }).map((_, colIdx) => (
                                   <div key={colIdx} className="h-full pointer-events-none" />
                                 ))}
 
                                 <div 
-                                  className={`absolute top-2.5 bottom-2.5 rounded-sm border flex flex-col justify-center px-3 select-none transition-all z-10 ${statusStyle.bg}`}
+                                  className={`absolute top-2.5 bottom-2.5 rounded-[4px] border flex flex-col justify-center px-3 select-none transition-all z-10 ${statusStyle.bg}`}
                                   style={{
                                     left: `${(startWeek / 5) * 100}%`,
                                     width: `${(weekSpan / 5) * 100}%`
                                   }}
                                 >
-                                  <span className="font-bold truncate text-[10px] drop-shadow-sm select-none">
+                                  <span className="font-bold truncate text-[10px] drop-shadow-sm select-none text-white">
                                     {task.title}
                                   </span>
                                 </div>
@@ -659,26 +660,26 @@ export default function GanttTimeline({
       </div>
 
       {/* Legend Block */}
-      <div className="flex flex-wrap items-center gap-4 bg-zinc-950/40 p-3 border border-zinc-900 font-mono text-[9px] text-zinc-500">
-        <span className="uppercase font-bold text-zinc-400">CHÚ GIẢI TRẠNG THÁI:</span>
+      <div className="flex flex-wrap items-center gap-4 bg-[#12141a] p-3.5 border border-white/[0.08] rounded-[6px] font-mono text-[9px] text-[#9496a1]">
+        <span className="uppercase font-bold text-white">CHÚ GIẢI TRẠNG THÁI:</span>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-zinc-800 border border-zinc-600 rounded-sm"></span>
+          <span className="w-2.5 h-2.5 bg-zinc-800 border border-zinc-600 rounded-[2px]"></span>
           <span>CHƯA GIAO (UNASSIGNED)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-amber-600 rounded-sm"></span>
+          <span className="w-2.5 h-2.5 bg-amber-600 rounded-[2px]"></span>
           <span>BẢN DỰ THẢO (ROUGH CUT)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-purple-600 rounded-sm"></span>
+          <span className="w-2.5 h-2.5 bg-purple-600 rounded-[2px]"></span>
           <span>TINH CHỈNH (FINAL POLISH)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-cyan-600 rounded-sm"></span>
+          <span className="w-2.5 h-2.5 bg-cyan-600 rounded-[2px]"></span>
           <span>KHÁCH DUYỆT (CLIENT REVIEW)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-emerald-600 rounded-sm"></span>
+          <span className="w-2.5 h-2.5 bg-emerald-600 rounded-[2px]"></span>
           <span>ĐÃ DUYỆT (APPROVED)</span>
         </div>
       </div>
