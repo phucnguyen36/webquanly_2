@@ -42,8 +42,36 @@ export default function GanttTimeline({
   const [statusFilter, setStatusFilter] = useState<string>('all');
   
   // Resolve year and month context
-  const year = useMemo(() => selectedYear === 'all' ? 2026 : parseInt(selectedYear), [selectedYear]);
-  const monthIdx = useMemo(() => selectedMonthOnly === 'all' ? 6 : parseInt(selectedMonthOnly) - 1, [selectedMonthOnly]); // 0-indexed
+  const currentYear = new Date().getFullYear();
+  const currentMonthIdx = new Date().getMonth();
+
+  const year = useMemo(() => {
+    if (selectedYear === 'all') {
+      if (tasks && tasks.length > 0) {
+        const firstWithDate = tasks.find(t => t.internalDeadline);
+        if (firstWithDate) {
+          const y = parseInt(firstWithDate.internalDeadline.substring(0, 4));
+          if (!isNaN(y)) return y;
+        }
+      }
+      return currentYear;
+    }
+    return parseInt(selectedYear);
+  }, [selectedYear, tasks, currentYear]);
+
+  const monthIdx = useMemo(() => {
+    if (selectedMonthOnly === 'all') {
+      if (tasks && tasks.length > 0) {
+        const firstWithDate = tasks.find(t => t.internalDeadline);
+        if (firstWithDate) {
+          const m = parseInt(firstWithDate.internalDeadline.substring(5, 7));
+          if (!isNaN(m)) return m - 1;
+        }
+      }
+      return currentMonthIdx;
+    }
+    return parseInt(selectedMonthOnly) - 1;
+  }, [selectedMonthOnly, tasks, currentMonthIdx]);
 
   // List of days in the selected month
   const daysInMonth = useMemo(() => {
@@ -253,7 +281,9 @@ export default function GanttTimeline({
         }
       });
     }
-}, [sortedAndFilteredTasks, groupBy, staff, clients]);
+
+    return result;
+  }, [sortedAndFilteredTasks, groupBy, staff, clients]);
 
   return (
     <div className="space-y-6 font-haas">
@@ -402,7 +432,7 @@ export default function GanttTimeline({
                   THÔNG TIN VIDEO TASK
                 </div>
                 
-                <div className="flex-1 grid text-center divide-x divide-white/[0.06]" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
+                <div className="flex-1 grid text-center divide-x divide-white/[0.06]" style={{ gridTemplateColumns: `repeat(${daysInMonth}, minmax(0, 1fr))` }}>
                   {daysArray.map(day => {
                     // Check if weekend
                     const dayDate = new Date(year, monthIdx, day);
@@ -476,7 +506,7 @@ export default function GanttTimeline({
                               </div>
 
                               {/* Gantt Bar Grid Row */}
-                              <div className="flex-1 grid relative divide-x divide-white/[0.04] bg-[#0b0c10]" style={{ gridTemplateColumns: 'repeat(31, minmax(0, 1fr))' }}>
+                              <div className="flex-1 grid relative divide-x divide-white/[0.04] bg-[#0b0c10]" style={{ gridTemplateColumns: `repeat(${daysInMonth}, minmax(0, 1fr))` }}>
                                 
                                 {/* Background Weekend Shading */}
                                 {daysArray.map(day => {
